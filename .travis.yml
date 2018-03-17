@@ -1,0 +1,28 @@
+language: python
+
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+
+install:
+  - pip install tox-travis
+  - pip install codecov
+
+script:
+  - tox
+
+after_success:
+  - codecov
+
+deploy:
+  provider: pypi
+  user: acsbidoul
+  password:
+    secure: "ORwZNPD9Ic4Fy6jAsGHycdjrcgER7gcTCVteH2tpcO+X1+1c0awRfjHTuT2Kvcoe7vIpZytEgRX0dgODGwJCfnkm5BZ9fyttFxHJayINaMd+KLznbsww2anBbHqNZm5YoNSDA1cUl8NXWjdibOdI3fdr/r0Jh1ut397uqCw/iI3iH262qvm9nSOWDXg2RIRFySAi2qHr9ue47UdDNSz03AASIzkOrv4sf0DHmIKiqCXC/VSjsLULLBtbv2QfnqdIjNJ305Pie6euvvnAijiKEXDAwnlO5wXFsDy50KFdU7WB3T5JGXOcED22xZuiyIUdrDSx8ZEt2kQXUwxjDYsowrCbilkBXQhN9OKB4Qqg7Bb7EJh21QtAwFnqfECIQf+UV2TbcMHLtIiOSWESgmLxKMIkbyM9Bn2ZH9YmbEKSVE8iGjWJ9UGYr0ef4D8cbW2h9AgFdeWB9EeOrkbSt1xaE9oR0Hdq3+vJ0N/7WMDLCOTA46L2oj08Tq3sL/OVK0fMiGtafg9MBBFRdlYFFfqOaibqm3FBwHNWplAWuI/e6pr13WgfCHKtoJEQXvIi9JAJiQ7SzMMxnVAEeEdEdapY9x3mcTj9GCivXytfcKqryRTwC5Tv++f6S6FsWCK7rff3z54vWkvab8qFCBmqXG/sSjJ++oP81Y57auc+PMMp6Ho="
+  distributions: "sdist bdist_wheel"
+  skip_upload_docs: true
+  on:
+    repo: acsone/odoo-script
+    branch: master
+    tags: true
