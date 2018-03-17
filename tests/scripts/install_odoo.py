@@ -32,10 +32,5 @@ if not os.path.exists(odoo_dir):
 
 subprocess.check_call([
     'pip', 'install',
-    '-f', 'https://wheelhouse.acsone.eu/manylinux1',
-    '-r', os.path.join(odoo_dir, 'requirements.txt'),
-])
-subprocess.check_call([
-    'pip', 'install',
     '-e', odoo_dir,
 ])
