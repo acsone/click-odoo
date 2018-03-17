@@ -38,10 +38,10 @@ def test_odoo_script_args(odoo_venv):
         '--log-level=error',
         '--',
         script,
-        'a', '-b',
+        'a', '-b', '-d',
     ]
     result = subprocess.check_output(cmd, universal_newlines=True)
-    assert result == script + ' a -b\n'
+    assert result == script + ' a -b -d\n'
 
 
 def test_odoo_script_shebang(odoo_venv):
@@ -63,7 +63,7 @@ def test_odoo_script_shebang_args(odoo_venv):
         '-d', odoo_venv.dbname,
         '--log-level=error',
         '--',
-        'a', '-b',
+        'a', '-b', '-d',
     ]
     result = subprocess.check_output(cmd, universal_newlines=True)
-    assert result == script + ' a -b\n'
+    assert result == script + ' a -b -d\n'
