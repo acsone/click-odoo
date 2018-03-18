@@ -73,7 +73,7 @@ Command line interface
   Usage: odoo-script [OPTIONS] [SCRIPT] [SCRIPT_ARGS]...
 
     Execute a python script in an initialized Odoo environment. The script has
-    access to a 'env' global variable which is the odoo.api.Environment
+    access to a 'env' global variable which is an odoo.api.Environment
     initialized for the given database. If no script is provided, the script
     is read from stdin or an interactive console is started if stdin appears
     to be a terminal.

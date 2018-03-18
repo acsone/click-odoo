@@ -40,7 +40,7 @@ def odoo_env_options(func):
 
 @click.command(help="Execute a python script in an initialized Odoo "
                     "environment. The script has access to a 'env' global "
-                    "variable which is the odoo.api.Environment "
+                    "variable which is an odoo.api.Environment "
                     "initialized for the given database. If no script is "
                     "provided, the script is read from stdin or an "
                     "interactive console is started if stdin appears "
