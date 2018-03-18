@@ -36,7 +36,6 @@ def test_odoo_script():
     cmd = [
         'odoo-script',
         '-d', dbname,
-        '--log-level=error',
         script
     ]
     result = subprocess.check_output(cmd, universal_newlines=True)
@@ -49,7 +48,6 @@ def test_cli_runner():
     runner = CliRunner()
     result = runner.invoke(main, [
         '-d', dbname,
-        '--log-level=error',
         script
     ])
     assert result.exit_code == 0
@@ -62,7 +60,6 @@ def test_odoo_script_args():
     cmd = [
         'odoo-script',
         '-d', dbname,
-        '--log-level=error',
         '--',
         script,
         'a', '-b', '-d',
@@ -77,7 +74,6 @@ def test_odoo_script_shebang():
     cmd = [
         script,
         '-d', dbname,
-        '--log-level=error',
     ]
     result = subprocess.check_output(cmd, universal_newlines=True)
     assert result == 'admin\n'
@@ -88,7 +84,6 @@ def test_odoo_script_shebang_args():
     cmd = [
         script,
         '-d', dbname,
-        '--log-level=error',
         '--',
         'a', '-b', '-d',
     ]
@@ -104,7 +99,6 @@ def test_interactive_no_script(mocker):
     runner = CliRunner()
     result = runner.invoke(main, [
         '-d', dbname,
-        '--log-level=error',
     ])
     assert result.exit_code == 0
     assert console.Shell.ipython.call_count == 1
@@ -119,7 +113,6 @@ def test_interactive_no_script_preferred_shell(mocker):
     runner = CliRunner()
     result = runner.invoke(main, [
         '-d', dbname,
-        '--log-level=error',
         '--shell-interface=python',
     ])
     assert result.exit_code == 0

@@ -41,6 +41,9 @@ Supported Odoo versions
 
 Odoo version 8, 9, 10 and 11 are supported.
 
+In version 8, Odoo logs to stdout by default. On other versions
+it is stderr. odoo-script attemps to use stderr for Odoo 8 too.
+
 Database transactions
 ~~~~~~~~~~~~~~~~~~~~~
 
