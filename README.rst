@@ -95,10 +95,9 @@ Command line interface
     --help                          Show this message and exit.
 
 Most options above are the same as ``odoo`` options and behave the same.
-Additional options can be set the the configuration file. 
-
-The following options are forced, whatever the configuration file says: 
-``--no-xmlrpc``, ``--max-cron-threads=0``, ``--workers=0``.
+Additional options can be set the the configuration file.
+Note however that most server-related options (workers, http interface etc)
+are ignored because no server is actually started when running a script.
 
 API
 ~~~
