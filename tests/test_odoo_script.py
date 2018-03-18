@@ -15,9 +15,12 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 try:
     import odoo
+    import odoo.api  # noqa
 except ImportError:
     import openerp as odoo
+    import openerp.api  # noqa
 
+# see also scripts/install_odoo.py
 dbname = 'odoo-script-test-%s-%s' % odoo.release.version_info[:2]
 
 
