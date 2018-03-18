@@ -94,6 +94,12 @@ Command line interface
                                     tried in this order.
     --help                          Show this message and exit.
 
+Most options above are the same as ``odoo`` options and behave the same.
+Additional options can be set the the configuration file. 
+
+The following options are forced, whatever the configuration file says: 
+``--no-xmlrpc``, ``--max-cron-threads=0``, ``--workers=0``.
+
 API
 ~~~
 
