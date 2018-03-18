@@ -8,8 +8,8 @@ odoo-script
     :target: http://badge.fury.io/py/odoo-script
 .. image:: https://travis-ci.org/acsone/odoo-script.svg?branch=master
    :target: https://travis-ci.org/acsone/odoo-script
-.. image:: https://coveralls.io/repos/acsone/odoo-script/badge.svg?branch=master&service=github
-   :target: https://coveralls.io/github/acsone/odoo-script?branch=master
+.. image:: https://codecov.io/gh/acsone/odoo-script/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/acsone/odoo-script
 
 ``odoo-script`` helps you run python scripts in an initialized Odoo environment.
 
