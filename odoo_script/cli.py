@@ -14,28 +14,33 @@ from .env import OdooEnvironment
 _logger = logging.getLogger(__name__)
 
 
-def odoo_env_options(func):
-    @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
-                  type=click.Path(exists=True, dir_okay=False),
-                  help="Specify the Odoo configuration file. Other "
-                       "ways to provide it are with the ODOO_RC or "
-                       "OPENERP_SERVER environment variables, or ~/.odoorc "
-                       "(Odoo >= 10) or ~/.openerp_serverrc.")
-    @click.option('--database', '-d', envvar=['PGDATABASE'],
-                  help="Specify the database name.")
-    @click.option('--log-level',
-                  help="Specify the logging level. Accepted values depend "
-                       "on the Odoo version, and include debug, info "
-                       "(default), warn, error.")
-    @functools.wraps(func)
-    def wrapper(config, database, log_level, *args, **kwargs):
-        with OdooEnvironment(
-            config=config,
-            database=database,
-            log_level=log_level,
-        ) as env:
-            return func(env, *args, **kwargs)
-    return wrapper
+def odoo_env_options(default_log_level='info'):
+    def inner(func):
+        @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
+                      type=click.Path(exists=True, dir_okay=False),
+                      help="Specify the Odoo configuration file. Other "
+                           "ways to provide it are with the ODOO_RC or "
+                           "OPENERP_SERVER environment variables, "
+                           "or ~/.odoorc (Odoo >= 10) "
+                           "or ~/.openerp_serverrc.")
+        @click.option('--database', '-d', envvar=['PGDATABASE'],
+                      help="Specify the database name.")
+        @click.option('--log-level',
+                      default=default_log_level,
+                      show_default=True,
+                      help="Specify the logging level. Accepted values depend "
+                           "on the Odoo version, and include debug, info "
+                           "warn, error.")
+        @functools.wraps(func)
+        def wrapped(config, database, log_level, *args, **kwargs):
+            with OdooEnvironment(
+                config=config,
+                database=database,
+                log_level=log_level,
+            ) as env:
+                return func(env, *args, **kwargs)
+        return wrapped
+    return inner
 
 
 @click.command(help="Execute a python script in an initialized Odoo "
@@ -45,7 +50,7 @@ def odoo_env_options(func):
                     "provided, the script is read from stdin or an "
                     "interactive console is started if stdin appears "
                     "to be a terminal.")
-@odoo_env_options
+@odoo_env_options()
 @click.option('--interactive/--no-interactive', '-i',
               help="Inspect interactively after running the script.")
 @click.option('--shell-interface',
