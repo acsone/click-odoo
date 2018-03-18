@@ -30,11 +30,11 @@ Assuming the following script named ``list-users.py``.
 
 It can be run with::
 
-  odoo-script -d dbname list-users.py
+  odoo-script -d dbname --log-level=error list-users.py
 
 or::
 
-  ./list-users.py -d dbname
+  ./list-users.py -d dbname --log-level=error
 
 Supported Odoo versions
 ~~~~~~~~~~~~~~~~~~~~~~~
