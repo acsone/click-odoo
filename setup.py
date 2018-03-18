@@ -23,6 +23,9 @@ setup(
         'click',
     ],
     license='LGPLv3+',
+    author='ACSONE SA/NV',
+    author_email='info@acsone.eu',
+    url='http://github.com/acsone/setuptools-odoo',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
