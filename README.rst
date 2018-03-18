@@ -76,7 +76,7 @@ Command line interface
     to be a terminal.
 
   Options:
-    -c, --config TEXT               Specify the Odoo configuration file. Other
+    -c, --config PATH               Specify the Odoo configuration file. Other
                                     ways to provide it are with the ODOO_RC or
                                     OPENERP_SERVER environment variables, or
                                     ~/.odoorc (Odoo >= 10) or

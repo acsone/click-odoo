@@ -20,6 +20,7 @@ _logger = logging.getLogger(__name__)
                     "the script is read from stdin or an interactive console "
                     "is started if stdin appears to be a terminal.")
 @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
+              type=click.Path(exists=True, dir_okay=False),
               help="Specify the Odoo configuration file. Other "
                    "ways to provide it are with the ODOO_RC or "
                    "OPENERP_SERVER environment variables, or ~/.odoorc "
@@ -36,7 +37,8 @@ _logger = logging.getLogger(__name__)
               help="Preferred shell interface for interactive mode. Accepted "
                    "values are ipython, ptpython, bpython, python. If not "
                    "provided they are tried in this order.")
-@click.argument('script', required=False, type=click.Path(exists=True))
+@click.argument('script', required=False, 
+                type=click.Path(exists=True, dir_okay=False))
 @click.argument('script-args', nargs=-1)
 def main(config, database, log_level, interactive, shell_interface,
          script, script_args):
