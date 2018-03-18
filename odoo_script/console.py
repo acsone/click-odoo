@@ -55,8 +55,15 @@ class Shell(object):
         _logger.error("Could not start any shell.")
 
 
+def _isatty(stream):
+    try:
+        return os.isatty(stream.fileno())
+    except Exception:
+        return False
+
+
 def interact(local_vars, preferred_shell=None, force_interactive=False):
-    if not os.isatty(sys.stdin.fileno()) and not force_interactive:
+    if not _isatty(sys.stdin) and not force_interactive:
         sys.argv[:] = ['']
         local_vars['__name__'] = '__main__'
         exec(sys.stdin.read(), local_vars)

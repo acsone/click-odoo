@@ -5,4 +5,5 @@ import sys
 
 env = env  # noqa
 
-print(" ".join(sys.argv))
+res = " ".join(sys.argv)
+print(res)
