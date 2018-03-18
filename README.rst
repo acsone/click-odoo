@@ -25,6 +25,7 @@ Assuming the following script named ``list-users.py``.
 
    #!/usr/bin/env odoo-script
    from __future__ import print_function
+
    for u in env['res.users'].search([]):
        print(u.login, u.name)
 
@@ -49,21 +50,6 @@ Database transactions
 
 ``odoo-script`` does not commit the transaction for you.
 To persist changes made to the database, use ``env.cr.commit()``.
-
-Script arguments
-~~~~~~~~~~~~~~~~
-
-An important feature of ``odoo-script`` compared to, say, ``odoo shell`` is
-the capability to pass arguments to scripts.
-
-In order to avoid confusion between ``odoo-script`` options and your script
-options and argument, it is recommended to separate them with ``--``::
-
-  odoo-script -d dbname -- list-users.py -d a b
-  ./list-users.py -d dbname -- -d a b
-
-In both examples above, ``sys.argv[1:]`` will contain ``['-d', 'a', 'b']``
-in the script.
 
 Command line interface
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -102,10 +88,22 @@ Additional options can be set the the configuration file.
 Note however that most server-related options (workers, http interface etc)
 are ignored because no server is actually started when running a script.
 
+An important feature of ``odoo-script`` compared to, say, ``odoo shell`` is
+the capability to pass arguments to scripts.
+
+In order to avoid confusion between ``odoo-script`` options and your script
+options and arguments, it is recommended to separate them with ``--``::
+
+  odoo-script -d dbname -- list-users.py -d a b
+  ./list-users.py -d dbname -- -d a b
+
+In both examples above, ``sys.argv[1:]`` will contain ``['-d', 'a', 'b']``
+in the script.
+
 API
 ~~~
 
-This package proides an ``OdooEnvironment`` context manager.
+The ``odoo_script`` package provides an ``OdooEnvironment`` context manager.
 
 .. warning::
 
@@ -135,7 +133,7 @@ Credits
 
 Author:
 
-  - Stéphane Bidoul (`ACSONE <http://acsone.eu/>`_)
+- Stéphane Bidoul (`ACSONE <http://acsone.eu/>`_)
 
 Inspiration has been drawn from:
 
