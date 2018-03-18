@@ -67,10 +67,10 @@ def create_db():
             """)
             if cr.rowcount:
                 return
+    # initialize database
     subprocess.check_call([
         odoo_bin,
         '-d', odoo_db,
-        '-i', 'base',
         '--stop-after-init',
     ])
 
