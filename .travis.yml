@@ -1,5 +1,12 @@
 language: python
 
+stages:
+  - name: test
+  - name: deploy
+    if: branch = master
+    if: tag IS present
+    if: repo = acsone/click-odoo
+
 jobs:
   include:
     - stage: test
