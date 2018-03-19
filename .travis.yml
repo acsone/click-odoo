@@ -34,3 +34,5 @@ deploy:
     repo: acsone/click-odoo
     branch: master
     tags: true
+    condition: $ODOO = 11.0
+    python: 3.6
