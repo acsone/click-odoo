@@ -59,7 +59,11 @@ def OdooEnvironment(config=None, database=None, log_level=None):
             uid = odoo.SUPERUSER_ID
             ctx = Environment(cr, uid, {})['res.users'].context_get()
             env = Environment(cr, uid, ctx)
+            cr.commit()
             try:
                 yield env
             finally:
-                cr.rollback()
+                try:
+                    cr.rollback()
+                except Exception:
+                    pass
