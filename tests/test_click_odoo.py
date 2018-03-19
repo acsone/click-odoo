@@ -2,13 +2,15 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from __future__ import print_function
+import logging
 import os
 import subprocess
 import textwrap
 
+import click
 from click.testing import CliRunner
 
-from click_odoo import OdooEnvironment
+from click_odoo import OdooEnvironment, env_options
 from click_odoo.cli import main
 from click_odoo import console
 
@@ -125,3 +127,36 @@ def test_interactive_no_script_preferred_shell(mocker):
     assert result.exit_code == 0
     assert console.Shell.ipython.call_count == 0
     assert console.Shell.python.call_count == 1
+
+
+def test_logging_stderr(capfd):
+    script = os.path.join(here, 'scripts', 'script3.py')
+    cmd = [
+        'click-odoo',
+        '-d', dbname,
+        '--',
+        script,
+    ]
+    subprocess.check_call(cmd)
+    out, err = capfd.readouterr()
+    assert "Modules loaded" in err
+    assert "hello from script3" in err
+
+
+def test_logging_logfile(tmpdir):
+    @click.command()
+    @env_options()
+    def testcmd(env):
+        logging.getLogger(__name__).info("hello from testcmd")
+
+    logfile = tmpdir.join('log')
+
+    runner = CliRunner()
+    result = runner.invoke(testcmd, [
+        '-d', dbname,
+        '--logfile', str(logfile),
+    ])
+    assert result.exit_code == 0
+    logcontent = logfile.read()
+    assert "Modules loaded" in logcontent
+    assert "hello from testcmd" in logcontent

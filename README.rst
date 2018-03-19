@@ -11,7 +11,7 @@ click-odoo
 .. image:: https://codecov.io/gh/acsone/click-odoo/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/acsone/click-odoo
 
-``click-odoo`` helps you create and run beautiful and robust command line scripts 
+``click-odoo`` helps you create and run beautiful and robust command line scripts
 for Odoo. It is based on the excellent Click_ library.
 
 .. contents::
@@ -93,14 +93,23 @@ Supported Odoo versions
 
 Odoo version 8, 9, 10 and 11 are supported.
 
-In version 8, Odoo logs to stdout by default. On other versions
-it is stderr. ``click-odoo`` attemps to use stderr for Odoo 8 too.
+An important design goal is to provide a consistent behaviour
+across Odoo versions.
 
 Database transactions
 ~~~~~~~~~~~~~~~~~~~~~
 
 ``click-odoo`` does not commit the transaction for you.
 To persist changes made to the database, use ``env.cr.commit()``.
+
+Logging
+~~~~~~~
+
+In version 8, Odoo logs to stdout by default. On other versions
+it is stderr. ``click-odoo`` attemps to use stderr for Odoo 8 too.
+
+Logging is controlled by the usual Odoo logging options (--log-level,
+--logfile) or the Odoo configuration file.
 
 Command line interface (click-odoo)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

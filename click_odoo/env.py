@@ -30,7 +30,7 @@ def _fix_logging(series):
 
 
 @contextmanager
-def OdooEnvironment(config=None, database=None, log_level=None):
+def OdooEnvironment(config=None, database=None, log_level=None, logfile=None):
     series = odoo.release.version_info[0]
 
     odoo_args = []
@@ -40,6 +40,8 @@ def OdooEnvironment(config=None, database=None, log_level=None):
         odoo_args.extend(['-d', database])
     if log_level:
         odoo_args.extend(['--log-level', log_level])
+    if logfile:
+        odoo_args.extend(['--logfile', logfile])
     # see https://github.com/odoo/odoo/commit/b122217f74
     odoo.tools.config['load_language'] = None
     odoo.tools.config.parse_config(odoo_args)
