@@ -15,6 +15,9 @@ odoo-script
 
 .. contents::
 
+Quick start
+~~~~~~~~~~~
+
 Install it in a (preferably virtual) environment where Odoo is installed::
 
   pip install odoo-script
@@ -37,6 +40,53 @@ or::
 
   ./list-users.py -d dbname --log-level=error
 
+The third technique to create scripts looks like this. Assuming
+the following script named ``list-users2.py``.
+
+.. code:: python
+
+  #!/usr/bin/env python
+  from __future__ import print_function
+  import click
+
+  import odoo_script
+
+
+  @click.command()
+  @odoo_script.env_options(default_log_level='error')
+  @click.option('--say-hello', is_flag=True)
+  def main(env, say_hello):
+      if say_hello:
+          click.echo("Hello!")
+      for u in env['res.users'].search([]):
+          print(u.login, u.name)
+
+
+  if __name__ == '__main__':
+      main()
+
+It can be run like this::
+
+  $ ./list-users2.py --help
+  Usage: list-users2.py [OPTIONS]
+
+  Options:
+    -c, --config PATH    Specify the Odoo configuration file. Other ways to
+                         provide it are with the ODOO_RC or OPENERP_SERVER
+                         environment variables, or ~/.odoorc (Odoo >= 10) or
+                         ~/.openerp_serverrc.
+    -d, --database TEXT  Specify the database name.
+    --log-level TEXT     Specify the logging level. Accepted values depend on
+                         the Odoo version, and include debug, info warn, error.
+                         [default: error]
+    --say-hello
+    --help               Show this message and exit.
+
+  $ ./list-users2.py --say-hello -d dbname
+  Hello!
+  admin Administrator
+  ...
+
 Supported Odoo versions
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -51,8 +101,8 @@ Database transactions
 ``odoo-script`` does not commit the transaction for you.
 To persist changes made to the database, use ``env.cr.commit()``.
 
-Command line interface
-~~~~~~~~~~~~~~~~~~~~~~
+Command line interface (odoo-script)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code::
 
@@ -73,7 +123,7 @@ Command line interface
     -d, --database TEXT             Specify the database name.
     --log-level TEXT                Specify the logging level. Accepted values
                                     depend on the Odoo version, and include
-                                    debug, info (default), warn, error.
+                                    debug, info, warn, error. [default: info]
     -i, --interactive / --no-interactive
                                     Inspect interactively after running the
                                     script.
@@ -103,20 +153,29 @@ in the script.
 API
 ~~~
 
-The ``odoo_script`` package provides an ``OdooEnvironment`` context manager.
+odoo_script.env_options decorator
+---------------------------------
+
+TODO
+
+OdooEnvironment context manager (experimental)
+----------------------------------------------
+
+This package also provides an experimental an ``OdooEnvironment`` context manager.
 
 .. warning::
 
    This API is considered experimental, contrarily to the scripting mechanism
-   (ie passing ``env`` to scripts) which is a stable feature.
-   Should you have a specific usage for the API and would like it to become stable,
-   get it touch to discuss your requirements.
+   (ie passing ``env`` to scripts) and ``env_options`` decorator which are
+   stable features. Should you have a specific usage for this API and would
+   like it to become stable, get it touch to discuss your requirements.
 
 Example:
 
 .. code:: python
 
   from odoo_script import OdooEnvironment
+
 
   with OdooEnvironment(database='dbname') as env:
       env['res.users'].search([])

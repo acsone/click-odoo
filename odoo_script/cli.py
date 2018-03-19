@@ -14,7 +14,7 @@ from .env import OdooEnvironment
 _logger = logging.getLogger(__name__)
 
 
-def odoo_env_options(default_log_level='info'):
+def env_options(default_log_level='info'):
     def inner(func):
         @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
                       type=click.Path(exists=True, dir_okay=False),
@@ -50,7 +50,7 @@ def odoo_env_options(default_log_level='info'):
                     "provided, the script is read from stdin or an "
                     "interactive console is started if stdin appears "
                     "to be a terminal.")
-@odoo_env_options()
+@env_options()
 @click.option('--interactive/--no-interactive', '-i',
               help="Inspect interactively after running the script.")
 @click.option('--shell-interface',
