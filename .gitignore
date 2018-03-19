@@ -1,6 +1,7 @@
 *~
 *.swp
 /.pytest_cache
+/tmp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
