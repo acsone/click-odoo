@@ -64,6 +64,7 @@ def main(env, interactive, shell_interface, script, script_args):
     global_vars = {'env': env}
     if script:
         sys.argv[1:] = script_args
-        global_vars = runpy.run_path(script, init_globals=global_vars)
+        global_vars = runpy.run_path(
+            script, init_globals=global_vars, run_name='__main__')
     if not script or interactive:
         interact(global_vars, shell_interface, interactive)

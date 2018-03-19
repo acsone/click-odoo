@@ -6,4 +6,5 @@ import sys
 env = env  # noqa
 
 res = " ".join(sys.argv)
-print(res)
+print("sys.argv =", res)
+print("__name__ =", __name__)

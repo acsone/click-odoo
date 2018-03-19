@@ -4,6 +4,7 @@
 from __future__ import print_function
 import os
 import subprocess
+import textwrap
 
 from click.testing import CliRunner
 
@@ -65,7 +66,10 @@ def test_click_odoo_args():
         'a', '-b', '-d',
     ]
     result = subprocess.check_output(cmd, universal_newlines=True)
-    assert result == script + ' a -b -d\n'
+    assert result == textwrap.dedent("""\
+        sys.argv = {} a -b -d
+        __name__ = __main__
+    """.format(script))
 
 
 def test_click_odoo_shebang():
@@ -88,7 +92,10 @@ def test_click_odoo_shebang_args():
         'a', '-b', '-d',
     ]
     result = subprocess.check_output(cmd, universal_newlines=True)
-    assert result == script + ' a -b -d\n'
+    assert result == textwrap.dedent("""\
+        sys.argv = {} a -b -d
+        __name__ = __main__
+    """.format(script))
 
 
 def test_interactive_no_script(mocker):
