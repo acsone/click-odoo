@@ -80,6 +80,7 @@ It can be run like this::
     --log-level TEXT     Specify the logging level. Accepted values depend on
                          the Odoo version, and include debug, info warn, error.
                          [default: error]
+    --logfile PATH       Specify the log file.
     --say-hello
     --help               Show this message and exit.
 
@@ -106,7 +107,7 @@ Logging
 ~~~~~~~
 
 In version 8, Odoo logs to stdout by default. On other versions
-it is stderr. ``click-odoo`` attemps to use stderr for Odoo 8 too.
+it is stderr. ``click-odoo`` attempts to use stderr for Odoo 8 too.
 
 Logging is controlled by the usual Odoo logging options (--log-level,
 --logfile) or the Odoo configuration file.
@@ -133,7 +134,8 @@ Command line interface (click-odoo)
     -d, --database TEXT             Specify the database name.
     --log-level TEXT                Specify the logging level. Accepted values
                                     depend on the Odoo version, and include
-                                    debug, info, warn, error. [default: info]
+                                    debug, info, warn, error.  [default: info]
+    --logfile PATH                  Specify the log file.
     -i, --interactive / --no-interactive
                                     Inspect interactively after running the
                                     script.

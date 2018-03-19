@@ -29,10 +29,11 @@ def env_options(default_log_level='info'):
                       default=default_log_level,
                       show_default=True,
                       help="Specify the logging level. Accepted values depend "
-                           "on the Odoo version, and include debug, info "
+                           "on the Odoo version, and include debug, info, "
                            "warn, error.")
         @click.option('--logfile',
-                      type=click.Path(dir_okay=False))
+                      type=click.Path(dir_okay=False),
+                      help="Specify the log file.")
         @functools.wraps(func)
         def wrapped(config, database, log_level, logfile, *args, **kwargs):
             with OdooEnvironment(
