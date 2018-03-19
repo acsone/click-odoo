@@ -6,8 +6,10 @@ import os
 import subprocess
 import textwrap
 
+import click
 from click.testing import CliRunner
 
+import click_odoo
 from click_odoo import OdooEnvironment
 from click_odoo.cli import main
 from click_odoo import console
@@ -158,3 +160,18 @@ def test_logging_logfile(tmpdir, capfd):
     logcontent = logfile.read()
     assert "Modules loaded" in logcontent
     assert "hello from script3" in logcontent
+
+
+def tests_env_options():
+    @click.command()
+    @click_odoo.env_options()
+    def testcmd(env):
+        login = env['res.users'].search([('id', '=', 1)]).login
+        click.echo("login={}".format(login))
+
+    runner = CliRunner()
+    result = runner.invoke(testcmd, [
+        '-d', dbname,
+    ])
+    assert result.exit_code == 0
+    assert 'login=admin\n' in result.output
