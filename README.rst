@@ -1,17 +1,18 @@
-odoo-script
+click-odoo
 ===========
 
 .. image:: https://img.shields.io/badge/license-LGPL--3-blue.svg
    :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
    :alt: License: LGPL-3
-.. image:: https://badge.fury.io/py/odoo-script.svg
-    :target: http://badge.fury.io/py/odoo-script
-.. image:: https://travis-ci.org/acsone/odoo-script.svg?branch=master
-   :target: https://travis-ci.org/acsone/odoo-script
-.. image:: https://codecov.io/gh/acsone/odoo-script/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/acsone/odoo-script
+.. image:: https://badge.fury.io/py/click-odoo.svg
+    :target: http://badge.fury.io/py/click-odoo
+.. image:: https://travis-ci.org/acsone/click-odoo.svg?branch=master
+   :target: https://travis-ci.org/acsone/click-odoo
+.. image:: https://codecov.io/gh/acsone/click-odoo/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/acsone/click-odoo
 
-``odoo-script`` helps you run python scripts in an initialized Odoo environment.
+``click-odoo`` helps you create and run beautiful and robust command line scripts 
+for Odoo. It is based on the excellent Click_ library.
 
 .. contents::
 
@@ -20,13 +21,13 @@ Quick start
 
 Install it in a (preferably virtual) environment where Odoo is installed::
 
-  pip install odoo-script
+  pip install click-odoo
 
 Assuming the following script named ``list-users.py``.
 
 .. code:: python
 
-   #!/usr/bin/env odoo-script
+   #!/usr/bin/env click-odoo
    from __future__ import print_function
 
    for u in env['res.users'].search([]):
@@ -34,7 +35,7 @@ Assuming the following script named ``list-users.py``.
 
 It can be run with::
 
-  odoo-script -d dbname --log-level=error list-users.py
+  click-odoo -d dbname --log-level=error list-users.py
 
 or::
 
@@ -49,11 +50,11 @@ the following script named ``list-users2.py``.
   from __future__ import print_function
   import click
 
-  import odoo_script
+  import click_odoo
 
 
   @click.command()
-  @odoo_script.env_options(default_log_level='error')
+  @click_odoo.env_options(default_log_level='error')
   @click.option('--say-hello', is_flag=True)
   def main(env, say_hello):
       if say_hello:
@@ -93,20 +94,20 @@ Supported Odoo versions
 Odoo version 8, 9, 10 and 11 are supported.
 
 In version 8, Odoo logs to stdout by default. On other versions
-it is stderr. odoo-script attemps to use stderr for Odoo 8 too.
+it is stderr. ``click-odoo`` attemps to use stderr for Odoo 8 too.
 
 Database transactions
 ~~~~~~~~~~~~~~~~~~~~~
 
-``odoo-script`` does not commit the transaction for you.
+``click-odoo`` does not commit the transaction for you.
 To persist changes made to the database, use ``env.cr.commit()``.
 
-Command line interface (odoo-script)
+Command line interface (click-odoo)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code::
 
-  Usage: odoo-script [OPTIONS] [SCRIPT] [SCRIPT_ARGS]...
+  Usage: click-odoo [OPTIONS] [SCRIPT] [SCRIPT_ARGS]...
 
     Execute a python script in an initialized Odoo environment. The script has
     access to a 'env' global variable which is an odoo.api.Environment
@@ -138,13 +139,13 @@ Additional options can be set the the configuration file.
 Note however that most server-related options (workers, http interface etc)
 are ignored because no server is actually started when running a script.
 
-An important feature of ``odoo-script`` compared to, say, ``odoo shell`` is
+An important feature of ``click-odoo`` compared to, say, ``odoo shell`` is
 the capability to pass arguments to scripts.
 
-In order to avoid confusion between ``odoo-script`` options and your script
+In order to avoid confusion between ``click-odoo`` options and your script
 options and arguments, it is recommended to separate them with ``--``::
 
-  odoo-script -d dbname -- list-users.py -d a b
+  click-odoo -d dbname -- list-users.py -d a b
   ./list-users.py -d dbname -- -d a b
 
 In both examples above, ``sys.argv[1:]`` will contain ``['-d', 'a', 'b']``
@@ -153,7 +154,7 @@ in the script.
 API
 ~~~
 
-odoo_script.env_options decorator
+click_odoo.env_options decorator
 ---------------------------------
 
 TODO
@@ -174,7 +175,7 @@ Example:
 
 .. code:: python
 
-  from odoo_script import OdooEnvironment
+  from click_odoo import OdooEnvironment
 
 
   with OdooEnvironment(database='dbname') as env:
@@ -183,9 +184,11 @@ Example:
 Useful links
 ~~~~~~~~~~~~
 
-- pypi page: https://pypi.python.org/pypi/odoo-script
-- code repository: https://github.com/acsone/odoo-script
-- report issues at: https://github.com/acsone/odoo-script/issues
+- pypi page: https://pypi.python.org/pypi/click-odoo
+- code repository: https://github.com/acsone/click-odoo
+- report issues at: https://github.com/acsone/click-odoo/issues
+
+.. _Click: http://click.pocoo.org
 
 Credits
 ~~~~~~~

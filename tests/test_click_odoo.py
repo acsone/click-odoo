@@ -7,9 +7,9 @@ import subprocess
 
 from click.testing import CliRunner
 
-from odoo_script import OdooEnvironment
-from odoo_script.cli import main
-from odoo_script import console
+from click_odoo import OdooEnvironment
+from click_odoo.cli import main
+from click_odoo import console
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,7 +21,7 @@ except ImportError:
     import openerp.api  # noqa
 
 # see also scripts/install_odoo.py
-dbname = 'odoo-script-test-%s-%s' % odoo.release.version_info[:2]
+dbname = 'click-odoo-test-%s-%s' % odoo.release.version_info[:2]
 
 
 def test_odoo_env():
@@ -30,11 +30,11 @@ def test_odoo_env():
         assert len(admin) == 1
 
 
-def test_odoo_script():
+def test_click_odoo():
     """ Test simple access to env in script """
     script = os.path.join(here, 'scripts', 'script1.py')
     cmd = [
-        'odoo-script',
+        'click-odoo',
         '-d', dbname,
         script
     ]
@@ -54,11 +54,11 @@ def test_cli_runner():
     assert result.output == 'admin\n'
 
 
-def test_odoo_script_args():
+def test_click_odoo_args():
     """ Test sys.argv in script """
     script = os.path.join(here, 'scripts', 'script2.py')
     cmd = [
-        'odoo-script',
+        'click-odoo',
         '-d', dbname,
         '--',
         script,
@@ -68,7 +68,7 @@ def test_odoo_script_args():
     assert result == script + ' a -b -d\n'
 
 
-def test_odoo_script_shebang():
+def test_click_odoo_shebang():
     """ Test simple access to env in script """
     script = os.path.join(here, 'scripts', 'script1.py')
     cmd = [
@@ -79,7 +79,7 @@ def test_odoo_script_shebang():
     assert result == 'admin\n'
 
 
-def test_odoo_script_shebang_args():
+def test_click_odoo_shebang_args():
     script = os.path.join(here, 'scripts', 'script2.py')
     cmd = [
         script,

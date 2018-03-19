@@ -8,8 +8,8 @@ import psycopg2
 
 odoo_series = sys.argv[1]
 odoo_dir = os.path.join(os.environ['VIRTUAL_ENV'], 'src', 'odoo')
-# see also dbname in ../test_odoo_script.py
-odoo_db = 'odoo-script-test-' + odoo_series.replace('.', '-')
+# see also dbname in ../test_click_odoo.py
+odoo_db = 'click-odoo-test-' + odoo_series.replace('.', '-')
 if odoo_series in ('8.0', '9.0'):
     odoo_bin = 'openerp-server'
 else:

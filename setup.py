@@ -8,8 +8,8 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 
 setup(
-    name='odoo-script',
-    description='Run python scripts in an Odoo environment',
+    name='click-odoo',
+    description='Beautiful, robust CLI for Odoo',
     long_description='\n'.join((
         open(os.path.join(here, 'README.rst')).read(),
         open(os.path.join(here, 'CHANGES.rst')).read(),
@@ -27,7 +27,7 @@ setup(
     author_email='info@acsone.eu',
     url='http://github.com/acsone/setuptools-odoo',
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: '
         'GNU Lesser General Public License v3 or later (LGPLv3+)',
@@ -38,6 +38,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        odoo-script=odoo_script.cli:main
+        click-odoo=click_odoo.cli:main
     ''',
 )
