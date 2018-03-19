@@ -50,7 +50,9 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None):
 
     db_name = odoo.tools.config['db_name']
     if not db_name:
-        raise click.ClickException("No database name found.")
+        raise click.ClickException("No database name found. Please provide "
+                                   "one with the -d option or the odoo "
+                                   "configuration file.")
 
     with Environment.manage():
         if series > 9:
