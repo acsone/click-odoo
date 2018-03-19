@@ -1,17 +1,35 @@
 language: python
 
-matrix:
+jobs:
   include:
-    - python: 2.7
+    - stage: test
+      python: 2.7
       env: ODOO="8.0"
-    - python: 2.7
+    - stage: test
+      python: 2.7
       env: ODOO="9.0"
-    - python: 2.7
+    - stage: test
+      python: 2.7
       env: ODOO="10.0"
-    - python: 3.5
+    - stage: test
+      python: 3.5
       env: ODOO="11.0"
-    - python: 3.6
+    - stage: test
+      python: 3.6
       env: ODOO="11.0"
+    - stage: deploy
+      script: echo "Deploy to PyPi"
+      deploy:
+        provider: pypi
+        user: acsbidoul
+        password:
+          secure: "5268je56vnMH5clI8srEgH5rnK2jkIglKcrQiwK7L37d8EmM23sJXZTccjoHHTdu/i4L1lHo052RMhtUvOUpDrjdY877t4PIjv2pUO86AvYZdKDJU99xrSaDObIprvOq48eJF77vTJHBOyLSYz3br37pYvh2PmUqNPXu/QdF0OsY8kc7995fDhZuJmBUWnAn7yFXPB/NOcgklHkcQDz1AGgCZ/a+PPxSRpiVdAjeQiz+1s0PeZLug2pIxqyg2luEN1d8R8VQQ2dbjlMrI+ngGsm/vHyGny2iLgI//ozkxQWHATwPC47WZJiNLaf9gNcB4BfbZdZKDofy8pv6PEZl+Gvqe2xY8OvlgfYWLiPk2ek2HJmWoqaYu5YC7aYYnhgS+IcbwDsFVXwV6ToU2t+fI1USyrSaTygDKHCyVEiPmvB6+3pFLFxsDnu7YlbQTf1wBE7rO1K4nK/pPU1uqZ6a3IkkcZiKkMpyQC329N8nPLaOOBA7M7Gwa6PtmV6QbM+OthXo+eOUkYp4640V7nk7+W6HEzjqfl69u8B4buOmWWKQ176NeycIUriRpjjRw+psj4Ikr+f7ccxBsrz43HtZxoHnb7g/TWjULsddolDYWpDTUI1LWa+hSIkZdnFs3eGPJnATi6DIMHhMxSqmzPB7EpJIruyjJhDlOgt4BrMmQLg="
+        distributions: "sdist bdist_wheel"
+        skip_upload_docs: true
+        on:
+          repo: acsone/click-odoo
+          branch: master
+          tags: true
  
 install:
   - pip install tox-travis
@@ -23,16 +41,3 @@ script:
 after_success:
   - codecov
 
-deploy:
-  provider: pypi
-  user: acsbidoul
-  password:
-    secure: "5268je56vnMH5clI8srEgH5rnK2jkIglKcrQiwK7L37d8EmM23sJXZTccjoHHTdu/i4L1lHo052RMhtUvOUpDrjdY877t4PIjv2pUO86AvYZdKDJU99xrSaDObIprvOq48eJF77vTJHBOyLSYz3br37pYvh2PmUqNPXu/QdF0OsY8kc7995fDhZuJmBUWnAn7yFXPB/NOcgklHkcQDz1AGgCZ/a+PPxSRpiVdAjeQiz+1s0PeZLug2pIxqyg2luEN1d8R8VQQ2dbjlMrI+ngGsm/vHyGny2iLgI//ozkxQWHATwPC47WZJiNLaf9gNcB4BfbZdZKDofy8pv6PEZl+Gvqe2xY8OvlgfYWLiPk2ek2HJmWoqaYu5YC7aYYnhgS+IcbwDsFVXwV6ToU2t+fI1USyrSaTygDKHCyVEiPmvB6+3pFLFxsDnu7YlbQTf1wBE7rO1K4nK/pPU1uqZ6a3IkkcZiKkMpyQC329N8nPLaOOBA7M7Gwa6PtmV6QbM+OthXo+eOUkYp4640V7nk7+W6HEzjqfl69u8B4buOmWWKQ176NeycIUriRpjjRw+psj4Ikr+f7ccxBsrz43HtZxoHnb7g/TWjULsddolDYWpDTUI1LWa+hSIkZdnFs3eGPJnATi6DIMHhMxSqmzPB7EpJIruyjJhDlOgt4BrMmQLg="
-  distributions: "sdist bdist_wheel"
-  skip_upload_docs: true
-  on:
-    repo: acsone/click-odoo
-    branch: master
-    tags: true
-    condition: $ODOO = 11.0
-    python: 3.6
