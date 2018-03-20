@@ -57,10 +57,8 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None):
                                    "configuration file.")
 
     with Environment.manage():
-        if series > 9:
-            registry = odoo.modules.registry.Registry(db_name)
-        else:
-            registry = odoo.modules.registry.RegistryManager.get(db_name)
+        registry = odoo.registry(db_name)
+        registry.clear_caches()
         with registry.cursor() as cr:
             uid = odoo.SUPERUSER_ID
             ctx = Environment(cr, uid, {})['res.users'].context_get()

@@ -265,3 +265,18 @@ def test_write_raise(tmpdir, capfd):
     our, err = capfd.readouterr()
     assert "testerror" in err
     _assert_testparam_absent()
+
+
+def test_env_cache():
+    _cleanup_testparam()
+    with OdooEnvironment(database=dbname) as env:
+        env['ir.config_parameter'].set_param('testparam', 'testvalue')
+        value = env['ir.config_parameter'].get_param('testparam')
+        assert value == 'testvalue'
+        env.cr.commit()
+    _assert_testparam_present('testvalue')
+    _cleanup_testparam()
+    _assert_testparam_absent()
+    with OdooEnvironment(database=dbname) as env:
+        value = env['ir.config_parameter'].get_param('testparam')
+        assert not value
