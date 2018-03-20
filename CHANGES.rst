@@ -5,6 +5,13 @@ Changes
 .. ----------
 .. -
 
+1.0.0b1 (unreleased)
+--------------------
+- clear cache when starting environment (mostly useful for tests)
+- simplify and test transaction and exception handling
+- when leaving the env, log the exception to be sure it is visible
+  when using --logfile
+
 1.0.0a2 (2018-03-19)
 --------------------
 - improve transaction management: avoid some rare deadlock
