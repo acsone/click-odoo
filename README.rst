@@ -78,7 +78,7 @@ It can be run like this::
                          ~/.openerp_serverrc.
     -d, --database TEXT  Specify the database name.
     --log-level TEXT     Specify the logging level. Accepted values depend on
-                         the Odoo version, and include debug, info warn, error.
+                         the Odoo version, and include debug, info, warn, error.
                          [default: error]
     --logfile PATH       Specify the log file.
     --say-hello
@@ -109,8 +109,8 @@ Logging
 In version 8, Odoo logs to stdout by default. On other versions
 it is stderr. ``click-odoo`` attempts to use stderr for Odoo 8 too.
 
-Logging is controlled by the usual Odoo logging options (--log-level,
---logfile) or the Odoo configuration file.
+Logging is controlled by the usual Odoo logging options (``--log-level``,
+``--logfile``) or the Odoo configuration file.
 
 Command line interface (click-odoo)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
