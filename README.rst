@@ -100,8 +100,9 @@ across Odoo versions.
 Database transactions
 ~~~~~~~~~~~~~~~~~~~~~
 
-``click-odoo`` does not commit the transaction for you.
-To persist changes made to the database, use ``env.cr.commit()``.
+``click-odoo`` commits the transaction for you, unless your script
+raises an exception. This is so that you don't need to put explicit commits
+in your scripts and they are therefore easier to compose in larger transactions.
 
 Logging
 ~~~~~~~

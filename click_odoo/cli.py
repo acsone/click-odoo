@@ -34,13 +34,20 @@ def env_options(default_log_level='info'):
         @click.option('--logfile',
                       type=click.Path(dir_okay=False),
                       help="Specify the log file.")
+        @click.option('--rollback', is_flag=True,
+                      help="Rollback the transaction even if the script "
+                           "does not raise an exception. Note that if the "
+                           "script itself commits this option has no effect, "
+                           "this is why it is not named dry run.")
         @functools.wraps(func)
-        def wrapped(config, database, log_level, logfile, *args, **kwargs):
+        def wrapped(config, database, log_level, logfile, rollback,
+                    *args, **kwargs):
             with OdooEnvironment(
                 config=config,
                 database=database,
                 log_level=log_level,
                 logfile=logfile,
+                rollback=rollback,
             ) as env:
                 return func(env, *args, **kwargs)
         return wrapped

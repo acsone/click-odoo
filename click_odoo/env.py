@@ -32,7 +32,8 @@ def _fix_logging(series):
 
 
 @contextmanager
-def OdooEnvironment(config=None, database=None, log_level=None, logfile=None):
+def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
+                    rollback=False):
     series = odoo.release.version_info[0]
 
     odoo_args = []
@@ -66,7 +67,10 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None):
             cr.rollback()
             try:
                 yield env
-                cr.rollback()
+                if rollback:
+                    cr.rollback()
+                else:
+                    cr.commit()
             except:  # noqa
                 _logger.exception("Exception in OdooEnvironment")
                 raise

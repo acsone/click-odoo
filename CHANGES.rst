@@ -5,6 +5,12 @@ Changes
 .. ----------
 .. -
 
+1.0.0b2 (unreleased)
+--------------------
+- commit in case of success, so users do not need to commit in their
+  scripts, therefore making scripts easier to compose in larger transactions
+- add a --rollback option
+
 1.0.0b1 (2018-03-20)
 --------------------
 - clear cache when starting environment (mostly useful for tests)

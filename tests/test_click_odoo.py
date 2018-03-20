@@ -244,7 +244,7 @@ def test_write_nocommit():
         script, 'nocommit'
     ]
     subprocess.check_call(cmd)
-    _assert_testparam_absent()
+    _assert_testparam_present('testvalue')
 
 
 def test_write_raise(tmpdir, capfd):
