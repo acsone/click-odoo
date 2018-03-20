@@ -5,7 +5,7 @@ Changes
 .. ----------
 .. -
 
-1.0.0b1 (unreleased)
+1.0.0b1 (2018-03-20)
 --------------------
 - clear cache when starting environment (mostly useful for tests)
 - simplify and test transaction and exception handling
