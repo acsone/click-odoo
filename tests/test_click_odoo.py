@@ -8,6 +8,7 @@ import textwrap
 
 import click
 from click.testing import CliRunner
+import psycopg2
 
 import click_odoo
 from click_odoo import OdooEnvironment
@@ -175,3 +176,92 @@ def tests_env_options():
     ])
     assert result.exit_code == 0
     assert 'login=admin\n' in result.output
+
+
+def _cleanup_testparam():
+    with psycopg2.connect(dbname=dbname) as conn:
+        with conn.cursor() as cr:
+            cr.execute("DELETE FROM ir_config_parameter "
+                       "WHERE key='testparam'")
+            conn.commit()
+    conn.close()
+
+
+def _assert_testparam_present(expected):
+    with psycopg2.connect(dbname=dbname) as conn:
+        with conn.cursor() as cr:
+            cr.execute("SELECT value FROM ir_config_parameter "
+                       "WHERE key='testparam'")
+            r = cr.fetchall()
+            assert len(r) == 1
+            assert r[0][0] == expected
+    conn.close()
+
+
+def _assert_testparam_absent():
+    with psycopg2.connect(dbname=dbname) as conn:
+        with conn.cursor() as cr:
+            cr.execute("SELECT value FROM ir_config_parameter "
+                       "WHERE key='testparam'")
+            r = cr.fetchall()
+            assert len(r) == 0
+    conn.close()
+
+
+def test_write_commit():
+    _cleanup_testparam()
+    script = os.path.join(here, 'scripts', 'script4.py')
+    cmd = [
+        'click-odoo',
+        '-d', dbname,
+        '--',
+        script, 'commit'
+    ]
+    subprocess.check_call(cmd)
+    _assert_testparam_present('testvalue')
+
+
+def test_write_rollback():
+    _cleanup_testparam()
+    script = os.path.join(here, 'scripts', 'script4.py')
+    cmd = [
+        'click-odoo',
+        '-d', dbname,
+        '--',
+        script, 'rollback'
+    ]
+    subprocess.check_call(cmd)
+    _assert_testparam_absent()
+
+
+def test_write_nocommit():
+    _cleanup_testparam()
+    script = os.path.join(here, 'scripts', 'script4.py')
+    cmd = [
+        'click-odoo',
+        '-d', dbname,
+        '--',
+        script, 'nocommit'
+    ]
+    subprocess.check_call(cmd)
+    _assert_testparam_absent()
+
+
+def test_write_raise(tmpdir, capfd):
+    _cleanup_testparam()
+    script = os.path.join(here, 'scripts', 'script4.py')
+    logfile = tmpdir.join('mylogfile')
+    cmd = [
+        'click-odoo',
+        '-d', dbname,
+        '--logfile', str(logfile),
+        '--',
+        script, 'raise'
+    ]
+    r = subprocess.call(cmd)
+    assert r != 0
+    logcontent = logfile.read()
+    assert "testerror" in logcontent
+    our, err = capfd.readouterr()
+    assert "testerror" in err
+    _assert_testparam_absent()

@@ -18,6 +18,8 @@ except ImportError:
     except ImportError:
         raise ImportError("No module named odoo nor openerp")
 
+_logger = logging.getLogger(__name__)
+
 
 def _fix_logging(series):
     if series < 9:
@@ -63,11 +65,10 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None):
             uid = odoo.SUPERUSER_ID
             ctx = Environment(cr, uid, {})['res.users'].context_get()
             env = Environment(cr, uid, ctx)
-            cr.commit()
+            cr.rollback()
             try:
                 yield env
-            finally:
-                try:
-                    cr.rollback()
-                except Exception:
-                    pass
+                cr.rollback()
+            except:  # noqa
+                _logger.exception("Exception in OdooEnvironment")
+                raise
