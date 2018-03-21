@@ -81,6 +81,12 @@ It can be run like this::
                          the Odoo version, and include debug, info, warn, error.
                          [default: error]
     --logfile PATH       Specify the log file.
+    --rollback           Rollback the transaction even if the script
+                         does not raise an exception. Note that if
+                         the script itself commits this option has no
+                         effect, this is why it is not named dry run.
+                         This option is implied when an interactive
+                         console is started.
     --say-hello
     --help               Show this message and exit.
 
@@ -100,9 +106,14 @@ across Odoo versions.
 Database transactions
 ~~~~~~~~~~~~~~~~~~~~~
 
-``click-odoo`` commits the transaction for you, unless your script
+By default ``click-odoo`` commits the transaction for you, unless your script
 raises an exception. This is so that you don't need to put explicit commits
 in your scripts and they are therefore easier to compose in larger transactions.
+
+There is a ``--rollback`` option to force a rollback.
+
+A rollback is always performed after an interactive session. If you need to
+commit changes made before or after an interactive session, use ``env.cr.commit``.
 
 Logging
 ~~~~~~~
@@ -137,6 +148,12 @@ Command line interface (click-odoo)
                                     depend on the Odoo version, and include
                                     debug, info, warn, error.  [default: info]
     --logfile PATH                  Specify the log file.
+    --rollback                      Rollback the transaction even if the script
+                                    does not raise an exception. Note that if
+                                    the script itself commits this option has no
+                                    effect, this is why it is not named dry run.
+                                    This option is implied when an interactive
+                                    console is started.
     -i, --interactive / --no-interactive
                                     Inspect interactively after running the
                                     script.

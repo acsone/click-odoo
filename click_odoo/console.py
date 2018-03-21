@@ -4,7 +4,6 @@
 import code
 import logging
 import os
-import sys
 
 _logger = logging.getLogger(__name__)
 
@@ -60,12 +59,3 @@ def _isatty(stream):
         return os.isatty(stream.fileno())
     except Exception:
         return False
-
-
-def interact(local_vars, preferred_shell=None, force_interactive=False):
-    if not _isatty(sys.stdin) and not force_interactive:
-        sys.argv[:] = ['']
-        local_vars['__name__'] = '__main__'
-        exec(sys.stdin.read(), local_vars)
-    else:
-        Shell.interact(local_vars, preferred_shell)

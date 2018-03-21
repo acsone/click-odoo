@@ -10,6 +10,7 @@ Changes
 - commit in case of success, so users do not need to commit in their
   scripts, therefore making scripts easier to compose in larger transactions
 - add a --rollback option
+- interactive mode forces --rollback
 
 1.0.0b1 (2018-03-20)
 --------------------

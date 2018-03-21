@@ -8,7 +8,7 @@ import sys
 
 import click
 
-from .console import interact
+from . import console
 from .env import OdooEnvironment
 
 _logger = logging.getLogger(__name__)
@@ -38,7 +38,9 @@ def env_options(default_log_level='info'):
                       help="Rollback the transaction even if the script "
                            "does not raise an exception. Note that if the "
                            "script itself commits this option has no effect, "
-                           "this is why it is not named dry run.")
+                           "this is why it is not named dry run. This option "
+                           "is implied when an interactive console is "
+                           "started.")
         @functools.wraps(func)
         def wrapped(config, database, log_level, logfile, rollback,
                     *args, **kwargs):
@@ -78,4 +80,10 @@ def main(env, interactive, shell_interface, script, script_args):
         global_vars = runpy.run_path(
             script, init_globals=global_vars, run_name='__main__')
     if not script or interactive:
-        interact(global_vars, shell_interface, interactive)
+        if console._isatty(sys.stdin):
+            console.Shell.interact(global_vars, shell_interface)
+            env.cr.rollback()
+        else:
+            sys.argv[:] = ['']
+            global_vars['__name__'] = '__main__'
+            exec(sys.stdin.read(), global_vars)

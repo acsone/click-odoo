@@ -27,6 +27,11 @@ except ImportError:
 # see also scripts/install_odoo.py
 dbname = 'click-odoo-test-%s-%s' % odoo.release.version_info[:2]
 
+# This hack is necessary because the way CliRunner patches
+# stdout is not compatible with the Odoo logging initialization
+# mechanism. Logging is therefore tested with subprocesses.
+odoo.netsvc._logger_init = True
+
 
 def test_odoo_env():
     with OdooEnvironment(database=dbname) as env:
@@ -234,16 +239,46 @@ def test_write_rollback():
     _assert_testparam_absent()
 
 
-def test_write_nocommit():
+def test_write_defaulttx():
     _cleanup_testparam()
     script = os.path.join(here, 'scripts', 'script4.py')
     cmd = [
         'click-odoo',
         '-d', dbname,
         '--',
-        script, 'nocommit'
+        script
     ]
     subprocess.check_call(cmd)
+    _assert_testparam_present('testvalue')
+
+
+def test_write_interactive_defaulttx(mocker):
+    mocker.patch.object(console.Shell, 'python')
+    mocker.patch.object(console, '_isatty', return_value=True)
+
+    _cleanup_testparam()
+    runner = CliRunner()
+    script = os.path.join(here, 'scripts', 'script4.py')
+    cmd = [
+        '-d', dbname,
+        '--interactive',
+        '--',
+        script
+    ]
+    result = runner.invoke(main, cmd)
+    assert result.exit_code == 0
+    _assert_testparam_absent()
+
+
+def test_write_stdin_defaulttx():
+    _cleanup_testparam()
+    script = os.path.join(here, 'scripts', 'script4.py')
+    cmd = [
+        'click-odoo',
+        '-d', dbname,
+        '<', script
+    ]
+    subprocess.check_call(' '.join(cmd), shell=True)
     _assert_testparam_present('testvalue')
 
 
