@@ -14,6 +14,8 @@ click-odoo
 ``click-odoo`` helps you create and run beautiful and robust command line scripts
 for Odoo. It is based on the excellent Click_ library.
 
+Useful community-managed scripts can be found in click-odoo-contrib_.
+
 .. contents::
 
 Quick start
@@ -218,6 +220,7 @@ Useful links
 - report issues at: https://github.com/acsone/click-odoo/issues
 
 .. _Click: http://click.pocoo.org
+.. _click-odoo-contrib: https://pypi.python.org/pypi/click-odoo-contrib
 
 Credits
 ~~~~~~~
