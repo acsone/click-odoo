@@ -3,7 +3,7 @@ language: python
 stages:
   - name: test
   - name: deploy
-    if: (repo = acsone/click-odoo) AND (branch = master) AND (tag IS present)
+    if: repo = acsone/click-odoo AND branch = master AND tag IS present
 
 jobs:
   include:
