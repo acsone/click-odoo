@@ -3,4 +3,4 @@
 
 from .cli import env_options  # noqa
 from .env import OdooEnvironment  # noqa
-from .env import odoo
+from .env import odoo  # noqa
