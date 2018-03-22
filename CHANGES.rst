@@ -3,9 +3,12 @@ Changes
 
 .. Future (?)
 .. ----------
-.. - export odoo namespace.
-..   As a convenience ``click_odoo`` exports the ``odoo`` namespace, so ``from click_odoo import odoo``
-..   is an alias for ``import odoo`` (>9) or ``import openerp as odoo`` (<=9)
+.. - ...
+
+1.0.0b3 (unreleased)
+--------------------
+- click_odoo now exports the odoo namespace: so ``from click_odoo import odoo`` 
+  is an alias for ``import odoo`` (>9) or ``import openerp as odoo`` (<=9)
 
 1.0.0b2 (2018-03-21)
 --------------------

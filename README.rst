@@ -216,7 +216,7 @@ Odoo namespace
 --------------
 
 As a convenience ``click_odoo`` exports the ``odoo`` namespace, so ``from click_odoo import odoo``
-is an alias for ``import odoo`` (>9) or ``import openerp as odoo`` (<=9)
+is an alias for ``import odoo`` (>9) or ``import openerp as odoo`` (<=9).
 
 Useful links
 ~~~~~~~~~~~~
