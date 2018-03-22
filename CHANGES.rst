@@ -7,8 +7,11 @@ Changes
 
 1.0.0b3 (unreleased)
 --------------------
-- click_odoo now exports the odoo namespace: so ``from click_odoo import odoo`` 
+- click_odoo now exports the odoo namespace: ``from click_odoo import odoo``
   is an alias for ``import odoo`` (>9) or ``import openerp as odoo`` (<=9)
+- add a ``with_rollback`` option to the ``env_options`` decorator, to control
+  the presence of the rollback option
+- document the ``env_options`` decorator
 
 1.0.0b2 (2018-03-21)
 --------------------

@@ -14,7 +14,14 @@ from .env import OdooEnvironment
 _logger = logging.getLogger(__name__)
 
 
-def env_options(default_log_level='info'):
+def _remove_click_option(func, name):
+    for o in func.__click_params__:
+        if o.name == name:
+            func.__click_params__.remove(o)
+            return
+
+
+def env_options(default_log_level='info', with_rollback=True):
     def inner(func):
         @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
                       type=click.Path(exists=True, dir_okay=False),
@@ -42,7 +49,7 @@ def env_options(default_log_level='info'):
                            "is implied when an interactive console is "
                            "started.")
         @functools.wraps(func)
-        def wrapped(config, database, log_level, logfile, rollback,
+        def wrapped(config, database, log_level, logfile, rollback=False,
                     *args, **kwargs):
             with OdooEnvironment(
                 config=config,
@@ -52,6 +59,8 @@ def env_options(default_log_level='info'):
                 rollback=rollback,
             ) as env:
                 return func(env, *args, **kwargs)
+        if not with_rollback:
+            _remove_click_option(wrapped, 'rollback')
         return wrapped
     return inner
 

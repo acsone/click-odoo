@@ -186,9 +186,29 @@ API
 ~~~
 
 click_odoo.env_options decorator
----------------------------------
+--------------------------------
 
-TODO
+``@click_odoo.env_options()`` is a decorator that is used very much like
+``@click.option()`` and inserts the list of predefined ``click-odoo``
+options. Instead of passing down these options to the command, it prepares
+an odoo ``Environment`` and pass it as a ``env`` parameter.
+
+It is configurable with the following parameters:
+
+default_log_level
+  The default value for the ``-log-level`` option (default: 'info').
+
+with_rollback
+  Controls the presence of the ``--rollback`` option (default: True).
+  This is useful for creating commands that commit and leave no possibility
+  for rollback.
+
+click_odoo.odoo namespace
+-------------------------
+
+As a convenience ``click_odoo`` exports the ``odoo`` namespace, so
+``from click_odoo import odoo`` is an alias for ``import odoo`` (>9)
+or ``import openerp as odoo`` (<=9).
 
 OdooEnvironment context manager (experimental)
 ----------------------------------------------
@@ -211,12 +231,6 @@ Example:
 
   with OdooEnvironment(database='dbname') as env:
       env['res.users'].search([])
-
-Odoo namespace
---------------
-
-As a convenience ``click_odoo`` exports the ``odoo`` namespace, so ``from click_odoo import odoo``
-is an alias for ``import odoo`` (>9) or ``import openerp as odoo`` (<=9).
 
 Useful links
 ~~~~~~~~~~~~
