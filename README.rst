@@ -235,7 +235,7 @@ Example:
 Useful links
 ~~~~~~~~~~~~
 
-- pypi page: https://pypi.python.org/pypi/click-odoo
+- pypi page: https://pypi.org/project/click-odoo
 - code repository: https://github.com/acsone/click-odoo
 - report issues at: https://github.com/acsone/click-odoo/issues
 
