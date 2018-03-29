@@ -85,7 +85,7 @@ It can be run like this::
     --logfile PATH       Specify the log file.
     --rollback           Rollback the transaction even if the script
                          does not raise an exception. Note that if
-                         the script itself commits this option has no
+                         the script itself commits, this option has no
                          effect, this is why it is not named dry run.
                          This option is implied when an interactive
                          console is started.
@@ -115,7 +115,7 @@ in your scripts and they are therefore easier to compose in larger transactions.
 There is a ``--rollback`` option to force a rollback.
 
 A rollback is always performed after an interactive session. If you need to
-commit changes made before or after an interactive session, use ``env.cr.commit``.
+commit changes made before or after an interactive session, use ``env.cr.commit()``.
 
 Logging
 ~~~~~~~
@@ -153,7 +153,7 @@ Command line interface (click-odoo)
     --rollback                      Rollback the transaction even if the script
                                     does not raise an exception. Note that if
                                     the script itself commits this option has no
-                                    effect, this is why it is not named dry run.
+                                    effect. This is why it is not named dry run.
                                     This option is implied when an interactive
                                     console is started.
     -i, --interactive / --no-interactive
@@ -213,7 +213,7 @@ or ``import openerp as odoo`` (<=9).
 OdooEnvironment context manager (experimental)
 ----------------------------------------------
 
-This package also provides an experimental an ``OdooEnvironment`` context manager.
+This package also provides an experimental ``OdooEnvironment`` context manager.
 
 .. warning::
 

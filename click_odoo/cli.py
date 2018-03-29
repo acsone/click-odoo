@@ -44,8 +44,8 @@ def env_options(default_log_level='info', with_rollback=True):
         @click.option('--rollback', is_flag=True,
                       help="Rollback the transaction even if the script "
                            "does not raise an exception. Note that if the "
-                           "script itself commits this option has no effect, "
-                           "this is why it is not named dry run. This option "
+                           "script itself commits, this option has no effect. "
+                           "This is why it is not named dry run. This option "
                            "is implied when an interactive console is "
                            "started.")
         @functools.wraps(func)
