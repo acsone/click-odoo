@@ -110,12 +110,12 @@ Database transactions
 
 By default ``click-odoo`` commits the transaction for you, unless your script
 raises an exception. This is so that you don't need to put explicit commits
-in your scripts and they are therefore easier to compose in larger transactions.
+in your scripts, which are therefore easier to compose in larger transactions.
 
 There is a ``--rollback`` option to force a rollback.
 
 A rollback is always performed after an interactive session. If you need to
-commit changes made before or after an interactive session, use ``env.cr.commit()``.
+commit changes made before or during an interactive session, use ``env.cr.commit()``.
 
 Logging
 ~~~~~~~
@@ -165,8 +165,8 @@ Command line interface (click-odoo)
                                     tried in this order.
     --help                          Show this message and exit.
 
-Most options above are the same as ``odoo`` options and behave the same.
-Additional options can be set the the configuration file.
+Most options above are the same as ``odoo`` options and behave the identically.
+Additional options can be set in the the configuration file.
 Note however that most server-related options (workers, http interface etc)
 are ignored because no server is actually started when running a script.
 
