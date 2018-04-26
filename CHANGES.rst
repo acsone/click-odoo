@@ -5,6 +5,10 @@ Changes
 .. ----------
 .. - ...
 
+1.0.0 (unreleased)
+------------------
+- minor documentation improvements
+
 1.0.0b3 (2018-03-22)
 --------------------
 - click_odoo now exports the odoo namespace: ``from click_odoo import odoo``
