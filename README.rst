@@ -165,8 +165,8 @@ Command line interface (click-odoo)
                                     tried in this order.
     --help                          Show this message and exit.
 
-Most options above are the same as ``odoo`` options and behave the identically.
-Additional options can be set in the the configuration file.
+Most options above are the same as ``odoo`` options and behave identically.
+Additional Odoo options can be set in the the configuration file.
 Note however that most server-related options (workers, http interface etc)
 are ignored because no server is actually started when running a script.
 
@@ -191,7 +191,7 @@ click_odoo.env_options decorator
 ``@click_odoo.env_options()`` is a decorator that is used very much like
 ``@click.option()`` and inserts the list of predefined ``click-odoo``
 options. Instead of passing down these options to the command, it prepares
-an odoo ``Environment`` and pass it as a ``env`` parameter.
+an odoo ``Environment`` and passes it as a ``env`` parameter.
 
 It is configurable with the following parameters:
 
