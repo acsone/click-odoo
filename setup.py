@@ -2,22 +2,29 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import os
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 here = os.path.abspath(os.path.dirname(__file__))
 
+long_description = []
+with open(os.path.join('README.rst')) as f:
+    long_description.append(f.read())
+with open(os.path.join('CHANGES.rst')) as f:
+    long_description.append(f.read())
+
+
 setup(
     name='click-odoo',
     description='Beautiful, robust CLI for Odoo',
-    long_description='\n'.join((
-        open(os.path.join(here, 'README.rst')).read(),
-        open(os.path.join(here, 'CHANGES.rst')).read(),
-    )),
+    long_description='\n'.join(long_description),
     use_scm_version=True,
-    packages=find_packages(),
+    packages=[
+        'click_odoo',
+    ],
+    include_package_data=True,
     setup_requires=[
-        'setuptools-scm',
+        'setuptools_scm',
     ],
     install_requires=[
         'click',
