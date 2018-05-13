@@ -31,9 +31,7 @@ def _fix_logging(series):
                     handler.stream = sys.stderr
 
 
-@contextmanager
-def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
-                    rollback=False):
+def parse_config(config=None, database=None, log_level=None, logfile=None):
     series = odoo.release.version_info[0]
 
     odoo_args = []
@@ -48,8 +46,14 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
     # see https://github.com/odoo/odoo/commit/b122217f74
     odoo.tools.config['load_language'] = None
     odoo.tools.config.parse_config(odoo_args)
-
     _fix_logging(series)
+    odoo.cli.server.report_configuration()
+
+
+@contextmanager
+def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
+                    rollback=False):
+    parse_config(config, database, log_level, logfile)
 
     db_name = odoo.tools.config['db_name']
     if not db_name:

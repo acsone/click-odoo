@@ -203,6 +203,16 @@ with_rollback
   This is useful for creating commands that commit and leave no possibility
   for rollback.
 
+with_database
+  Controls the presence of the ``--database`` option (default: True).
+  This is useful to create scripts that have access to a pre-loaded Odoo
+  configuration, without any database. In such case, the environment
+  is not set (env is None).
+
+database_required
+  Controls if ``--database`` is a required option (default: True).
+  If no database is provided, no environment is initialized (env is None).
+
 click_odoo.odoo namespace
 -------------------------
 

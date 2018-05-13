@@ -9,7 +9,7 @@ import sys
 import click
 
 from . import console
-from .env import OdooEnvironment
+from .env import OdooEnvironment, parse_config
 
 _logger = logging.getLogger(__name__)
 
@@ -21,7 +21,8 @@ def _remove_click_option(func, name):
             return
 
 
-def env_options(default_log_level='info', with_rollback=True):
+def env_options(default_log_level='info', with_rollback=True, 
+                with_database=True, database_required=True):
     def inner(func):
         @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
                       type=click.Path(exists=True, dir_okay=False),
@@ -31,6 +32,7 @@ def env_options(default_log_level='info', with_rollback=True):
                            "or ~/.odoorc (Odoo >= 10) "
                            "or ~/.openerp_serverrc.")
         @click.option('--database', '-d', envvar=['PGDATABASE'],
+                      required=database_required,
                       help="Specify the database name.")
         @click.option('--log-level',
                       default=default_log_level,
@@ -49,17 +51,23 @@ def env_options(default_log_level='info', with_rollback=True):
                            "is implied when an interactive console is "
                            "started.")
         @functools.wraps(func)
-        def wrapped(config, database, log_level, logfile, rollback=False,
+        def wrapped(config, log_level, logfile, database=None, rollback=False,
                     *args, **kwargs):
-            with OdooEnvironment(
-                config=config,
-                database=database,
-                log_level=log_level,
-                logfile=logfile,
-                rollback=rollback,
-            ) as env:
-                return func(env, *args, **kwargs)
-        if not with_rollback:
+            if database:
+                with OdooEnvironment(
+                    config=config,
+                    database=database,
+                    log_level=log_level,
+                    logfile=logfile,
+                    rollback=rollback,
+                ) as env:
+                    return func(env, *args, **kwargs)
+            else:
+                parse_config(config, None, log_level, logfile)
+                return func(None, *args, **kwargs)
+        if not with_database:
+            _remove_click_option(wrapped, 'database')
+        if not with_rollback or not with_database:
             _remove_click_option(wrapped, 'rollback')
         return wrapped
     return inner
@@ -72,7 +80,7 @@ def env_options(default_log_level='info', with_rollback=True):
                     "provided, the script is read from stdin or an "
                     "interactive console is started if stdin appears "
                     "to be a terminal.")
-@env_options()
+@env_options(database_required=False)
 @click.option('--interactive/--no-interactive', '-i',
               help="Inspect interactively after running the script.")
 @click.option('--shell-interface',
@@ -90,8 +98,11 @@ def main(env, interactive, shell_interface, script, script_args):
             script, init_globals=global_vars, run_name='__main__')
     if not script or interactive:
         if console._isatty(sys.stdin):
+            if not env:
+                _logger.info("No environment set, use `-d dbname` to get one.")
             console.Shell.interact(global_vars, shell_interface)
-            env.cr.rollback()
+            if env:
+                env.cr.rollback()
         else:
             sys.argv[:] = ['']
             global_vars['__name__'] = '__main__'

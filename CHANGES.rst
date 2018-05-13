@@ -5,9 +5,11 @@ Changes
 .. ----------
 .. - ...
 
-1.0.0 (unreleased)
-------------------
+1.0.0b4 (unreleased)
+--------------------
 - minor documentation improvements
+- add the possibility to run script without ``--database`` (ie without env,
+  but with a properly initialized Odoo library such as addons path)
 
 1.0.0b3 (2018-03-22)
 --------------------
