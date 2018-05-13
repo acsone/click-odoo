@@ -21,7 +21,7 @@ def _remove_click_option(func, name):
             return
 
 
-def env_options(default_log_level='info', with_rollback=True, 
+def env_options(default_log_level='info', with_rollback=True,
                 with_database=True, database_required=True):
     def inner(func):
         @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
