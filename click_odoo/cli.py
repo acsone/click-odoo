@@ -9,7 +9,7 @@ import sys
 import click
 
 from . import console
-from .env import OdooEnvironment, parse_config
+from .env import OdooEnvironment, parse_config, odoo
 
 _logger = logging.getLogger(__name__)
 
@@ -64,7 +64,8 @@ def env_options(default_log_level='info', with_rollback=True,
                     return func(env, *args, **kwargs)
             else:
                 parse_config(config, None, log_level, logfile)
-                return func(None, *args, **kwargs)
+                with odoo.api.Environment.manage():
+                    return func(None, *args, **kwargs)
         if not with_database:
             _remove_click_option(wrapped, 'database')
         if not with_rollback or not with_database:
