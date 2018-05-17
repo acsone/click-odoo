@@ -10,6 +10,7 @@ Changes
 - minor documentation improvements
 - add the possibility to run script without ``--database`` (ie without env,
   but with a properly initialized Odoo library such as addons path)
+- be more resilient in case we can't obtain a context for the user
 
 1.0.0b3 (2018-03-22)
 --------------------
