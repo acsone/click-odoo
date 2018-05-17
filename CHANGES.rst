@@ -5,7 +5,7 @@ Changes
 .. ----------
 .. - ...
 
-1.0.0b4 (unreleased)
+1.0.0b4 (2018-05-17)
 --------------------
 - minor documentation improvements
 - add the possibility to run script without ``--database`` (ie without env,
