@@ -5,6 +5,10 @@ Changes
 .. ----------
 .. - ...
 
+1.0.1 (unreleased)
+------------------
+- close db connections when releasing OdooEnvironment
+
 1.0.0b4 (2018-05-17)
 --------------------
 - minor documentation improvements

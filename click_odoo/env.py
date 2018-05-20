@@ -63,29 +63,32 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
 
     with Environment.manage():
         registry = odoo.registry(db_name)
-        registry.clear_caches()
-        with registry.cursor() as cr:
-            uid = odoo.SUPERUSER_ID
-            try:
-                ctx = Environment(cr, uid, {})['res.users'].context_get()
-            except Exception as e:
-                ctx = {'lang': 'en_US'}
-                # this happens, for instance, when there are new
-                # fields declared on res_partner which are not yet
-                # in the database (before -u)
-                _logger.warn(
-                    "Could not obtain a user context, continuing "
-                    "anyway with a default context. Error was: %s",
-                    e
-                )
-            env = Environment(cr, uid, ctx)
-            cr.rollback()
-            try:
-                yield env
-                if rollback:
-                    cr.rollback()
-                else:
-                    cr.commit()
-            except:  # noqa
-                _logger.exception("Exception in OdooEnvironment")
-                raise
+        try:
+            with registry.cursor() as cr:
+                uid = odoo.SUPERUSER_ID
+                try:
+                    ctx = Environment(cr, uid, {})['res.users'].context_get()
+                except Exception as e:
+                    ctx = {'lang': 'en_US'}
+                    # this happens, for instance, when there are new
+                    # fields declared on res_partner which are not yet
+                    # in the database (before -u)
+                    _logger.warn(
+                        "Could not obtain a user context, continuing "
+                        "anyway with a default context. Error was: %s",
+                        e
+                    )
+                env = Environment(cr, uid, ctx)
+                cr.rollback()
+                try:
+                    yield env
+                    if rollback:
+                        cr.rollback()
+                    else:
+                        cr.commit()
+                except:  # noqa
+                    _logger.exception("Exception in OdooEnvironment")
+                    raise
+        finally:
+            odoo.modules.registry.Registry.delete(db_name)
+            odoo.sql_db.close_db(db_name)
