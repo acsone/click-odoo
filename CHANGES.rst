@@ -5,7 +5,7 @@ Changes
 .. ----------
 .. - ...
 
-1.0.1 (unreleased)
+1.0.0 (2018-05-20)
 ------------------
 - close db connections when releasing OdooEnvironment
 - expose click_odoo.odoo_bin (odoo or openerp-server depending on Odoo series).
