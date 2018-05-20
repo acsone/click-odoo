@@ -21,7 +21,7 @@ Useful community-managed scripts can be found in click-odoo-contrib_.
 Quick start
 ~~~~~~~~~~~
 
-Install it in a (preferably virtual) environment where Odoo is installed::
+Install it in an environment where Odoo is installed,
 
   pip install click-odoo
 
@@ -104,6 +104,12 @@ Odoo version 8, 9, 10 and 11 are supported.
 
 An important design goal is to provide a consistent behaviour
 across Odoo versions.
+
+.. note::
+
+  ``click-odoo`` does not mandate any particular method of installing odoo.
+  The only prerequisiste is that ``import odoo`` (>= 10) or ``import openerp``
+  (< 10) must work.
 
 Database transactions
 ~~~~~~~~~~~~~~~~~~~~~
