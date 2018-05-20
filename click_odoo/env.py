@@ -10,11 +10,15 @@ import click
 try:
     import odoo
     from odoo.api import Environment
+    Registry = odoo.modules.registry.Registry
+    odoo_bin = 'odoo'
 except ImportError:
     # Odoo < 10
     try:
         import openerp as odoo
         from openerp.api import Environment
+        Registry = odoo.modules.registry.RegistryManager
+        odoo_bin = 'openerp-server'
     except ImportError:
         raise ImportError("No module named odoo nor openerp")
 

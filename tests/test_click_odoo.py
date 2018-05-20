@@ -15,15 +15,9 @@ import click_odoo
 from click_odoo import OdooEnvironment
 from click_odoo.cli import main
 from click_odoo import console
+from click_odoo import odoo, odoo_bin
 
 here = os.path.abspath(os.path.dirname(__file__))
-
-try:
-    import odoo
-    import odoo.api  # noqa
-except ImportError:
-    import openerp as odoo
-    import openerp.api  # noqa
 
 # This hack is necessary because the way CliRunner patches
 # stdout is not compatible with the Odoo logging initialization
@@ -31,19 +25,12 @@ except ImportError:
 odoo.netsvc._logger_init = True
 
 
-def _odoo_bin():
-    if odoo.release.version in ('8.0', '9.0'):
-        return 'openerp-server'
-    else:
-        return 'odoo'
-
-
 def _init_odoo_db(dbname):
     subprocess.check_call([
         'createdb', dbname,
     ])
     subprocess.check_call([
-        _odoo_bin(),
+        odoo_bin,
         '-d', dbname,
         '--stop-after-init',
     ])
