@@ -94,5 +94,5 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
                     _logger.exception("Exception in OdooEnvironment")
                     raise
         finally:
-            odoo.modules.registry.Registry.delete(db_name)
+            Registry.delete(db_name)
             odoo.sql_db.close_db(db_name)
