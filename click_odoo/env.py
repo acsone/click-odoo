@@ -82,15 +82,11 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
                     )
                 env = Environment(cr, uid, ctx)
                 cr.rollback()
-                try:
-                    yield env
-                    if rollback:
-                        cr.rollback()
-                    else:
-                        cr.commit()
-                except:  # noqa
-                    _logger.exception("Exception in OdooEnvironment")
-                    raise
+                yield env
+                if rollback:
+                    cr.rollback()
+                else:
+                    cr.commit()
         finally:
             if odoo.release.version_info[0] < 10:
                 odoo.modules.registry.RegistryManager.delete(db_name)

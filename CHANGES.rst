@@ -5,6 +5,15 @@ Changes
 .. ----------
 .. - ...
 
+1.0.1 (unreleased)
+------------------
+- better error logging and handling: all exceptions occuring
+  in scripts under click_odoo.env_options are logged and converted
+  to ClickException so we are sure they are both in the log file
+  and on the console (handled by click) for the user to see.
+  The OdooEnvironment context manager does not do additional logging,
+  leaving that responsibility to the caller.
+
 1.0.0 (2018-05-20)
 ------------------
 - close db connections when releasing OdooEnvironment

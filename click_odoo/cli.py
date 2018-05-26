@@ -53,19 +53,23 @@ def env_options(default_log_level='info', with_rollback=True,
         @functools.wraps(func)
         def wrapped(config, log_level, logfile, database=None, rollback=False,
                     *args, **kwargs):
-            if database:
-                with OdooEnvironment(
-                    config=config,
-                    database=database,
-                    log_level=log_level,
-                    logfile=logfile,
-                    rollback=rollback,
-                ) as env:
-                    return func(env, *args, **kwargs)
-            else:
-                parse_config(config, None, log_level, logfile)
-                with odoo.api.Environment.manage():
-                    return func(None, *args, **kwargs)
+            try:
+                if database:
+                    with OdooEnvironment(
+                        config=config,
+                        database=database,
+                        log_level=log_level,
+                        logfile=logfile,
+                        rollback=rollback,
+                    ) as env:
+                        return func(env, *args, **kwargs)
+                else:
+                    parse_config(config, None, log_level, logfile)
+                    with odoo.api.Environment.manage():
+                        return func(None, *args, **kwargs)
+            except Exception as e:
+                _logger.error("exception", exc_info=True)
+                raise click.ClickException(str(e))
         if not with_database:
             _remove_click_option(wrapped, 'database')
         if not with_rollback or not with_database:
