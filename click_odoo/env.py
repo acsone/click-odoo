@@ -10,14 +10,12 @@ import click
 try:
     import odoo
     from odoo.api import Environment
-    Registry = odoo.modules.registry.Registry
     odoo_bin = 'odoo'
 except ImportError:
     # Odoo < 10
     try:
         import openerp as odoo
         from openerp.api import Environment
-        Registry = odoo.modules.registry.RegistryManager
         odoo_bin = 'openerp-server'
     except ImportError:
         raise ImportError("No module named odoo nor openerp")
@@ -94,5 +92,8 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
                     _logger.exception("Exception in OdooEnvironment")
                     raise
         finally:
-            Registry.delete(db_name)
+            if odoo.release.version_info[0] < 10:
+                odoo.modules.registry.RegistryManager.delete(db_name)
+            else:
+                odoo.modules.registry.Registry.delete(db_name)
             odoo.sql_db.close_db(db_name)
