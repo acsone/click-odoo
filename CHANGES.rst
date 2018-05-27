@@ -5,7 +5,7 @@ Changes
 .. ----------
 .. - ...
 
-1.0.1 (unreleased)
+1.0.1 (2018-05-27)
 ------------------
 - better error logging and handling: all exceptions occuring
   in scripts under click_odoo.env_options are logged and converted
