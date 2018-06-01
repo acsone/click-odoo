@@ -51,7 +51,7 @@ def parse_config(config=None, database=None, log_level=None, logfile=None):
 
 
 @contextmanager
-def OdooEnvironment(database, rollback=True):
+def OdooEnvironment(database, rollback=False):
     with Environment.manage():
         registry = odoo.registry(database)
         try:
