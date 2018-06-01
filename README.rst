@@ -116,7 +116,8 @@ Database transactions
 
 By default ``click-odoo`` commits the transaction for you, unless your script
 raises an exception. This is so that you don't need to put explicit commits
-in your scripts, which are therefore easier to compose in larger transactions.
+in your scripts, which are therefore easier to compose in larger transactions
+(provided they pass around the same env).
 
 There is a ``--rollback`` option to force a rollback.
 
