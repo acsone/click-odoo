@@ -5,6 +5,12 @@ Changes
 .. ----------
 .. - ...
 
+1.0.2 (unreleased)
+------------------
+- refactor the OdooEnvironment class: it is much cleaner when
+  it leaves the global Odoo config alone, so we completely move
+  responsibility to initialize the Odoo config to the CLI part.
+
 1.0.1 (2018-05-27)
 ------------------
 - better error logging and handling: all exceptions occuring

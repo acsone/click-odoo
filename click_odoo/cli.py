@@ -54,17 +54,16 @@ def env_options(default_log_level='info', with_rollback=True,
         def wrapped(config, log_level, logfile, database=None, rollback=False,
                     *args, **kwargs):
             try:
+                parse_config(config, database, log_level, logfile)
+                if not database:
+                    database = odoo.tools.config['db_name']
                 if database:
                     with OdooEnvironment(
-                        config=config,
                         database=database,
-                        log_level=log_level,
-                        logfile=logfile,
                         rollback=rollback,
                     ) as env:
                         return func(env, *args, **kwargs)
                 else:
-                    parse_config(config, None, log_level, logfile)
                     with odoo.api.Environment.manage():
                         return func(None, *args, **kwargs)
             except Exception as e:

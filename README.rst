@@ -230,6 +230,8 @@ OdooEnvironment context manager (experimental)
 ----------------------------------------------
 
 This package also provides an experimental ``OdooEnvironment`` context manager.
+It is meant to be used in after properly intializing Odoo (ie parsing the
+configuration file etc).
 
 .. warning::
 

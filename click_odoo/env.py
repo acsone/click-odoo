@@ -5,8 +5,6 @@ from contextlib import contextmanager
 import logging
 import sys
 
-import click
-
 try:
     import odoo
     from odoo.api import Environment
@@ -53,18 +51,9 @@ def parse_config(config=None, database=None, log_level=None, logfile=None):
 
 
 @contextmanager
-def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
-                    rollback=False):
-    parse_config(config, database, log_level, logfile)
-
-    db_name = odoo.tools.config['db_name']
-    if not db_name:
-        raise click.ClickException("No database name found. Please provide "
-                                   "one with the -d option or the odoo "
-                                   "configuration file.")
-
+def OdooEnvironment(database, rollback=True):
     with Environment.manage():
-        registry = odoo.registry(db_name)
+        registry = odoo.registry(database)
         try:
             with registry.cursor() as cr:
                 uid = odoo.SUPERUSER_ID
@@ -89,7 +78,7 @@ def OdooEnvironment(config=None, database=None, log_level=None, logfile=None,
                     cr.commit()
         finally:
             if odoo.release.version_info[0] < 10:
-                odoo.modules.registry.RegistryManager.delete(db_name)
+                odoo.modules.registry.RegistryManager.delete(database)
             else:
-                odoo.modules.registry.Registry.delete(db_name)
-            odoo.sql_db.close_db(db_name)
+                odoo.modules.registry.Registry.delete(database)
+            odoo.sql_db.close_db(database)
