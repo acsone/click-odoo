@@ -5,7 +5,7 @@ Changes
 .. ----------
 .. - ...
 
-1.0.2 (unreleased)
+1.0.2 (2018-06-01)
 ------------------
 - refactor the OdooEnvironment class: it is much cleaner when
   it leaves the global Odoo config alone, so we completely move
