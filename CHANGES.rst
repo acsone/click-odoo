@@ -5,6 +5,13 @@ Changes
 .. ----------
 .. - ...
 
+1.0.3 (unreleased)
+------------------
+- clarify the behaviour of ``@env_option`` ``with_database`` and ``database_required``
+  parameters; in particular, when ``with_database`` and ``database_required``
+  are both set (the default), the ``--database`` option can be omitted
+  as long as a database is declared in the Odoo configuration file.
+
 1.0.2 (2018-06-01)
 ------------------
 - refactor the OdooEnvironment class: it is much cleaner when

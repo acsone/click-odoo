@@ -32,8 +32,9 @@ def env_options(default_log_level='info', with_rollback=True,
                            "or ~/.odoorc (Odoo >= 10) "
                            "or ~/.openerp_serverrc.")
         @click.option('--database', '-d', envvar=['PGDATABASE'],
-                      required=database_required,
-                      help="Specify the database name.")
+                      help="Specify the database name. If present, this "
+                           "parameter takes precedence over the database "
+                           "provided in the Odoo configuration file.")
         @click.option('--log-level',
                       default=default_log_level,
                       show_default=True,
@@ -57,7 +58,12 @@ def env_options(default_log_level='info', with_rollback=True,
                 parse_config(config, database, log_level, logfile)
                 if not database:
                     database = odoo.tools.config['db_name']
-                if database:
+                if with_database and database_required and not database:
+                    raise click.UsageError(
+                        "No database provided, please provide one with the -d "
+                        "option or the Odoo configuration file."
+                    )
+                if with_database and database:
                     with OdooEnvironment(
                         database=database,
                         rollback=rollback,
