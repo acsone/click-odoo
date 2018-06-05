@@ -78,7 +78,9 @@ It can be run like this::
                          provide it are with the ODOO_RC or OPENERP_SERVER
                          environment variables, or ~/.odoorc (Odoo >= 10) or
                          ~/.openerp_serverrc.
-    -d, --database TEXT  Specify the database name.
+    -d, --database TEXT  Specify the database name. If present, this
+                         parameter takes precedence over the database
+                         provided in the Odoo configuration file.
     --log-level TEXT     Specify the logging level. Accepted values depend on
                          the Odoo version, and include debug, info, warn, error.
                          [default: error]
@@ -152,17 +154,19 @@ Command line interface (click-odoo)
                                     OPENERP_SERVER environment variables, or
                                     ~/.odoorc (Odoo >= 10) or
                                     ~/.openerp_serverrc.
-    -d, --database TEXT             Specify the database name.
+    -d, --database TEXT             Specify the database name. If present, this
+                                    parameter takes precedence over the database
+                                    provided in the Odoo configuration file.
     --log-level TEXT                Specify the logging level. Accepted values
                                     depend on the Odoo version, and include
                                     debug, info, warn, error.  [default: info]
     --logfile PATH                  Specify the log file.
     --rollback                      Rollback the transaction even if the script
                                     does not raise an exception. Note that if
-                                    the script itself commits this option has no
-                                    effect. This is why it is not named dry run.
-                                    This option is implied when an interactive
-                                    console is started.
+                                    the script itself commits, this option has
+                                    no effect. This is why it is not named dry
+                                    run. This option is implied when an
+                                    interactive console is started.
     -i, --interactive / --no-interactive
                                     Inspect interactively after running the
                                     script.
