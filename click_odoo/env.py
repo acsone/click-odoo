@@ -35,6 +35,10 @@ def parse_config(config=None, database=None, log_level=None, logfile=None):
     series = odoo.release.version_info[0]
 
     odoo_args = []
+    # reset db_name in case we come from a previous run
+    # where database has been set, in the second run the is no database
+    # (mostly for tests)
+    odoo.tools.config['db_name'] = None
     if config:
         odoo_args.extend(['-c', config])
     if database:
