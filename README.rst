@@ -214,11 +214,12 @@ with_database
   Controls the presence of the ``--database`` option (default: True).
   This is useful to create scripts that have access to a pre-loaded Odoo
   configuration, without any database. In such case, the environment
-  is not set (env is None).
+  is not set (env is None). If ``with_database`` is False,
+  ``database_required`` is implied to be False too.
 
 database_required
-  Controls if ``--database`` is a required option (default: True).
-  If no database is provided, no environment is initialized (env is None).
+  Controls if a database must be provided through the ``--database``
+  option or the Odoo configuration file (default: True).
 
 click_odoo.odoo namespace
 -------------------------

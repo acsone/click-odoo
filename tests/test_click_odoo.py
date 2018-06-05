@@ -38,18 +38,21 @@ def _init_odoo_db(dbname):
 
 def _drop_db(dbname):
     subprocess.check_call([
-        'dropdb', dbname,
+        'dropdb', '--if-exists', dbname,
     ])
 
 
 @pytest.fixture(scope='session')
 def odoodb():
-    dbname = 'click-odoo-test-' + odoo.release.version.replace('.', '-')
-    _init_odoo_db(dbname)
-    try:
-        yield dbname
-    finally:
-        _drop_db(dbname)
+    if 'CLICK_ODOO_TEST_DB' in os.environ:
+        yield os.environ['CLICK_ODOO_TEST_DB']
+    else:
+        dbname = 'click-odoo-test-' + odoo.release.version.replace('.', '-')
+        try:
+            _init_odoo_db(dbname)
+            yield dbname
+        finally:
+            _drop_db(dbname)
 
 
 def test_odoo_env(odoodb):
@@ -188,19 +191,109 @@ def test_logging_logfile(tmpdir, capfd, odoodb):
     assert "hello from script3" in logcontent
 
 
-def tests_env_options(odoodb):
+def test_env_options_withdb(odoodb, tmpdir):
     @click.command()
     @click_odoo.env_options()
     def testcmd(env):
         login = env['res.users'].search([('id', '=', 1)]).login
         click.echo("login={}".format(login))
 
+    # database from command line
     runner = CliRunner()
     result = runner.invoke(testcmd, [
         '-d', odoodb,
     ])
     assert result.exit_code == 0
     assert 'login=admin\n' in result.output
+    # database in config
+    odoocfg1 = tmpdir / 'odoo1.cfg'
+    odoocfg1.write(textwrap.dedent("""\
+        [options]
+        db_name={}
+    """.format(odoodb)))
+    result = runner.invoke(testcmd, [
+        '-c', str(odoocfg1),
+    ])
+    assert result.exit_code == 0
+    assert 'login=admin\n' in result.output
+    # database -d has priority over db_name in config
+    odoocfg2 = tmpdir / 'odoo2.cfg'
+    odoocfg2.write(textwrap.dedent("""\
+        [options]
+        db_name=notadb
+    """))
+    result = runner.invoke(testcmd, [
+        '-c', str(odoocfg2),
+        '-d', odoodb,
+    ])
+    assert result.exit_code == 0
+    assert 'login=admin\n' in result.output
+    # no -d, error
+    result = runner.invoke(testcmd, [])
+    assert result.exit_code != 0
+    assert "No database provided" in result.output
+
+
+def test_env_options_nodb(odoodb, tmpdir):
+    @click.command()
+    @click_odoo.env_options(with_database=False)
+    def testcmd(env):
+        assert not env
+
+    # no database
+    runner = CliRunner()
+    result = runner.invoke(testcmd, [])
+    assert result.exit_code == 0
+    # -d not allowed
+    result = runner.invoke(testcmd, [
+        '-d', odoodb,
+    ])
+    assert result.exit_code != 0
+    assert "no such option: -d" in result.output
+    # db_name in config ignored
+    odoocfg1 = tmpdir / 'odoo1.cfg'
+    odoocfg1.write(textwrap.dedent("""\
+        [options]
+        db_name={}
+    """.format(odoodb)))
+    result = runner.invoke(testcmd, [
+        '-c', str(odoocfg1),
+    ])
+    assert result.exit_code == 0
+
+
+def test_env_options_optionaldb(odoodb, tmpdir):
+    @click.command()
+    @click_odoo.env_options(database_required=False)
+    def testcmd(env):
+        if env:
+            print("with env")
+        else:
+            print("without env")
+
+    # no database
+    runner = CliRunner()
+    result = runner.invoke(testcmd, [])
+    assert result.exit_code == 0
+    assert "without env" in result.output
+    # with database
+    runner = CliRunner()
+    result = runner.invoke(testcmd, [
+        '-d', odoodb,
+    ])
+    assert result.exit_code == 0
+    assert "with env" in result.output
+    # database in config
+    odoocfg1 = tmpdir / 'odoo1.cfg'
+    odoocfg1.write(textwrap.dedent("""\
+        [options]
+        db_name={}
+    """.format(odoodb)))
+    result = runner.invoke(testcmd, [
+        '-c', str(odoocfg1),
+    ])
+    assert result.exit_code == 0
+    assert "with env" in result.output
 
 
 def _cleanup_testparam(dbname):
