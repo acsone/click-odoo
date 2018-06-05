@@ -38,18 +38,21 @@ def _init_odoo_db(dbname):
 
 def _drop_db(dbname):
     subprocess.check_call([
-        'dropdb', dbname,
+        'dropdb', '--if-exists', dbname,
     ])
 
 
 @pytest.fixture(scope='session')
 def odoodb():
-    dbname = 'click-odoo-test-' + odoo.release.version.replace('.', '-')
-    _init_odoo_db(dbname)
-    try:
-        yield dbname
-    finally:
-        _drop_db(dbname)
+    if 'CLICK_ODOO_TEST_DB' in os.environ:
+        yield os.environ['CLICK_ODOO_TEST_DB']
+    else:
+        dbname = 'click-odoo-test-' + odoo.release.version.replace('.', '-')
+        try:
+            _init_odoo_db(dbname)
+            yield dbname
+        finally:
+            _drop_db(dbname)
 
 
 def test_odoo_env(odoodb):
