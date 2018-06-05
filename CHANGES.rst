@@ -5,7 +5,7 @@ Changes
 .. ----------
 .. - ...
 
-1.0.3 (unreleased)
+1.0.3 (2018-06-05)
 ------------------
 - clarify the behaviour of ``@env_option`` ``with_database`` and ``database_required``
   parameters; in particular, when ``with_database`` and ``database_required``
