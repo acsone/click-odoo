@@ -32,13 +32,13 @@ jobs:
       env: ODOO="11.0"
     - stage: test
       python: 3.5
-      env: ODOO="master"
+      env: ODOO="saas-11.5"
     - stage: test
       python: 3.6
-      env: ODOO="master"
+      env: ODOO="saas-11.5"
     - stage: test
       python: 3.7-dev
-      env: ODOO="master"
+      env: ODOO="saas-11.5"
     - stage: deploy
       script: echo "Deploy to PyPi"
       deploy:
