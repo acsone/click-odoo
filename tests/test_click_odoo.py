@@ -57,7 +57,7 @@ def odoodb():
 
 def test_odoo_env(odoodb):
     with OdooEnvironment(database=odoodb) as env:
-        admin = env['res.users'].search([('id', '=', 1)])
+        admin = env['res.users'].search([('login', '=', 'admin')])
         assert len(admin) == 1
 
 
@@ -195,7 +195,7 @@ def test_env_options_withdb(odoodb, tmpdir):
     @click.command()
     @click_odoo.env_options()
     def testcmd(env):
-        login = env['res.users'].search([('id', '=', 1)]).login
+        login = env['res.users'].search([('login', '=', 'admin')]).login
         click.echo("login={}".format(login))
 
     # database from command line

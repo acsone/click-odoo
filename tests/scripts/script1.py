@@ -4,4 +4,4 @@ from __future__ import print_function
 
 env = env  # noqa
 
-print(env['res.users'].search([('id', '=', 1)]).login)
+print(env['res.users'].search([('login', '=', 'admin')]).login)
