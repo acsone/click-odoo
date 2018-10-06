@@ -68,7 +68,7 @@ def OdooEnvironment(database, rollback=False):
                     # this happens, for instance, when there are new
                     # fields declared on res_partner which are not yet
                     # in the database (before -u)
-                    _logger.warn(
+                    _logger.warning(
                         "Could not obtain a user context, continuing "
                         "anyway with a default context. Error was: %s",
                         e
