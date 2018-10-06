@@ -32,6 +32,7 @@ def _init_odoo_db(dbname):
     subprocess.check_call([
         odoo_bin,
         '-d', dbname,
+        '-i', 'base',
         '--stop-after-init',
     ])
 
