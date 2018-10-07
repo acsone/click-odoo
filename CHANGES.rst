@@ -5,6 +5,11 @@ Changes
 .. ----------
 .. - ...
 
+1.0.4 (2018-10-07)
+------------------
+- silence deprecation warning
+- adapt tests for Odoo 12
+
 1.0.3 (2018-06-05)
 ------------------
 - clarify the behaviour of ``@env_option`` ``with_database`` and ``database_required``
