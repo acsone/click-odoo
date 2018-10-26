@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright 2018 ACSONE SA/NV (<http://acsone.eu>)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -31,6 +32,10 @@ def env_options(default_log_level='info', with_rollback=True,
                            "OPENERP_SERVER environment variables, "
                            "or ~/.odoorc (Odoo >= 10) "
                            "or ~/.openerp_serverrc.")
+        @click.option('--addons-path', envvar=['ODOO_ADDONS_PATH'],
+                      help="Specify the addons path. If present, this "
+                           "parameter takes precedence over the addons path "
+                           "provided in the Odoo configuration file.")
         @click.option('--database', '-d', envvar=['PGDATABASE'],
                       help="Specify the database name. If present, this "
                            "parameter takes precedence over the database "
@@ -52,10 +57,10 @@ def env_options(default_log_level='info', with_rollback=True,
                            "is implied when an interactive console is "
                            "started.")
         @functools.wraps(func)
-        def wrapped(config, log_level, logfile, database=None, rollback=False,
-                    *args, **kwargs):
+        def wrapped(config, log_level, logfile, addons_path=None,
+                    database=None, rollback=False, *args, **kwargs):
             try:
-                parse_config(config, database, log_level, logfile)
+                parse_config(config, database, log_level, logfile, addons_path)
                 if not database:
                     database = odoo.tools.config['db_name']
                 if with_database and database_required and not database:

@@ -149,18 +149,22 @@ Command line interface (click-odoo)
     to be a terminal.
 
   Options:
-    -c, --config PATH               Specify the Odoo configuration file. Other
+    -c, --config FILE               Specify the Odoo configuration file. Other
                                     ways to provide it are with the ODOO_RC or
                                     OPENERP_SERVER environment variables, or
                                     ~/.odoorc (Odoo >= 10) or
                                     ~/.openerp_serverrc.
+    --addons-path TEXT              Specify the addons path. If present, this
+                                    parameter takes precedence over the addons
+                                    path provided in the Odoo configuration
+                                    file.
     -d, --database TEXT             Specify the database name. If present, this
                                     parameter takes precedence over the database
                                     provided in the Odoo configuration file.
     --log-level TEXT                Specify the logging level. Accepted values
                                     depend on the Odoo version, and include
                                     debug, info, warn, error.  [default: info]
-    --logfile PATH                  Specify the log file.
+    --logfile FILE                  Specify the log file.
     --rollback                      Rollback the transaction even if the script
                                     does not raise an exception. Note that if
                                     the script itself commits, this option has
