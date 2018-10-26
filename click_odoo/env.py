@@ -31,7 +31,8 @@ def _fix_logging(series):
                     handler.stream = sys.stderr
 
 
-def parse_config(config=None, database=None, log_level=None, logfile=None):
+def parse_config(config=None, database=None, log_level=None, logfile=None,
+                 addons_path=None):
     series = odoo.release.version_info[0]
 
     odoo_args = []
@@ -47,6 +48,8 @@ def parse_config(config=None, database=None, log_level=None, logfile=None):
         odoo_args.extend(['--log-level', log_level])
     if logfile:
         odoo_args.extend(['--logfile', logfile])
+    if addons_path:
+        odoo_args.extend(['--addons-path', addons_path])
     # see https://github.com/odoo/odoo/commit/b122217f74
     odoo.tools.config['load_language'] = None
     odoo.tools.config.parse_config(odoo_args)

@@ -7,6 +7,7 @@ Changes
 
 - add ``environment_manager`` to ``@click_odoo.env_options``, providing
   a hook on ``odoo.api.Environment`` creation.
+- add --addons-path option
 
 1.0.4 (2018-10-07)
 ------------------
