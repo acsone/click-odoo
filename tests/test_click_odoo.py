@@ -235,6 +235,35 @@ def test_env_options_withdb(odoodb, tmpdir):
     assert "No database provided" in result.output
 
 
+def test_env_options_addons_path():
+    script = os.path.join(here, 'scripts', 'script5.py')
+    cmd = [
+        'click-odoo',
+        '--',
+        script
+    ]
+    try:
+        subprocess.check_output(cmd)
+        assert False
+    except subprocess.CalledProcessError as err:
+        assert err.returncode != 0
+
+    addons_path = ','.join([
+        os.path.join(odoo.__path__[0], 'addons'),
+        os.path.join(os.path.dirname(__file__), 'data', 'addons'),
+    ])
+
+    script = os.path.join(here, 'scripts', 'script5.py')
+    cmd = [
+        'click-odoo',
+        '--addons-path', addons_path,
+        '--',
+        script
+    ]
+    r = subprocess.check_call(cmd)
+    assert r == 0
+
+
 def test_env_options_nodb(odoodb, tmpdir):
     @click.command()
     @click_odoo.env_options(with_database=False)
