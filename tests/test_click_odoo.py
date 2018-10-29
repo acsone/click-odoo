@@ -235,6 +235,55 @@ def test_env_options_withdb(odoodb, tmpdir):
     assert "No database provided" in result.output
 
 
+def test_env_options_addons_path(odoodb, tmpdir):
+    addons_path = ','.join([
+        os.path.join(odoo.__path__[0], 'addons'),
+        os.path.join(odoo.__path__[0], '..', 'addons'),
+        os.path.join(os.path.dirname(__file__), 'data', 'addons'),
+    ])
+
+    @click.command()
+    @click_odoo.env_options()
+    def testcmd(env):
+        login = env['res.users'].search([('login', '=', 'admin')]).login
+        click.echo("login={}".format(login))
+
+    # addons path from command line
+    runner = CliRunner()
+    result = runner.invoke(testcmd, [
+        '-d', odoodb,
+        '--addons-path', addons_path,
+    ])
+    assert result.exit_code == 0
+    assert 'login=admin\n' in result.output
+    # addons path in config
+    odoocfg1 = tmpdir / 'odoo1.cfg'
+    odoocfg1.write(textwrap.dedent("""\
+        [options]
+        db_name={}
+        addons_path={}
+    """.format(odoodb, addons_path)))
+    result = runner.invoke(testcmd, [
+        '-c', str(odoocfg1,),
+    ])
+    assert result.exit_code == 0
+    assert 'login=admin\n' in result.output
+    # --addons-path has priority over addons_path in config
+    odoocfg2 = tmpdir / 'odoo2.cfg'
+    odoocfg2.write(textwrap.dedent("""\
+        [options]
+        db_name=notadb
+        addons_path=notanaddonspath
+    """))
+    result = runner.invoke(testcmd, [
+        '-c', str(odoocfg2),
+        '-d', odoodb,
+        '--addons-path', addons_path,
+    ])
+    assert result.exit_code == 0
+    assert 'login=admin\n' in result.output
+
+
 def test_env_options_nodb(odoodb, tmpdir):
     @click.command()
     @click_odoo.env_options(with_database=False)
