@@ -10,7 +10,7 @@ import sys
 import click
 
 from . import console
-from .env import OdooEnvironment, odoo, parse_config
+from .env import OdooEnvironment, OdooConfig, odoo
 
 _logger = logging.getLogger(__name__)
 
@@ -89,7 +89,9 @@ def env_options(
             **kwargs
         ):
             try:
-                parse_config(config, database, log_level, logfile, addons_path)
+                OdooConfig(
+                    config, database, log_level, logfile, addons_path,
+                    *args, **kwargs).seed()
                 if not database:
                     database = odoo.tools.config["db_name"]
                 if with_database and database_required and not database:
