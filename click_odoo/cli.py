@@ -10,7 +10,8 @@ import sys
 import click
 
 from . import console
-from .env import OdooEnvironment, OdooConfig, odoo
+from .env import OdooEnvironment, odoo
+from .config import OdooConfig
 
 _logger = logging.getLogger(__name__)
 
