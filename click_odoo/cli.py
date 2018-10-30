@@ -23,7 +23,8 @@ def _remove_click_option(func, name):
 
 
 def env_options(default_log_level='info', with_rollback=True,
-                with_database=True, database_required=True):
+                with_database=True, database_required=True,
+                config_callback=None):
     def inner(func):
         @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
                       type=click.Path(exists=True, dir_okay=False),
@@ -60,7 +61,10 @@ def env_options(default_log_level='info', with_rollback=True,
         def wrapped(config, log_level, logfile, addons_path=None,
                     database=None, rollback=False, *args, **kwargs):
             try:
-                parse_config(config, database, log_level, logfile, addons_path)
+                parse_config(
+                    config, database, log_level, logfile, addons_path,
+                    config_callback(*args, **kwargs)
+                    if callable(config_callback) else None)
                 if not database:
                     database = odoo.tools.config['db_name']
                 if with_database and database_required and not database:

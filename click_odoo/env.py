@@ -31,25 +31,35 @@ def _fix_logging(series):
                     handler.stream = sys.stderr
 
 
+def _get_config_args(**kwargs):
+    """ This method can be patched for custom downstream config API """
+    odoo_args = []
+    if kwargs.get('config'):
+        odoo_args.extend(['-c', kwargs.get('config')])
+    if kwargs.get('database'):
+        odoo_args.extend(['-d', kwargs.get('database')])
+    if kwargs.get('log_level'):
+        odoo_args.extend(['--log-level', kwargs.get('log_level')])
+    if kwargs.get('logfile'):
+        odoo_args.extend(['--logfile', kwargs.get('logfile')])
+    if kwargs.get('addons_path'):
+        odoo_args.extend(['--addons-path', kwargs.get('addons_path')])
+    return odoo_args
+
+
 def parse_config(config=None, database=None, log_level=None, logfile=None,
-                 addons_path=None):
+                 addons_path=None, additional_odoo_args=None):
     series = odoo.release.version_info[0]
 
-    odoo_args = []
     # reset db_name in case we come from a previous run
     # where database has been set, in the second run the is no database
     # (mostly for tests)
     odoo.tools.config['db_name'] = None
-    if config:
-        odoo_args.extend(['-c', config])
-    if database:
-        odoo_args.extend(['-d', database])
-    if log_level:
-        odoo_args.extend(['--log-level', log_level])
-    if logfile:
-        odoo_args.extend(['--logfile', logfile])
-    if addons_path:
-        odoo_args.extend(['--addons-path', addons_path])
+    odoo_args = _get_config_args(
+        config=config, database=database, log_level=log_level,
+        logfile=logfile, addons_path=addons_path)
+    if additional_odoo_args:
+        odoo_args.append(additional_odoo_args)
     # see https://github.com/odoo/odoo/commit/b122217f74
     odoo.tools.config['load_language'] = None
     odoo.tools.config.parse_config(odoo_args)
