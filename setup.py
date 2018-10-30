@@ -28,6 +28,7 @@ setup(
     ],
     install_requires=[
         'click',
+        'click-plugins'
     ],
     license='LGPLv3+',
     author='ACSONE SA/NV',
