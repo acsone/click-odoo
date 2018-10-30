@@ -22,7 +22,8 @@ def _remove_click_option(func, name):
 
 
 def env_options(default_log_level='info', with_rollback=True,
-                with_database=True, database_required=True):
+                with_database=True, database_required=True,
+                environment_manager=OdooEnvironment):
     def inner(func):
         @click.option('--config', '-c', envvar=['ODOO_RC', 'OPENERP_SERVER'],
                       type=click.Path(exists=True, dir_okay=False),
@@ -64,7 +65,7 @@ def env_options(default_log_level='info', with_rollback=True,
                         "option or the Odoo configuration file."
                     )
                 if with_database and database:
-                    with OdooEnvironment(
+                    with environment_manager(
                         database=database,
                         rollback=rollback,
                     ) as env:

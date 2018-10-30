@@ -5,6 +5,9 @@ Changes
 .. ----------
 .. - ...
 
+- add ``environment_manager`` to ``@click_odoo.env_options``, providing
+  a hook on ``odoo.api.Environment`` creation.
+
 1.0.4 (2018-10-07)
 ------------------
 - silence deprecation warning
