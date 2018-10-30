@@ -277,6 +277,10 @@ Author:
 
 - Stéphane Bidoul (`ACSONE <http://acsone.eu/>`_)
 
+Contributor:
+
+- David Arnold (`XOE <https://xoe.solutions>`_)
+
 Inspiration has been drawn from:
 
 - `anybox.recipe.odoo <https://github.com/anybox/anybox.recipe.odoo>`_

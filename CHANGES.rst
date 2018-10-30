@@ -7,9 +7,7 @@ Changes
 
 1.0.5 (2018-10-26)
 ------------------
-- add --addons-path parameter as a very volatile config option
-
-
+- add --addons-path option for it's high volatility
 
 1.0.4 (2018-10-07)
 ------------------
