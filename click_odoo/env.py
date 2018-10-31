@@ -1,20 +1,22 @@
 # Copyright 2018 ACSONE SA/NV (<http://acsone.eu>)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from contextlib import contextmanager
 import logging
 import sys
+from contextlib import contextmanager
 
 try:
     import odoo
     from odoo.api import Environment
-    odoo_bin = 'odoo'
+
+    odoo_bin = "odoo"
 except ImportError:
     # Odoo < 10
     try:
         import openerp as odoo
         from openerp.api import Environment
-        odoo_bin = 'openerp-server'
+
+        odoo_bin = "openerp-server"
     except ImportError:
         raise ImportError("No module named odoo nor openerp")
 
@@ -31,27 +33,28 @@ def _fix_logging(series):
                     handler.stream = sys.stderr
 
 
-def parse_config(config=None, database=None, log_level=None, logfile=None,
-                 addons_path=None):
+def parse_config(
+    config=None, database=None, log_level=None, logfile=None, addons_path=None
+):
     series = odoo.release.version_info[0]
 
     odoo_args = []
     # reset db_name in case we come from a previous run
     # where database has been set, in the second run the is no database
     # (mostly for tests)
-    odoo.tools.config['db_name'] = None
+    odoo.tools.config["db_name"] = None
     if config:
-        odoo_args.extend(['-c', config])
+        odoo_args.extend(["-c", config])
     if database:
-        odoo_args.extend(['-d', database])
+        odoo_args.extend(["-d", database])
     if log_level:
-        odoo_args.extend(['--log-level', log_level])
+        odoo_args.extend(["--log-level", log_level])
     if logfile:
-        odoo_args.extend(['--logfile', logfile])
+        odoo_args.extend(["--logfile", logfile])
     if addons_path:
-        odoo_args.extend(['--addons-path', addons_path])
+        odoo_args.extend(["--addons-path", addons_path])
     # see https://github.com/odoo/odoo/commit/b122217f74
-    odoo.tools.config['load_language'] = None
+    odoo.tools.config["load_language"] = None
     odoo.tools.config.parse_config(odoo_args)
     _fix_logging(series)
     odoo.cli.server.report_configuration()
@@ -65,16 +68,16 @@ def OdooEnvironment(database, rollback=False):
             with registry.cursor() as cr:
                 uid = odoo.SUPERUSER_ID
                 try:
-                    ctx = Environment(cr, uid, {})['res.users'].context_get()
+                    ctx = Environment(cr, uid, {})["res.users"].context_get()
                 except Exception as e:
-                    ctx = {'lang': 'en_US'}
+                    ctx = {"lang": "en_US"}
                     # this happens, for instance, when there are new
                     # fields declared on res_partner which are not yet
                     # in the database (before -u)
                     _logger.warning(
                         "Could not obtain a user context, continuing "
                         "anyway with a default context. Error was: %s",
-                        e
+                        e,
                     )
                 env = Environment(cr, uid, ctx)
                 cr.rollback()

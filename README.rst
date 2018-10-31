@@ -269,6 +269,20 @@ Example:
   with OdooEnvironment(database='dbname') as env:
       env['res.users'].search([])
 
+Developement
+~~~~~~~~~~~~
+
+To run test, type ``tox``. Tests are made using pytest. To run tests matching a
+specific keyword for, say Odoo 12 and python 3.6, use
+``tox -e py36-12.0 -- -k keyword``.
+
+This project uses `black <https://github.com/ambv/black>`_
+as code formatting convention, as well as isort and flake8.
+To make sure local coding convention are respected before
+you commit, install
+`pre-commit <https://github.com/pre-commit/pre-commit>`_ and
+run ``pre-commit install`` after cloning the repository.
+
 Useful links
 ~~~~~~~~~~~~
 

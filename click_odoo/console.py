@@ -10,29 +10,33 @@ _logger = logging.getLogger(__name__)
 
 class Shell(object):
 
-    shells = ['ipython', 'ptpython', 'bpython', 'python']
+    shells = ["ipython", "ptpython", "bpython", "python"]
 
     @classmethod
     def python(cls, local_vars):
         console = code.InteractiveConsole(locals=local_vars)
         import rlcompleter  # noqa
         import readline
+
         readline.parse_and_bind("tab: complete")
         console.interact()
 
     @classmethod
     def ipython(cls, local_vars):
         from IPython import start_ipython
+
         start_ipython(argv=[], user_ns=local_vars)
 
     @classmethod
     def ptpython(cls, local_vars):
         from ptpython.repl import embed
+
         embed({}, local_vars)
 
     @classmethod
     def bpython(cls, local_vars):
         from bpython import embed
+
         embed(local_vars)
 
     @classmethod
