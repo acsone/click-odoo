@@ -230,7 +230,8 @@ database_required
   option or the Odoo configuration file (default: True).
 
 environment_manager
-  **experimental feature** A context manager that yields an intialized ``odoo.api.Environment``.
+  **experimental feature** A context manager that yields an intialized
+  ``odoo.api.Environment``.
   It is invoked after Odoo configuration parsing and initialization.
   It must have the following signature (identical to ``OdooEnvironment``
   below, plus ``**kwargs``)::
