@@ -116,7 +116,7 @@ def env_options(
                     and (database_must_exist or _db_exists(database))
                 ):
                     with environment_manager(
-                        database=database, rollback=rollback
+                        database=database, rollback=rollback, *args, **kwargs
                     ) as env:
                         return func(env, *args, **kwargs)
                 else:
