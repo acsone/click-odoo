@@ -90,8 +90,10 @@ def env_options(
             "is implied when an interactive console is "
             "started.",
         )
+        @click.pass_context
         @functools.wraps(func)
         def wrapped(
+            ctx,
             config,
             log_level,
             logfile,
@@ -116,12 +118,12 @@ def env_options(
                     and (database_must_exist or _db_exists(database))
                 ):
                     with environment_manager(
-                        database=database, rollback=rollback
+                        ctx, database=database, rollback=rollback
                     ) as env:
-                        return func(env, *args, **kwargs)
+                        return func(ctx, env, *args, **kwargs)
                 else:
                     with odoo.api.Environment.manage():
-                        return func(None, *args, **kwargs)
+                        return func(ctx, None, *args, **kwargs)
             except Exception as e:
                 _logger.error("exception", exc_info=True)
                 raise click.ClickException(str(e))
@@ -158,7 +160,7 @@ def env_options(
 )
 @click.argument("script", required=False, type=click.Path(exists=True, dir_okay=False))
 @click.argument("script-args", nargs=-1)
-def main(env, interactive, shell_interface, script, script_args):
+def main(_ctx, env, interactive, shell_interface, script, script_args):
     global_vars = {"env": env}
     if script:
         sys.argv[1:] = script_args

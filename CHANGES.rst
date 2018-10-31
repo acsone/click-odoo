@@ -5,6 +5,11 @@ Changes
 .. ----------
 .. - ...
 
+2.0.0 (2018-10-31)
+------------------
+- pass click ``ctx`` as first argument to scripts, providing donwstream cli
+  application with better introspection mecanisms.
+
 1.1.0 (2018-10-31)
 ------------------
 - add ``environment_manager`` to ``@click_odoo.env_options``, providing
