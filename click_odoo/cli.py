@@ -29,6 +29,7 @@ def env_options(
     with_database=True,
     database_required=True,
     environment_manager=OdooEnvironment,
+    config_preprocessor=OdooConfig,
 ):
     def inner(func):
         @click.option(
@@ -90,7 +91,7 @@ def env_options(
             **kwargs
         ):
             try:
-                OdooConfig(
+                config_preprocessor(
                     config, database, log_level, logfile, addons_path,
                     *args, **kwargs).seed()
                 if not database:
