@@ -199,25 +199,6 @@ def test_env_options_withdb(odoodb, tmpdir):
     assert "No database provided" in result.output
 
 
-def test_env_options_addons_path():
-    script = os.path.join(here, "scripts", "script5.py")
-
-    cmd = ["click-odoo", "--", script]
-    r = subprocess.call(cmd)
-    assert r != 0  # addon1 not found in addons path
-
-    addons_path = ",".join(
-        [
-            os.path.join(odoo.__path__[0], "addons"),
-            os.path.join(os.path.dirname(__file__), "data", "addons"),
-        ]
-    )
-
-    cmd = ["click-odoo", "--addons-path", addons_path, "--", script]
-    r = subprocess.call(cmd)
-    assert r == 0
-
-
 def test_env_options_nodb(odoodb, tmpdir):
     @click.command()
     @click_odoo.env_options(with_database=False)
@@ -389,3 +370,22 @@ def test_env_cache(odoodb):
     with OdooEnvironment(database=odoodb) as env:
         value = env["ir.config_parameter"].get_param("testparam")
         assert not value
+
+
+def test_env_options_addons_path():
+    script = os.path.join(here, "scripts", "script5.py")
+
+    cmd = ["click-odoo", "--", script]
+    r = subprocess.call(cmd)
+    assert r != 0  # addon1 not found in addons path
+
+    addons_path = ",".join(
+        [
+            os.path.join(odoo.__path__[0], "addons"),
+            os.path.join(os.path.dirname(__file__), "data", "addons"),
+        ]
+    )
+
+    cmd = ["click-odoo", "--addons-path", addons_path, "--", script]
+    r = subprocess.call(cmd)
+    assert r == 0
