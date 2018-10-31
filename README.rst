@@ -276,8 +276,8 @@ Example:
 Developement
 ~~~~~~~~~~~~
 
-To run test, type ``tox``. Tests are made using pytest. To run tests matching a
-specific keyword for, say Odoo 12 and python 3.6, use
+To run tests, type ``tox``. Tests are made using pytest. To run tests matching
+a specific keyword for, say, Odoo 12 and python 3.6, use
 ``tox -e py36-12.0 -- -k keyword``.
 
 This project uses `black <https://github.com/ambv/black>`_
