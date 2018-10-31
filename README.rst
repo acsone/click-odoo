@@ -204,7 +204,7 @@ click_odoo.env_options decorator
 options. Instead of passing down these options to the command, it prepares
 an odoo ``Environment`` and passes it as a ``env`` parameter.
 
-It is configurable with the following parameters:
+It is configurable with the following keyword arguments:
 
 default_log_level
   The default value for the ``-log-level`` option (default: 'info').
@@ -224,6 +224,14 @@ with_database
 database_required
   Controls if a database must be provided through the ``--database``
   option or the Odoo configuration file (default: True).
+
+environment_manager
+  **experimental feature** A context manager that yields an intialized ``odoo.api.Environment``.
+  It is invoked after Odoo configuration parsing and initialization.
+  It must have the following signature (identical to ``OdooEnvironment``
+  below, plus ``**kwargs``)::
+
+    environment_manager(database, rollback, **kwargs)
 
 click_odoo.odoo namespace
 -------------------------
