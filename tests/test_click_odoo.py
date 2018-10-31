@@ -265,6 +265,28 @@ def test_env_options_optionaldb(odoodb, tmpdir):
     assert "with env" in result.output
 
 
+def test_env_options_database_must_exist(odoodb):
+    @click.command()
+    @click_odoo.env_options(database_must_exist=False)
+    def testcmd(env):
+        if env:
+            print("with env")
+        else:
+            print("without env")
+
+    # no database, must not exist, no env
+    runner = CliRunner()
+    result = runner.invoke(testcmd, ["-d", "dbthatdoesnotexist"])
+    assert result.exit_code == 0
+    assert "without env" in result.output
+
+    # database exists, must not exist, env ok
+    runner = CliRunner()
+    result = runner.invoke(testcmd, ["-d", odoodb])
+    assert result.exit_code == 0
+    assert "with env" in result.output
+
+
 def _cleanup_testparam(dbname):
     with psycopg2.connect(dbname=dbname) as conn:
         with conn.cursor() as cr:

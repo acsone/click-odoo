@@ -6,6 +6,7 @@ import functools
 import logging
 import runpy
 import sys
+from contextlib import closing
 
 import click
 
@@ -22,11 +23,23 @@ def _remove_click_option(func, name):
             return
 
 
+def _db_exists(dbname):
+    conn = odoo.sql_db.db_connect("postgres")
+    with closing(conn.cursor()) as cr:
+        cr._obj.execute(
+            "SELECT datname FROM pg_catalog.pg_database "
+            "WHERE lower(datname) = lower(%s)",
+            (dbname,),
+        )
+        return bool(cr.fetchone())
+
+
 def env_options(
     default_log_level="info",
     with_rollback=True,
     with_database=True,
     database_required=True,
+    database_must_exist=True,
     environment_manager=OdooEnvironment,
 ):
     def inner(func):
@@ -97,7 +110,11 @@ def env_options(
                         "No database provided, please provide one with the -d "
                         "option or the Odoo configuration file."
                     )
-                if with_database and database:
+                if (
+                    with_database
+                    and database
+                    and (database_must_exist or _db_exists(database))
+                ):
                     with environment_manager(
                         database=database, rollback=rollback
                     ) as env:
