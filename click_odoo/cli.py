@@ -27,9 +27,9 @@ def _db_exists(dbname):
 
 
 class CommandWithOdooEnv(click.Command):
-    def __init__(self, env_options=None, *args, **kwargs):
-        if not env_options:
-            env_options = {}
+    def __init__(self, env_options=None, default_overrides=None, *args, **kwargs):
+        env_options = env_options if env_options else {}
+        self.default_overrides = default_overrides if default_overrides else {}
         super(CommandWithOdooEnv, self).__init__(*args, **kwargs)
         self.database = None
         self.rollback = None
@@ -57,11 +57,9 @@ class CommandWithOdooEnv(click.Command):
 
     def _parse_env_args(self, ctx):
         def _get(flag):
-            result = ctx.params.get(flag) or self.config_settings.get(flag)
+            result = ctx.params.get(flag) or self.default_overrides.get(flag)
             if flag in ctx.params:
                 del ctx.params[flag]
-            if flag in self.config_settings:
-                del self.config_settings[flag]
             return result
 
         odoo_args = []

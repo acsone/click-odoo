@@ -360,6 +360,20 @@ def test_write_rollback(odoodb):
     _assert_testparam_absent(odoodb)
 
 
+def test_write_default_rollback(odoodb):
+    """ test click-odoo rollbacks itself via default_overrides """
+    _cleanup_testparam(odoodb)
+
+    @click.command(cls=CommandWithOdooEnv, default_overrides={"rollback": True})
+    def testcmd(env):
+        env = env  # noqa
+        env["ir.config_parameter"].set_param("testparam", "testvalue")
+
+    runner = CliRunner()
+    runner.invoke(testcmd, ["-d", odoodb])
+    _assert_testparam_absent(odoodb)
+
+
 def test_write_interactive_defaulttx(mocker, odoodb):
     """ test click-odoo rollbacks in interactive mode """
     mocker.patch.object(console.Shell, "python")

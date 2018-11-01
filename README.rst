@@ -247,14 +247,17 @@ environment_manager
     environment_manager(database, rollback, **kwargs)
 
 
-``context_settings``
+``default_overrides``
 --------------------
 
-Additionally, you can use the standard click override mechanism to provide
-defaults for command flags via the ``context_settings`` keyword argument:
+Override defaults for command flags via the ``default_overrides`` keyword
+argument:
 
 log_level
   The default value for the ``--log-level`` option (default: 'info').
+
+rollback
+  The default value for the ``--rollback`` option (default: False).
 
 click_odoo.odoo namespace
 -------------------------

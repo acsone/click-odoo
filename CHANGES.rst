@@ -11,6 +11,8 @@ Changes
 - replace ``@env_options()`` named parameters with ``context_settings``
   on ``click.Command()``
 - replace ``@env_options`` wrapper with custom Command class
+- add ``default_overrides`` command key to manage script-scoped parameter
+  defaults (eg. adjust default for ``log_level`` or ``rollback``)
 
 1.1.1 (2018-11-01)
 ------------------
