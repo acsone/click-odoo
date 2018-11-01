@@ -55,8 +55,9 @@ the following script named ``list-users2.py``.
   import click_odoo
 
 
-  @click.command()
-  @click_odoo.env_options(default_log_level='error')
+  @click.command(
+    cls=click_odoo.CommandWithOdooEnv,
+    context_settings={'log_level':'error'})
   @click.option('--say-hello', is_flag=True)
   def main(env, say_hello):
       if say_hello:
@@ -200,18 +201,16 @@ in the script.
 API
 ~~~
 
-click_odoo.env_options decorator
---------------------------------
+``env_options``
+---------------
 
-``@click_odoo.env_options()`` is a decorator that is used very much like
-``@click.option()`` and inserts the list of predefined ``click-odoo``
-options. Instead of passing down these options to the command, it prepares
-an odoo ``Environment`` and passes it as a ``env`` parameter.
+Customize the behaviour of ``click_odoo.CommandWithOdooEnv`` through
+``click.Command(env_options={})``.
 
-It is configurable with the following keyword arguments:
+``click_odoo.CommandWithOdooEnv`` prepares an odoo ``Environment`` and passes
+it as a ``env`` parameter.
 
-default_log_level
-  The default value for the ``-log-level`` option (default: 'info').
+It is configurable with the following keyword arguments in ``env_options``:
 
 with_rollback
   Controls the presence of the ``--rollback`` option (default: True).
@@ -238,9 +237,21 @@ environment_manager
   ``odoo.api.Environment``.
   It is invoked after Odoo configuration parsing and initialization.
   It must have the following signature (identical to ``OdooEnvironment``
-  below, plus ``**kwargs``)::
+  below, plus ``**kwargs``)
+
+  .. code-block:: python
 
     environment_manager(database, rollback, **kwargs)
+
+
+``context_settings``
+--------------------
+
+Additionally, you can use the standard click override mechanism to provide
+defaults for command flags via the ``context_settings`` keyword argument:
+
+log_level
+  The default value for the ``--log-level`` option (default: 'info').
 
 click_odoo.odoo namespace
 -------------------------

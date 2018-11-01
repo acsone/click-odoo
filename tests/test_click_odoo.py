@@ -12,8 +12,7 @@ import psycopg2
 import pytest
 from click.testing import CliRunner
 
-import click_odoo
-from click_odoo import OdooEnvironment, console, odoo, odoo_bin
+from click_odoo import CommandWithOdooEnv, OdooEnvironment, console, odoo, odoo_bin
 from click_odoo.cli import main
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -46,8 +45,10 @@ def odoodb():
             _drop_db(dbname)
 
 
-def test_odoo_env(odoodb):
-    with OdooEnvironment(database=odoodb) as env:
+def test_odoo_env(odoodb, mocker):
+    self = mocker.patch("click_odoo.CommandWithOdooEnv")
+    self.database = odoodb
+    with OdooEnvironment(self) as env:
         admin = env["res.users"].search([("login", "=", "admin")])
         assert len(admin) == 1
 
@@ -154,8 +155,7 @@ def test_logging_logfile(tmpdir, capfd, odoodb):
 
 
 def test_env_options_withdb(odoodb, tmpdir):
-    @click.command()
-    @click_odoo.env_options()
+    @click.command(cls=CommandWithOdooEnv)
     def testcmd(env):
         login = env["res.users"].search([("login", "=", "admin")]).login
         click.echo("login={}".format(login))
@@ -200,8 +200,7 @@ def test_env_options_withdb(odoodb, tmpdir):
 
 
 def test_env_options_nodb(odoodb, tmpdir):
-    @click.command()
-    @click_odoo.env_options(with_database=False)
+    @click.command(cls=CommandWithOdooEnv, env_options={"with_database": False})
     def testcmd(env):
         assert not env
 
@@ -230,8 +229,7 @@ def test_env_options_nodb(odoodb, tmpdir):
 
 
 def test_env_options_optionaldb(odoodb, tmpdir):
-    @click.command()
-    @click_odoo.env_options(database_required=False)
+    @click.command(cls=CommandWithOdooEnv, env_options={"database_required": False})
     def testcmd(env):
         if env:
             print("with env")
@@ -266,8 +264,7 @@ def test_env_options_optionaldb(odoodb, tmpdir):
 
 
 def test_env_options_database_must_exist(odoodb):
-    @click.command()
-    @click_odoo.env_options(database_must_exist=False)
+    @click.command(cls=CommandWithOdooEnv, env_options={"database_must_exist": False})
     def testcmd(env):
         if env:
             print("with env")
@@ -378,10 +375,12 @@ def test_write_raise(tmpdir, capfd, odoodb):
     _assert_testparam_absent(odoodb)
 
 
-def test_env_cache(odoodb):
+def test_env_cache(odoodb, mocker):
     """ test a new environment does not reuse cache """
     _cleanup_testparam(odoodb)
-    with OdooEnvironment(database=odoodb) as env:
+    self = mocker.patch("click_odoo.CommandWithOdooEnv")
+    self.database = odoodb
+    with OdooEnvironment(self) as env:
         env["ir.config_parameter"].set_param("testparam", "testvalue")
         value = env["ir.config_parameter"].get_param("testparam")
         assert value == "testvalue"
@@ -389,7 +388,7 @@ def test_env_cache(odoodb):
     _assert_testparam_present(odoodb, "testvalue")
     _cleanup_testparam(odoodb)
     _assert_testparam_absent(odoodb)
-    with OdooEnvironment(database=odoodb) as env:
+    with OdooEnvironment(self) as env:
         value = env["ir.config_parameter"].get_param("testparam")
         assert not value
 

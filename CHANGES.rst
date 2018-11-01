@@ -5,6 +5,13 @@ Changes
 .. ----------
 .. - ...
 
+2.0.0 (2018-10-31)
+------------------
+- refactor to click native facilities, where possible
+- replace ``@env_options()`` named parameters with ``context_settings``
+  on ``click.Command()``
+- replace ``@env_options`` wrapper with custom Command class
+
 1.1.0 (2018-10-31)
 ------------------
 - add ``environment_manager`` to ``@click_odoo.env_options``, providing

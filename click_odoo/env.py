@@ -2,7 +2,6 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import logging
-import sys
 from contextlib import contextmanager
 
 try:
@@ -23,47 +22,10 @@ except ImportError:
 _logger = logging.getLogger(__name__)
 
 
-def _fix_logging(series):
-    if series < 9:
-        handlers = logging.getLogger().handlers
-        if handlers and len(handlers) == 1:
-            handler = handlers[0]
-            if isinstance(handler, logging.StreamHandler):
-                if handler.stream is sys.stdout:
-                    handler.stream = sys.stderr
-
-
-def parse_config(
-    config=None, database=None, log_level=None, logfile=None, addons_path=None
-):
-    series = odoo.release.version_info[0]
-
-    odoo_args = []
-    # reset db_name in case we come from a previous run
-    # where database has been set, in the second run the is no database
-    # (mostly for tests)
-    odoo.tools.config["db_name"] = None
-    if config:
-        odoo_args.extend(["-c", config])
-    if database:
-        odoo_args.extend(["-d", database])
-    if log_level:
-        odoo_args.extend(["--log-level", log_level])
-    if logfile:
-        odoo_args.extend(["--logfile", logfile])
-    if addons_path:
-        odoo_args.extend(["--addons-path", addons_path])
-    # see https://github.com/odoo/odoo/commit/b122217f74
-    odoo.tools.config["load_language"] = None
-    odoo.tools.config.parse_config(odoo_args)
-    _fix_logging(series)
-    odoo.cli.server.report_configuration()
-
-
 @contextmanager
-def OdooEnvironment(database, rollback=False):
+def OdooEnvironment(self):
     with Environment.manage():
-        registry = odoo.registry(database)
+        registry = odoo.registry(self.database)
         try:
             with registry.cursor() as cr:
                 uid = odoo.SUPERUSER_ID
@@ -82,13 +44,13 @@ def OdooEnvironment(database, rollback=False):
                 env = Environment(cr, uid, ctx)
                 cr.rollback()
                 yield env
-                if rollback:
+                if self.rollback:
                     cr.rollback()
                 else:
                     cr.commit()
         finally:
             if odoo.release.version_info[0] < 10:
-                odoo.modules.registry.RegistryManager.delete(database)
+                odoo.modules.registry.RegistryManager.delete(self.database)
             else:
-                odoo.modules.registry.Registry.delete(database)
-            odoo.sql_db.close_db(database)
+                odoo.modules.registry.Registry.delete(self.database)
+            odoo.sql_db.close_db(self.database)
