@@ -198,6 +198,8 @@ class env_options(object):
                 with odoo.api.Environment.manage():
                     ctx.params["env"] = None
                     return self.org_invoke(ctx)
+        except click.exceptions.Exit:
+            raise
         except Exception as e:
             _logger.error("exception", exc_info=True)
             raise click.ClickException(str(e))
