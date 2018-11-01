@@ -5,12 +5,18 @@ Changes
 .. ----------
 .. - ...
 
+1.1.1 (2018-11-01)
+------------------
+- add ``with_addons_path`` option to ``@click_odoo.env_options``
+  to control the presence of the ``--addons-path`` option. Defaults to False.
+  Enabled for the ``click-odoo`` CLI.
+
 1.1.0 (2018-10-31)
 ------------------
 - add ``environment_manager`` to ``@click_odoo.env_options``, providing
   a hook on ``odoo.api.Environment`` creation.
 - add ``--addons-path`` option to the CLI.
-- add ``database_must_exist`` env option to ``@click_odoo.env_options``
+- add ``database_must_exist`` option to ``@click_odoo.env_options``
   so scripts can behave how they please in case the database is absent.
 
 1.0.4 (2018-10-07)

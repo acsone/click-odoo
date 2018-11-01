@@ -40,6 +40,7 @@ def env_options(
     with_database=True,
     database_required=True,
     database_must_exist=True,
+    with_addons_path=False,
     environment_manager=OdooEnvironment,
 ):
     def inner(func):
@@ -130,6 +131,8 @@ def env_options(
             _remove_click_option(wrapped, "database")
         if not with_rollback or not with_database:
             _remove_click_option(wrapped, "rollback")
+        if not with_addons_path:
+            _remove_click_option(wrapped, "addons_path")
         return wrapped
 
     return inner
@@ -144,7 +147,7 @@ def env_options(
     "interactive console is started if stdin appears "
     "to be a terminal."
 )
-@env_options(database_required=False)
+@env_options(database_required=False, with_addons_path=True)
 @click.option(
     "--interactive/--no-interactive",
     "-i",

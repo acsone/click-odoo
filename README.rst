@@ -1,5 +1,5 @@
 click-odoo
-===========
+==========
 
 .. image:: https://img.shields.io/badge/license-LGPL--3-blue.svg
    :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
@@ -232,6 +232,9 @@ database_required
 database_must_exist
   If this flag is False and the selected database does not exist
   do not fail and pass env=None instead (default: True).
+
+with_addons_path
+  Controls the presence of the ``--addons-path`` option (default: False).
 
 environment_manager
   **experimental feature** A context manager that yields an intialized
