@@ -271,11 +271,24 @@ def test_env_options_database_must_exist(odoodb):
         else:
             print("without env")
 
+    @click.command(cls=CommandWithOdooEnv)
+    def testcmd_must_exist(env):
+        pass
+
     # no database, must not exist, no env
     runner = CliRunner()
     result = runner.invoke(testcmd, ["-d", "dbthatdoesnotexist"])
     assert result.exit_code == 0
     assert "without env" in result.output
+
+    # no database, must exist, error
+    runner = CliRunner()
+    result = runner.invoke(testcmd_must_exist, ["-d", "dbthatdoesnotexist"])
+    assert result.exit_code != 0
+    assert (
+        "The provided database does not exists and this script requires"
+        in result.output
+    )
 
     # database exists, must not exist, env ok
     runner = CliRunner()
@@ -337,6 +350,7 @@ def test_write_defaulttx(odoodb):
     subprocess.check_call(cmd)
     _assert_testparam_present(odoodb, "testvalue")
 
+
 def test_write_rollback(odoodb):
     """ test click-odoo rollbacks itself """
     _cleanup_testparam(odoodb)
@@ -344,6 +358,7 @@ def test_write_rollback(odoodb):
     cmd = ["click-odoo", "--rollback", "-d", odoodb, "--", script]
     subprocess.check_call(cmd)
     _assert_testparam_absent(odoodb)
+
 
 def test_write_interactive_defaulttx(mocker, odoodb):
     """ test click-odoo rollbacks in interactive mode """
