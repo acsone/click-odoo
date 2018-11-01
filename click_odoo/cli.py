@@ -56,34 +56,43 @@ class CommandWithOdooEnv(click.Command):
         self.params.extend(self.env_params)  # So they appear in --help
 
     def _parse_env_args(self, ctx):
+        def _get(flag):
+            result = ctx.params.get(flag) or self.config_settings.get(flag)
+            if flag in ctx.params:
+                del ctx.params[flag]
+            if flag in self.config_settings:
+                del self.config_settings[flag]
+            return result
+
         odoo_args = []
         # reset db_name in case we come from a previous run
         # where database has been set, in the second run the is no database
         # (mostly for tests)
         odoo.tools.config["db_name"] = None
+
+        # fmt: off
         # Always present params
-        if ctx.params.get("config"):
-            odoo_args.extend(["-c", ctx.params["config"]])
-        del ctx.params["config"]
-        if ctx.params.get("log_level"):
-            odoo_args.extend(["--log-level", ctx.params["log_level"]])
-        del ctx.params["log_level"]
-        if ctx.params.get("logfile"):
-            odoo_args.extend(["--logfile", ctx.params["logfile"]])
-        del ctx.params["logfile"]
+        config      = _get("config")       # noqa
+        log_level   = _get("log_level")    # noqa
+        logfile     = _get("logfile")      # noqa
         # Conditionally present params
-        if ctx.params.get("addons_path"):
-            odoo_args.extend(["--addons-path", ctx.params["addons_path"]])
-        if "addons_path" in ctx.params:
-            del ctx.params["addons_path"]
-        if ctx.params.get("database"):
-            odoo_args.extend(["-d", ctx.params["database"]])
-        if "database" in ctx.params:
-            del ctx.params["database"]
-        if ctx.params.get("rollback"):
-            self.rollback = ctx.params["rollback"]
-        if "rollback" in ctx.params:
-            del ctx.params["rollback"]
+        addons_path = _get("addons_path")  # noqa
+        database    = _get("database")     # noqa
+        rollback    = _get("rollback")     # noqa
+        # fmt: on
+
+        if config:
+            odoo_args.extend(["-c", config])
+        if log_level:
+            odoo_args.extend(["--log-level", log_level])
+        if logfile:
+            odoo_args.extend(["--logfile", logfile])
+        if addons_path:
+            odoo_args.extend(["--addons-path", addons_path])
+        if database:
+            odoo_args.extend(["-d", database])
+        if rollback:
+            self.rollback = rollback
         return odoo_args
 
     def load_odoo_config(self, ctx):
