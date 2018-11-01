@@ -2,140 +2,16 @@
 # Copyright 2018 ACSONE SA/NV (<http://acsone.eu>)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-import functools
 import logging
 import runpy
 import sys
-from contextlib import closing
 
 import click
 
 from . import console
-from .env import OdooEnvironment, odoo, parse_config
+from .env_options import env_options
 
 _logger = logging.getLogger(__name__)
-
-
-def _remove_click_option(func, name):
-    for o in func.__click_params__:
-        if o.name == name:
-            func.__click_params__.remove(o)
-            return
-
-
-def _db_exists(dbname):
-    conn = odoo.sql_db.db_connect("postgres")
-    with closing(conn.cursor()) as cr:
-        cr._obj.execute(
-            "SELECT datname FROM pg_catalog.pg_database "
-            "WHERE lower(datname) = lower(%s)",
-            (dbname,),
-        )
-        return bool(cr.fetchone())
-
-
-def env_options(
-    default_log_level="info",
-    with_rollback=True,
-    with_database=True,
-    database_required=True,
-    database_must_exist=True,
-    with_addons_path=False,
-    environment_manager=OdooEnvironment,
-):
-    def inner(func):
-        @click.option(
-            "--config",
-            "-c",
-            envvar=["ODOO_RC", "OPENERP_SERVER"],
-            type=click.Path(exists=True, dir_okay=False),
-            help="Specify the Odoo configuration file. Other "
-            "ways to provide it are with the ODOO_RC or "
-            "OPENERP_SERVER environment variables, "
-            "or ~/.odoorc (Odoo >= 10) "
-            "or ~/.openerp_serverrc.",
-        )
-        @click.option(
-            "--addons-path",
-            envvar=["ODOO_ADDONS_PATH"],
-            help="Specify the addons path. If present, this "
-            "parameter takes precedence over the addons path "
-            "provided in the Odoo configuration file.",
-        )
-        @click.option(
-            "--database",
-            "-d",
-            envvar=["PGDATABASE"],
-            help="Specify the database name. If present, this "
-            "parameter takes precedence over the database "
-            "provided in the Odoo configuration file.",
-        )
-        @click.option(
-            "--log-level",
-            default=default_log_level,
-            show_default=True,
-            help="Specify the logging level. Accepted values depend "
-            "on the Odoo version, and include debug, info, "
-            "warn, error.",
-        )
-        @click.option(
-            "--logfile", type=click.Path(dir_okay=False), help="Specify the log file."
-        )
-        @click.option(
-            "--rollback",
-            is_flag=True,
-            help="Rollback the transaction even if the script "
-            "does not raise an exception. Note that if the "
-            "script itself commits, this option has no effect. "
-            "This is why it is not named dry run. This option "
-            "is implied when an interactive console is "
-            "started.",
-        )
-        @functools.wraps(func)
-        def wrapped(
-            config,
-            log_level,
-            logfile,
-            addons_path=None,
-            database=None,
-            rollback=False,
-            *args,
-            **kwargs
-        ):
-            try:
-                parse_config(config, database, log_level, logfile, addons_path)
-                if not database:
-                    database = odoo.tools.config["db_name"]
-                if with_database and database_required and not database:
-                    raise click.UsageError(
-                        "No database provided, please provide one with the -d "
-                        "option or the Odoo configuration file."
-                    )
-                if (
-                    with_database
-                    and database
-                    and (database_must_exist or _db_exists(database))
-                ):
-                    with environment_manager(
-                        database=database, rollback=rollback
-                    ) as env:
-                        return func(env, *args, **kwargs)
-                else:
-                    with odoo.api.Environment.manage():
-                        return func(None, *args, **kwargs)
-            except Exception as e:
-                _logger.error("exception", exc_info=True)
-                raise click.ClickException(str(e))
-
-        if not with_database:
-            _remove_click_option(wrapped, "database")
-        if not with_rollback or not with_database:
-            _remove_click_option(wrapped, "rollback")
-        if not with_addons_path:
-            _remove_click_option(wrapped, "addons_path")
-        return wrapped
-
-    return inner
 
 
 @click.command(
