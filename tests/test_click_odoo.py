@@ -311,7 +311,7 @@ def _assert_testparam_absent(dbname):
     conn.close()
 
 
-def test_write_commit(odoodb):
+def test_write_commit_in_script(odoodb):
     """ test commit in script """
     _cleanup_testparam(odoodb)
     script = os.path.join(here, "scripts", "script4.py")
@@ -320,7 +320,7 @@ def test_write_commit(odoodb):
     _assert_testparam_present(odoodb, "testvalue")
 
 
-def test_write_rollback(odoodb):
+def test_write_rollback_in_script(odoodb):
     """ test rollback in script """
     _cleanup_testparam(odoodb)
     script = os.path.join(here, "scripts", "script4.py")
@@ -337,6 +337,13 @@ def test_write_defaulttx(odoodb):
     subprocess.check_call(cmd)
     _assert_testparam_present(odoodb, "testvalue")
 
+def test_write_rollback(odoodb):
+    """ test click-odoo rollbacks itself """
+    _cleanup_testparam(odoodb)
+    script = os.path.join(here, "scripts", "script4.py")
+    cmd = ["click-odoo", "--rollback", "-d", odoodb, "--", script]
+    subprocess.check_call(cmd)
+    _assert_testparam_absent(odoodb)
 
 def test_write_interactive_defaulttx(mocker, odoodb):
     """ test click-odoo rollbacks in interactive mode """
