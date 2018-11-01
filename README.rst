@@ -224,6 +224,9 @@ with_database
   is not set (env is None). If ``with_database`` is False,
   ``database_required`` is implied to be False too.
 
+with_addons_path
+  Controls the presence of the ``--addons-path`` option (default: False).
+
 database_required
   Controls if a database must be provided through the ``--database``
   option or the Odoo configuration file (default: True).

@@ -35,6 +35,7 @@ class CommandWithOdooEnv(click.Command):
         self.rollback = None
         self.with_rollback = env_options.get("with_rollback", True)
         self.with_database = env_options.get("with_database", True)
+        self.with_addons_path = env_options.get("with_addons_path", False)
         self.database_must_exist = env_options.get("database_must_exist", True)
         self.database_required = self.with_database and env_options.get(
             "database_required", True
@@ -45,7 +46,7 @@ class CommandWithOdooEnv(click.Command):
 
         self.env_params = {
             options.config_opt,
-            options.addons_path_opt,
+            options.addons_path_opt if self.with_addons_path else None,
             options.db_opt if self.with_database else None,
             options.log_level_opt,
             options.logfile_opt,
@@ -70,10 +71,11 @@ class CommandWithOdooEnv(click.Command):
         if ctx.params.get("logfile"):
             odoo_args.extend(["--logfile", ctx.params["logfile"]])
         del ctx.params["logfile"]
+        # Conditionally present params
         if ctx.params.get("addons_path"):
             odoo_args.extend(["--addons-path", ctx.params["addons_path"]])
-        del ctx.params["addons_path"]
-        # Conditionally present params
+        if "addons_path" in ctx.params:
+            del ctx.params["addons_path"]
         if ctx.params.get("database"):
             odoo_args.extend(["-d", ctx.params["database"]])
         if "database" in ctx.params:
@@ -132,7 +134,10 @@ class CommandWithOdooEnv(click.Command):
             raise click.ClickException(str(e))
 
 
-@click.command(cls=CommandWithOdooEnv, env_options={"database_required": False})
+@click.command(
+    cls=CommandWithOdooEnv,
+    env_options={"database_required": False, "with_addons_path": True},
+)
 @options.interactive_opt
 @options.shell_interface_opt
 @options.script_arg
