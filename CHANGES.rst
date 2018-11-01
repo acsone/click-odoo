@@ -12,6 +12,12 @@ Changes
   on ``click.Command()``
 - replace ``@env_options`` wrapper with custom Command class
 
+1.1.1 (2018-11-01)
+------------------
+- add ``with_addons_path`` option to ``@click_odoo.env_options``
+  to control the presence of the ``--addons-path`` option. Defaults to False.
+  Enabled for the ``click-odoo`` CLI.
+
 1.1.0 (2018-10-31)
 ------------------
 - add ``environment_manager`` to ``@click_odoo.env_options``, providing
