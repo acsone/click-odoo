@@ -5,6 +5,11 @@ Changes
 .. ----------
 .. - ...
 
+- refactor ``@click_odoo.env_options`` to allow propagating ``env``
+  to subcommands through the click context. Fixes #16.
+- do not log click Exit exception, which may be raised by subcommands as
+  a result of --help.
+
 1.1.1 (2018-11-01)
 ------------------
 - add ``with_addons_path`` option to ``@click_odoo.env_options``

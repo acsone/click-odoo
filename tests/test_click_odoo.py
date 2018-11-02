@@ -373,7 +373,7 @@ def test_write_raise(tmpdir, capfd, odoodb):
     assert r != 0
     logcontent = logfile.read()
     assert "testerror" in logcontent
-    our, err = capfd.readouterr()
+    out, err = capfd.readouterr()
     assert "testerror" in err
     _assert_testparam_absent(odoodb)
 
