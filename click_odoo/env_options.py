@@ -121,6 +121,7 @@ class env_options(object):
                         handler.stream = sys.stderr
 
     def get_odoo_args(self, ctx):
+        """Return a list of Odoo command line arguments from the Click context."""
         config = ctx.params.get("config")
         addons_path = ctx.params.get("addons_path")
         database = ctx.params.get("database")

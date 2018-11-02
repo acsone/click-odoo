@@ -241,9 +241,29 @@ environment_manager
   ``odoo.api.Environment``.
   It is invoked after Odoo configuration parsing and initialization.
   It must have the following signature (identical to ``OdooEnvironment``
-  below, plus ``**kwargs``)::
+  below, plus ``**kwargs`` for future proofing):
+
+  .. code:: python
 
     environment_manager(database, rollback, **kwargs)
+
+Customizing click_odoo.env_options (experimental)
+-------------------------------------------------
+
+``click_odoo.env_options`` is a class that can be extended for customization
+purposes.
+
+It currently has one method that is intended to be overridden, with the
+following signature:
+
+.. code:: python
+
+  def get_odoo_args(self, ctx: click.Context) -> List[str]:
+      ...
+
+It must return a list of Odoo command line arguments computed
+from the Click context. It will be called after parsing all parameters
+of the command, and before initializing Odoo and invoking the command function.
 
 click_odoo.odoo namespace
 -------------------------
