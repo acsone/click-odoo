@@ -22,7 +22,7 @@ setup(
     packages=["click_odoo"],
     include_package_data=True,
     setup_requires=["setuptools_scm"],
-    install_requires=["click"],
+    install_requires=["click>=7"],
     license="LGPLv3+",
     author="ACSONE SA/NV",
     author_email="info@acsone.eu",
