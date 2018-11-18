@@ -5,10 +5,15 @@ Changes
 .. ----------
 .. - ...
 
+1.2.0 (2018-11-18)
+------------------
 - refactor ``@click_odoo.env_options`` to allow propagating ``env``
   to subcommands through the click context. Fixes #16.
 - do not log click Exit exception, which may be raised by subcommands as
   a result of --help.
+
+Upgrading:
+- click-odoo now requires click>=7
 
 1.1.1 (2018-11-01)
 ------------------
