@@ -191,7 +191,7 @@ class env_options(object):
                 and (self.database_must_exist or self._db_exists(database))
             ):
                 with self.environment_manager(
-                    database=database, rollback=rollback
+                    database=database, rollback=rollback, ctx=ctx
                 ) as env:
                     ctx.params["env"] = env
                     return self.org_invoke(ctx)

@@ -241,11 +241,11 @@ environment_manager
   ``odoo.api.Environment``.
   It is invoked after Odoo configuration parsing and initialization.
   It must have the following signature (identical to ``OdooEnvironment``
-  below, plus ``**kwargs`` for future proofing):
+  below, plus the click ``ctx`` as well as ``**kwargs`` for future proofing):
 
   .. code:: python
 
-    environment_manager(database, rollback, **kwargs)
+    environment_manager(database, rollback, ctx, **kwargs)
 
 Customizing click_odoo.env_options (experimental)
 -------------------------------------------------
