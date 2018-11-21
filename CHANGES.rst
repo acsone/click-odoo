@@ -5,6 +5,10 @@ Changes
 .. ----------
 .. - ...
 
+1.3.0 (2018-11-21)
+------------------
+- pass click ctx to environment_manager
+
 1.2.0 (2018-11-18)
 ------------------
 - refactor ``@click_odoo.env_options`` to allow propagating ``env``

@@ -23,7 +23,7 @@ _logger = logging.getLogger(__name__)
 
 
 @contextmanager
-def OdooEnvironment(database, rollback=False):
+def OdooEnvironment(database, rollback=False, **kwargs):
     with Environment.manage():
         registry = odoo.registry(database)
         try:
