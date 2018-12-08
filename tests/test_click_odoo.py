@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import os
 import subprocess
+import sys
 import textwrap
 
 import click
@@ -56,6 +57,22 @@ def test_click_odoo(odoodb):
     """ Test simple access to env in script """
     script = os.path.join(here, "scripts", "script1.py")
     cmd = ["click-odoo", "-d", odoodb, script]
+    result = subprocess.check_output(cmd, universal_newlines=True)
+    assert result == "admin\n"
+
+
+def test_click_odoo_minus_m(odoodb):
+    """ Test simple access to env in script """
+    script = os.path.join(here, "scripts", "script1.py")
+    cmd = [sys.executable, "-m", "click_odoo", "-d", odoodb, script]
+    result = subprocess.check_output(cmd, universal_newlines=True)
+    assert result == "admin\n"
+
+
+def test_click_odoo_minus_m_cli(odoodb):
+    """ Test simple access to env in script """
+    script = os.path.join(here, "scripts", "script1.py")
+    cmd = [sys.executable, "-m", "click_odoo.cli", "-d", odoodb, script]
     result = subprocess.check_output(cmd, universal_newlines=True)
     assert result == "admin\n"
 
