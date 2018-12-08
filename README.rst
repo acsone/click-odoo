@@ -344,11 +344,12 @@ Credits
 
 Author:
 
-- Stéphane Bidoul (`ACSONE <http://acsone.eu/>`_)
+- Stéphane Bidoul (`ACSONE <http://acsone.eu/>`__)
 
-Contributor:
+Contributors:
 
-- David Arnold (`XOE <https://xoe.solutions>`_)
+- Thomas Binsfeld (`ACSONE <http://acsone.eu/>`__)
+- David Arnold (`XOE <https://xoe.solutions>`__)
 
 Inspiration has been drawn from:
 
