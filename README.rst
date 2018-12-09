@@ -90,8 +90,8 @@ It can be run like this::
                          parameter takes precedence over the database
                          provided in the Odoo configuration file.
     --log-level TEXT     Specify the logging level. Accepted values depend on
-                         the Odoo version, and include debug, info, warn, error.
-                         [default: error]
+                         the Odoo version, and include debug, info, warn,
+                         error, critical. [default: error]
     --logfile PATH       Specify the log file.
     --rollback           Rollback the transaction even if the script
                          does not raise an exception. Note that if
@@ -230,7 +230,7 @@ an odoo ``Environment`` and passes it as a ``env`` parameter.
 It is configurable with the following keyword arguments:
 
 default_log_level
-  The default value for the ``-log-level`` option (default: 'info').
+  The default value for the ``--log-level`` option (default: 'info').
 
 with_rollback
   Controls the presence of the ``--rollback`` option (default: True).

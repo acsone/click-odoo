@@ -5,9 +5,15 @@ Changes
 .. ----------
 .. - ...
 
-1.3.1 (unreleased)
+1.4.0 (unreleased)
 ------------------
 - add support for launching with ``python -m click_odoo``. Fixes #20.
+- apply ``--log-level`` to the root logger, so it works more
+  intuitively by applying to the script too, and not only to the ``odoo``
+  namespace. *This may change the log output of some scripts*.
+  In particular, ``--log-level=debug`` will now apply debug logging
+  to every python library used, and not only to Odoo.
+  Fine tuning is available through the ``log_handler`` configuration item.
 
 1.3.0 (2018-11-21)
 ------------------
