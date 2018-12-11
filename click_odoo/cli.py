@@ -55,3 +55,7 @@ def main(env, interactive, shell_interface, script, script_args):
             sys.argv[:] = [""]
             global_vars["__name__"] = "__main__"
             exec(sys.stdin.read(), global_vars)
+
+
+if __name__ == "__main__":
+    main()

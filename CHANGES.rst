@@ -5,6 +5,10 @@ Changes
 .. ----------
 .. - ...
 
+1.3.1 (unreleased)
+------------------
+- add support for launching with ``python -m click_odoo``. Fixes #20.
+
 1.3.0 (2018-11-21)
 ------------------
 - pass click ctx to environment_manager

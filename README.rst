@@ -21,7 +21,11 @@ Useful community-managed scripts can be found in click-odoo-contrib_.
 Quick start
 ~~~~~~~~~~~
 
-Install it in an environment where Odoo is installed,
+Check Odoo is correctly installed: ``python -c "import odoo"`` (for Odoo 10
+and later) or ``python -c "import openerp"`` (for Odoo 8 and 9) must
+work when run from another directory than the Odoo root directory.
+
+Install ``click-odoo``::
 
   pip install click-odoo
 
@@ -37,13 +41,17 @@ Assuming the following script named ``list-users.py``.
 
 It can be run with::
 
-  click-odoo -d dbname --log-level=error list-users.py
+  python -m click_odoo -d dbname --log-level=error ./list-users.py
+
+or::
+
+  click-odoo -d dbname --log-level=error ./list-users.py
 
 or::
 
   ./list-users.py -d dbname --log-level=error
 
-The third technique to create scripts looks like this. Assuming
+The other technique to create scripts looks like this. Assuming
 the following script named ``list-users2.py``.
 
 .. code:: python
@@ -99,6 +107,11 @@ It can be run like this::
   admin Administrator
   ...
 
+Finally, you can start an interactive shell by simply typing
+``python -m click_odoo -d dbname`` or ``click-odoo -d dbname``.
+This will launch the python REPL with an Odoo ``env`` available
+as a global variable.
+
 Supported Odoo versions
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -111,7 +124,13 @@ across Odoo versions.
 
   ``click-odoo`` does not mandate any particular method of installing odoo.
   The only prerequisiste is that ``import odoo`` (>= 10) or ``import openerp``
-  (< 10) must work.
+  (< 10) must work when run from another directory than the Odoo root
+  directory.
+
+  You may also rely on the fact that python adds the current directory to
+  ``sys.path``, so ``import odoo`` works from the Odoo root directory.
+  In such case, the only working invocation method may be
+  ``python -m click_odoo``.
 
 Database transactions
 ~~~~~~~~~~~~~~~~~~~~~
@@ -136,7 +155,7 @@ Logging is controlled by the usual Odoo logging options (``--log-level``,
 ``--logfile``) or the Odoo configuration file.
 
 Command line interface (click-odoo)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code::
 
@@ -269,8 +288,8 @@ click_odoo.odoo namespace
 -------------------------
 
 As a convenience ``click_odoo`` exports the ``odoo`` namespace, so
-``from click_odoo import odoo`` is an alias for ``import odoo`` (>9)
-or ``import openerp as odoo`` (<=9).
+``from click_odoo import odoo`` is an alias for ``import odoo`` (>= 10)
+or ``import openerp as odoo`` (< 10).
 
 OdooEnvironment context manager (experimental)
 ----------------------------------------------
@@ -325,11 +344,12 @@ Credits
 
 Author:
 
-- Stéphane Bidoul (`ACSONE <http://acsone.eu/>`_)
+- Stéphane Bidoul (`ACSONE <http://acsone.eu/>`__)
 
-Contributor:
+Contributors:
 
-- David Arnold (`XOE <https://xoe.solutions>`_)
+- Thomas Binsfeld (`ACSONE <http://acsone.eu/>`__)
+- David Arnold (`XOE <https://xoe.solutions>`__)
 
 Inspiration has been drawn from:
 
