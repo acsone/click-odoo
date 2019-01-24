@@ -5,7 +5,7 @@ Changes
 .. ----------
 .. - ...
 
-1.4.0 (unreleased)
+1.4.0 (2019-01-24)
 ------------------
 - add support for launching with ``python -m click_odoo``. Fixes #20.
 - apply ``--log-level`` to the root logger, so it works more
