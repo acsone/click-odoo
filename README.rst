@@ -154,6 +154,8 @@ it is stderr. ``click-odoo`` attempts to use stderr for Odoo 8 too.
 Logging is controlled by the usual Odoo logging options (``--log-level``,
 ``--logfile``) or the Odoo configuration file.
 
+Note the ``--log-level`` option applies to the ``odoo`` package only.
+
 Command line interface (click-odoo)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
