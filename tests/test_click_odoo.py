@@ -170,41 +170,6 @@ def test_logging_logfile(tmpdir, capfd, odoodb):
     assert "hello from script3" in logcontent
 
 
-def test_logging_level(capfd):
-    # test that --log-level applies to the script
-    script = os.path.join(here, "scripts", "script6.py")
-    cmd = ["click-odoo", "--", script]
-    subprocess.check_call(cmd)
-    out, err = capfd.readouterr()
-    assert "debug log from script6" not in err
-    assert "info log from script6" in err
-    assert "warn log from script6" in err
-    cmd = ["click-odoo", "--log-level=info", "--", script]
-    subprocess.check_call(cmd)
-    out, err = capfd.readouterr()
-    assert "debug log from script6" not in err
-    assert "info log from script6" in err
-    assert "warn log from script6" in err
-    cmd = ["click-odoo", "--log-level=debug", "--", script]
-    subprocess.check_call(cmd)
-    out, err = capfd.readouterr()
-    assert "debug log from script6" in err
-    assert "info log from script6" in err
-    assert "warn log from script6" in err
-    cmd = ["click-odoo", "--log-level=warn", "--", script]
-    subprocess.check_call(cmd)
-    out, err = capfd.readouterr()
-    assert "debug log from script6" not in err
-    assert "info log from script6" not in err
-    assert "warn log from script6" in err
-    cmd = ["click-odoo", "--log-level=error", "--", script]
-    subprocess.check_call(cmd)
-    out, err = capfd.readouterr()
-    assert "debug log from script6" not in err
-    assert "info log from script6" not in err
-    assert "warn log from script6" not in err
-
-
 def test_env_options_withdb(odoodb, tmpdir):
     @click.command()
     @click_odoo.env_options()

@@ -64,7 +64,7 @@ class env_options(object):
                 show_default=True,
                 help="Specify the logging level. Accepted values depend "
                 "on the Odoo version, and include debug, info, "
-                "warn, error, critical.",
+                "warn, error.",
             ),
         )
         if self.with_database:
@@ -155,20 +155,6 @@ class env_options(object):
         self._fix_odoo_logging()
         odoo.cli.server.report_configuration()
 
-    def _configure_logging(self, ctx):
-        logging_levels = {
-            "debug": logging.DEBUG,
-            "info": logging.INFO,
-            "warn": logging.WARN,
-            "error": logging.ERROR,
-            "critical": logging.CRITICAL,
-        }
-        log_level = ctx.params.get("log_level")
-        logging_level = logging_levels.get(log_level, None)
-        if logging_level is not None:
-            logging.getLogger().setLevel(logging_level)
-            logging.getLogger(__name__).debug('logger set ":%s"', log_level.upper())
-
     def _db_exists(self, dbname):
         conn = odoo.sql_db.db_connect("postgres")
         with closing(conn.cursor()) as cr:
@@ -190,7 +176,6 @@ class env_options(object):
     def _invoke(self, ctx):
         try:
             self._configure_odoo(ctx)
-            self._configure_logging(ctx)
             database = ctx.params.get("database")
             if (
                 not database
