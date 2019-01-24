@@ -191,7 +191,15 @@ class env_options(object):
         try:
             self._configure_odoo(ctx)
             self._configure_logging(ctx)
-            database = ctx.params.get("database") or odoo.tools.config["db_name"]
+            database = ctx.params.get("database")
+            if (
+                not database
+                and odoo.tools.config["db_name"]
+                and "," not in odoo.tools.config["db_name"]
+            ):
+                # if database not provided as parameter and a single
+                # database is provided in the odoo config file, use it
+                database = odoo.tools.config["db_name"]
             rollback = ctx.params.get("rollback")
             # pop env_options params so they are not passed to the command
             self._pop_params(ctx)

@@ -14,6 +14,8 @@ Changes
   In particular, ``--log-level=debug`` will now apply debug logging
   to every python library used, and not only to Odoo.
   Fine tuning is available through the ``log_handler`` configuration item.
+- support Odoo config files with multiple comma separate databases names
+  in db_name config entry.
 
 1.3.0 (2018-11-21)
 ------------------

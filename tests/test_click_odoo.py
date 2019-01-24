@@ -245,6 +245,24 @@ def test_env_options_withdb(odoodb, tmpdir):
     result = runner.invoke(testcmd, ["-c", str(odoocfg2), "-d", odoodb])
     assert result.exit_code == 0
     assert "login=admin\n" in result.output
+    # test multiple databases in config file
+    odoocfg3 = tmpdir / "odoo3.cfg"
+    odoocfg3.write(
+        textwrap.dedent(
+            """\
+        [options]
+        db_name={},notadb
+    """.format(
+                odoodb
+            )
+        )
+    )
+    result = runner.invoke(testcmd, ["-c", str(odoocfg3)])
+    assert result.exit_code != 0
+    assert "No database provided" in result.output
+    result = runner.invoke(testcmd, ["-c", str(odoocfg3), "-d", odoodb])
+    assert result.exit_code == 0
+    assert "login=admin\n" in result.output
     # no -d, error
     result = runner.invoke(testcmd, [])
     assert result.exit_code != 0
