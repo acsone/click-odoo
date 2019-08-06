@@ -42,6 +42,15 @@ def clone_odoo():
 
 
 def install_odoo():
+    subprocess.check_call(
+        [
+            "pip",
+            "install",
+            "-r",
+            "https://raw.githubusercontent.com/odoo/odoo"
+            "/{odoo_branch}/requirements.txt".format(odoo_branch=odoo_branch),
+        ]
+    )
     subprocess.check_call(["pip", "install", "-e", odoo_dir])
 
 
