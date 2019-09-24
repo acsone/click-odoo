@@ -42,15 +42,12 @@ def clone_odoo():
 
 
 def install_odoo():
-    subprocess.check_call(
-        [
-            "pip",
-            "install",
-            "-r",
-            "https://raw.githubusercontent.com/odoo/odoo"
-            "/{odoo_branch}/requirements.txt".format(odoo_branch=odoo_branch),
-        ]
-    )
+    # Odoo not compatible with recent pyyaml due to load() now being safe by default
+    # XXX an alternative is to pip install -r requirements.txt with
+    # XXX the correct one for each Odoo version but this is slower as
+    # XXX many wheels more need to be built because Odoo's requirements.txt
+    # XXX pin old library versions.
+    subprocess.check_call(["pip", "install", "pyyaml<4"])
     subprocess.check_call(["pip", "install", "-e", odoo_dir])
 
 
