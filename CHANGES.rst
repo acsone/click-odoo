@@ -5,6 +5,14 @@ Changes
 .. ----------
 .. - ...
 
+1.4.2 (unreleased)
+------------------
+- Odoo 8 unconditionally registers wsgi handlers, which has the surprising
+  side effect to start a server in some circumstances, for instance when
+  calling ``env["ir.module.module"].update_list()`` in ``click-odoo-initdb``.
+  Disable them in click-odoo initialization, since they are useless and
+  other Odoo version do not install them.
+
 1.4.1 (2019-01-24)
 ------------------
 - revert change to logging made in 1.4.0
