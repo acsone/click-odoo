@@ -112,7 +112,9 @@ class env_options(object):
         return value
 
     def _fix_odoo_logging(self):
-        if odoo.release.version_info[0] < 9:
+        if odoo.tools.parse_version(odoo.release.version) < odoo.tools.parse_version(
+            "9.0"
+        ):
             handlers = logging.getLogger().handlers
             if handlers and len(handlers) == 1:
                 handler = handlers[0]

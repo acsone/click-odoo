@@ -49,7 +49,9 @@ def OdooEnvironment(database, rollback=False, **kwargs):
                 else:
                     cr.commit()
         finally:
-            if odoo.release.version_info[0] < 10:
+            if odoo.tools.parse_version(
+                odoo.release.version
+            ) < odoo.tools.parse_version("10.0"):
                 odoo.modules.registry.RegistryManager.delete(database)
             else:
                 odoo.modules.registry.Registry.delete(database)
