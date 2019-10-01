@@ -122,6 +122,10 @@ class env_options(object):
                     if handler.stream is sys.stdout:
                         handler.stream = sys.stderr
 
+    def _fix_disable_wsgi_module_handlers(self):
+        if odoo.release.version_info[0] < 9:
+            odoo.service.wsgi_server.module_handlers[:] = []
+
     def get_odoo_args(self, ctx):
         """Return a list of Odoo command line arguments from the Click context."""
         config = ctx.params.get("config")
@@ -155,6 +159,7 @@ class env_options(object):
         odoo.tools.config["load_language"] = None
         odoo.tools.config.parse_config(odoo_args)
         self._fix_odoo_logging()
+        self._fix_disable_wsgi_module_handlers()
         odoo.cli.server.report_configuration()
 
     def _db_exists(self, dbname):
