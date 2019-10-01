@@ -346,12 +346,13 @@ Credits
 
 Author:
 
-- Stéphane Bidoul (`ACSONE <http://acsone.eu/>`__)
+- Stéphane Bidoul (`ACSONE <https://acsone.eu/>`__)
 
 Contributors:
 
-- Thomas Binsfeld (`ACSONE <http://acsone.eu/>`__)
+- Thomas Binsfeld (`ACSONE <https://acsone.eu/>`__)
 - David Arnold (`XOE <https://xoe.solutions>`__)
+- Jairo Llopis (`Tecnativa <https://tecnativa.com>`__)
 
 Inspiration has been drawn from:
 
