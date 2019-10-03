@@ -113,7 +113,7 @@ class env_options(object):
 
     def _fix_odoo_logging(self):
         if odoo.tools.parse_version(odoo.release.version) < odoo.tools.parse_version(
-            "9.0"
+            "9.0c"
         ):
             handlers = logging.getLogger().handlers
             if handlers and len(handlers) == 1:
@@ -123,7 +123,9 @@ class env_options(object):
                         handler.stream = sys.stderr
 
     def _fix_disable_wsgi_module_handlers(self):
-        if odoo.release.version_info[0] < 9:
+        if odoo.tools.parse_version(odoo.release.version) < odoo.tools.parse_version(
+            "9.0c"
+        ):
             odoo.service.wsgi_server.module_handlers[:] = []
 
     def get_odoo_args(self, ctx):
