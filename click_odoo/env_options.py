@@ -162,6 +162,7 @@ class env_options(object):
         odoo.tools.config.parse_config(odoo_args)
         self._fix_odoo_logging()
         self._fix_disable_wsgi_module_handlers()
+        odoo.service.server.load_server_wide_modules()
         odoo.cli.server.report_configuration()
 
     def _db_exists(self, dbname):
