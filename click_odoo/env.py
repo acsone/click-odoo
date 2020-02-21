@@ -9,7 +9,9 @@ try:
     from odoo.api import Environment
 
     odoo_bin = "odoo"
-except ImportError:
+except ImportError as e:
+    if hasattr(e, "name") and e.name != "odoo":
+        raise
     # Odoo < 10
     try:
         import openerp as odoo
@@ -17,6 +19,8 @@ except ImportError:
 
         odoo_bin = "openerp-server"
     except ImportError:
+        if hasattr(e, "name") and e.name != "openerp":
+            raise
         raise ImportError("No module named odoo nor openerp")
 
 _logger = logging.getLogger(__name__)
