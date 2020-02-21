@@ -42,12 +42,16 @@ def clone_odoo():
 
 
 def install_odoo():
-    # Odoo not compatible with recent pyyaml due to load() now being safe by default
     # XXX an alternative is to pip install -r requirements.txt with
     # XXX the correct one for each Odoo version but this is slower as
     # XXX many wheels more need to be built because Odoo's requirements.txt
     # XXX pin old library versions.
+    # Odoo not compatible with recent pyyaml due to load() now being safe by default
     subprocess.check_call(["pip", "install", "pyyaml<4"])
+    # Odoo not compatible with werkzeug 1.0: https://github.com/odoo/odoo/issues/45914
+    subprocess.check_call(["pip", "install", "werkzeug<1"])
+    # Odoo not compatible with Jinja2 >= 2.11
+    subprocess.check_call(["pip", "install", "jinja2<2.11"])
     subprocess.check_call(["pip", "install", "-e", odoo_dir])
 
 

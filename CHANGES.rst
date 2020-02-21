@@ -5,6 +5,9 @@ Changes
 .. ----------
 .. - ...
 
+- Refined ImportError detection in ``from click_odoo import odoo``, for
+  easier diagnostic of Odoo installation issues.
+
 1.4.2 (2019-10-01)
 ------------------
 - Odoo 8 unconditionally registers wsgi handlers, which has the surprising
