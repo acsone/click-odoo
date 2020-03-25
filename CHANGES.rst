@@ -1,12 +1,7 @@
 Changes
 ~~~~~~~
 
-.. Future (?)
-.. ----------
-.. - ...
-
-- Refined ImportError detection in ``from click_odoo import odoo``, for
-  easier diagnostic of Odoo installation issues.
+.. towncrier release notes start
 
 1.4.2 (2019-10-01)
 ------------------
