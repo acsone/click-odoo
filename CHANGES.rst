@@ -3,6 +3,15 @@ Changes
 
 .. towncrier release notes start
 
+1.4.3 (2020-09-30)
+------------------
+
+**Features**
+
+- Refined ImportError detection in ``from click_odoo import odoo``, for
+  easier diagnostic of Odoo installation issues. (`#36 <https://github.com/acsone/click-odoo/issues/36>`_)
+
+
 1.4.2 (2019-10-01)
 ------------------
 - Odoo 8 unconditionally registers wsgi handlers, which has the surprising
