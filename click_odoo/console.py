@@ -15,8 +15,8 @@ class Shell(object):
     @classmethod
     def python(cls, local_vars):
         console = code.InteractiveConsole(locals=local_vars)
-        import rlcompleter  # noqa
         import readline
+        import rlcompleter  # noqa
 
         readline.parse_and_bind("tab: complete")
         console.interact()
