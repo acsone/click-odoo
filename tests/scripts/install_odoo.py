@@ -39,6 +39,11 @@ def clone_odoo():
             odoo_dir,
         ]
     )
+    if "PGHOST" in os.environ and odoo_branch == "8.0":
+        # Patch postgres connection mechanism to support connection with PGHOST
+        # environment variable. This patch is a backport from 9.0.
+        patch_path = os.path.join(os.path.dirname(__file__), "sql_db-8.patch")
+        subprocess.check_call(["patch", "-p1", "-i", patch_path], cwd=odoo_dir)
 
 
 def install_odoo():
