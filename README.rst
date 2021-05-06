@@ -33,7 +33,7 @@ Assuming the following script named ``list-users.py``.
 
 .. code:: python
 
-   #!/usr/bin/env click-odoo
+   #!/usr/bin/env python
    from __future__ import print_function
 
    for u in env['res.users'].search([]):
