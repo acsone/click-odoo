@@ -247,7 +247,7 @@ def test_env_options_nodb(odoodb, tmpdir):
     # -d not allowed
     result = runner.invoke(testcmd, ["-d", odoodb])
     assert result.exit_code != 0
-    assert "no such option: -d" in result.output
+    assert "no such option: -d" in result.output.lower()
     # db_name in config ignored
     odoocfg1 = tmpdir / "odoo1.cfg"
     odoocfg1.write(
