@@ -39,8 +39,8 @@ jobs:
             toxenv: "py36-15.0"
           - python-version: "3.8"
             toxenv: "py38-15.0"
-          - python-version: "3.8"
-            toxenv: "py38-master"
+          # - python-version: "3.8"
+          #   toxenv: "py38-master"
           - python-version: "3.6"
             toxenv: "twine_check"
     services:
