@@ -8,6 +8,7 @@ from contextlib import closing
 import click
 from click.decorators import _param_memo  # XXX undocumented click internal
 
+from .compat import odoo_version_info
 from .env import OdooEnvironment, odoo
 
 _logger = logging.getLogger(__name__)
@@ -112,9 +113,7 @@ class env_options(object):
         return value
 
     def _fix_odoo_logging(self):
-        if odoo.tools.parse_version(odoo.release.version) < odoo.tools.parse_version(
-            "9.0c"
-        ):
+        if odoo_version_info < (9, 0):
             handlers = logging.getLogger().handlers
             if handlers and len(handlers) == 1:
                 handler = handlers[0]
@@ -123,9 +122,7 @@ class env_options(object):
                         handler.stream = sys.stderr
 
     def _fix_disable_wsgi_module_handlers(self):
-        if odoo.tools.parse_version(odoo.release.version) < odoo.tools.parse_version(
-            "9.0c"
-        ):
+        if odoo_version_info < (9, 0):
             odoo.service.wsgi_server.module_handlers[:] = []
 
     def get_odoo_args(self, ctx):
