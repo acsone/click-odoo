@@ -3,6 +3,14 @@ Changes
 
 .. towncrier release notes start
 
+1.5.0 (2021-10-08)
+------------------
+
+**Features**
+
+- Silenced a noisy warning about Environment.manage() being a no-op in Odoo 15. (`#43 <https://github.com/acsone/click-odoo/issues/43>`_)
+
+
 1.4.3 (2020-09-30)
 ------------------
 
