@@ -8,7 +8,7 @@ from contextlib import closing
 import click
 from click.decorators import _param_memo  # XXX undocumented click internal
 
-from .compat import odoo_version_info
+from .compat import environment_manage, odoo_version_info
 from .env import OdooEnvironment, odoo
 
 _logger = logging.getLogger(__name__)
@@ -210,7 +210,7 @@ class env_options(object):
                     ctx.params["env"] = env
                     return self.org_invoke(ctx)
             else:
-                with odoo.api.Environment.manage():
+                with environment_manage():
                     ctx.params["env"] = None
                     return self.org_invoke(ctx)
         except click.exceptions.Exit:
