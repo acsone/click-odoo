@@ -4,31 +4,14 @@
 import logging
 from contextlib import contextmanager
 
-try:
-    import odoo
-    from odoo.api import Environment
-
-    odoo_bin = "odoo"
-except ImportError as e:
-    if hasattr(e, "name") and e.name != "odoo":
-        raise
-    # Odoo < 10
-    try:
-        import openerp as odoo
-        from openerp.api import Environment
-
-        odoo_bin = "openerp-server"
-    except ImportError:
-        if hasattr(e, "name") and e.name != "openerp":
-            raise
-        raise ImportError("No module named odoo nor openerp")
+from .compat import Environment, environment_manage, odoo, odoo_version_info
 
 _logger = logging.getLogger(__name__)
 
 
 @contextmanager
 def OdooEnvironment(database, rollback=False, **kwargs):
-    with Environment.manage():
+    with environment_manage():
         registry = odoo.registry(database)
         try:
             with registry.cursor() as cr:
@@ -53,9 +36,7 @@ def OdooEnvironment(database, rollback=False, **kwargs):
                 else:
                     cr.commit()
         finally:
-            if odoo.tools.parse_version(
-                odoo.release.version
-            ) < odoo.tools.parse_version("10.0"):
+            if odoo_version_info < (10, 0):
                 odoo.modules.registry.RegistryManager.delete(database)
             else:
                 odoo.modules.registry.Registry.delete(database)
