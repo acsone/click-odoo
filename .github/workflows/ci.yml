@@ -63,6 +63,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ matrix.toxenv }}
       - name: Install system dependencies
         run: |
+          sudo apt-get update -qq
           sudo apt-get install -qq --no-install-recommends \
             libxml2-dev libxslt1-dev \
             libldap2-dev libsasl2-dev \
