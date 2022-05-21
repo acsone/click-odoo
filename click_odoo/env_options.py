@@ -14,7 +14,7 @@ from .env import OdooEnvironment, odoo
 _logger = logging.getLogger(__name__)
 
 
-class env_options(object):
+class env_options:
     def __init__(
         self,
         default_log_level="info",

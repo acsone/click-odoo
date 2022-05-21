@@ -1,7 +1,6 @@
 # Copyright 2018 ACSONE SA/NV (<http://acsone.eu>)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from __future__ import print_function
 
 import os
 import subprocess
@@ -175,7 +174,7 @@ def test_env_options_withdb(odoodb, tmpdir):
     @click_odoo.env_options()
     def testcmd(env):
         login = env["res.users"].search([("login", "=", "admin")]).login
-        click.echo("login={}".format(login))
+        click.echo(f"login={login}")
 
     # database from command line
     runner = CliRunner()

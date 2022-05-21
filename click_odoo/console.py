@@ -8,7 +8,7 @@ import os
 _logger = logging.getLogger(__name__)
 
 
-class Shell(object):
+class Shell:
 
     shells = ["ipython", "ptpython", "bpython", "python"]
 
