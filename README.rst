@@ -21,8 +21,7 @@ Useful community-managed scripts can be found in click-odoo-contrib_.
 Quick start
 ~~~~~~~~~~~
 
-Check Odoo is correctly installed: ``python -c "import odoo"`` (for Odoo 10
-and later) or ``python -c "import openerp"`` (for Odoo 8 and 9) must
+Check Odoo is correctly installed: ``python -c "import odoo"`` must
 work when run from another directory than the Odoo root directory.
 
 Install ``click-odoo``::
@@ -122,10 +121,9 @@ across Odoo versions.
 
 .. note::
 
-  ``click-odoo`` does not mandate any particular method of installing odoo.
-  The only prerequisiste is that ``import odoo`` (>= 10) or ``import openerp``
-  (< 10) must work when run from another directory than the Odoo root
-  directory.
+  ``click-odoo`` does not mandate any particular method of installing odoo. The only
+  prerequisiste is that ``import odoo`` must work when run from another directory than
+  the Odoo root directory.
 
   You may also rely on the fact that python adds the current directory to
   ``sys.path``, so ``import odoo`` works from the Odoo root directory.
@@ -290,8 +288,7 @@ click_odoo.odoo namespace
 -------------------------
 
 As a convenience ``click_odoo`` exports the ``odoo`` namespace, so
-``from click_odoo import odoo`` is an alias for ``import odoo`` (>= 10)
-or ``import openerp as odoo`` (< 10).
+``from click_odoo import odoo`` is an alias for ``import odoo``.
 
 OdooEnvironment context manager (experimental)
 ----------------------------------------------
