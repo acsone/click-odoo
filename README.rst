@@ -114,7 +114,7 @@ as a global variable.
 Supported Odoo versions
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Odoo version 8, 9, 10, 11, 12, 13 and 14 are supported.
+Odoo version 12, 13, 14 and 15 are supported.
 
 An important design goal is to provide a consistent behaviour
 across Odoo versions.
@@ -145,9 +145,6 @@ commit changes made before or during an interactive session, use ``env.cr.commit
 
 Logging
 ~~~~~~~
-
-In version 8, Odoo logs to stdout by default. On other versions
-it is stderr. ``click-odoo`` attempts to use stderr for Odoo 8 too.
 
 Logging is controlled by the usual Odoo logging options (``--log-level``,
 ``--logfile``) or the Odoo configuration file.

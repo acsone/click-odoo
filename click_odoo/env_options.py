@@ -2,13 +2,12 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import logging
-import sys
 from contextlib import closing
 
 import click
 from click.decorators import _param_memo  # XXX undocumented click internal
 
-from .compat import environment_manage, odoo_version_info
+from .compat import environment_manage
 from .env import OdooEnvironment, odoo
 
 _logger = logging.getLogger(__name__)
@@ -112,19 +111,6 @@ class env_options:
             ctx.command.invoke = self._invoke
         return value
 
-    def _fix_odoo_logging(self):
-        if odoo_version_info < (9, 0):
-            handlers = logging.getLogger().handlers
-            if handlers and len(handlers) == 1:
-                handler = handlers[0]
-                if isinstance(handler, logging.StreamHandler):
-                    if handler.stream is sys.stdout:
-                        handler.stream = sys.stderr
-
-    def _fix_disable_wsgi_module_handlers(self):
-        if odoo_version_info < (9, 0):
-            odoo.service.wsgi_server.module_handlers[:] = []
-
     def get_odoo_args(self, ctx):
         """Return a list of Odoo command line arguments from the Click context."""
         config = ctx.params.get("config")
@@ -157,8 +143,6 @@ class env_options:
         # see https://github.com/odoo/odoo/commit/b122217f74
         odoo.tools.config["load_language"] = None
         odoo.tools.config.parse_config(odoo_args)
-        self._fix_odoo_logging()
-        self._fix_disable_wsgi_module_handlers()
         odoo.cli.server.report_configuration()
 
     def _db_exists(self, dbname):
