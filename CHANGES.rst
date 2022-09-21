@@ -3,6 +3,18 @@ Changes
 
 .. towncrier release notes start
 
+1.6.0 (2022-09-21)
+------------------
+
+**Feature**
+
+- Add CI tests for Odoo 16 and Python 3.10. (`#51 <https://github.com/acsone/click-odoo/issues/51>`_)
+
+**Deprecations and Removals**
+
+- Drop support for python < 3.6 and Odoo 8, 9, 10. (`#48 <https://github.com/acsone/click-odoo/issues/48>`_)
+
+
 1.5.0 (2021-10-08)
 ------------------
 
