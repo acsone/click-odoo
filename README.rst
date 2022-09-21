@@ -114,7 +114,7 @@ as a global variable.
 Supported Odoo versions
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Odoo version 12, 13, 14 and 15 are supported.
+Odoo version 11, 12, 13, 14, 15 and 16 are supported.
 
 An important design goal is to provide a consistent behaviour
 across Odoo versions.
