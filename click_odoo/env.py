@@ -4,7 +4,7 @@
 import logging
 from contextlib import contextmanager
 
-from .compat import Environment, environment_manage, odoo, odoo_version_info
+from .compat import Environment, environment_manage, odoo
 
 _logger = logging.getLogger(__name__)
 
@@ -36,8 +36,5 @@ def OdooEnvironment(database, rollback=False, **kwargs):
                 else:
                     cr.commit()
         finally:
-            if odoo_version_info < (10, 0):
-                odoo.modules.registry.RegistryManager.delete(database)
-            else:
-                odoo.modules.registry.Registry.delete(database)
+            odoo.modules.registry.Registry.delete(database)
             odoo.sql_db.close_db(database)

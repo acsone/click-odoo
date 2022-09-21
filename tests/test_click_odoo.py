@@ -1,7 +1,6 @@
 # Copyright 2018 ACSONE SA/NV (<http://acsone.eu>)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from __future__ import print_function
 
 import os
 import subprocess
@@ -54,7 +53,7 @@ def test_odoo_env(odoodb):
 
 
 def test_click_odoo(odoodb):
-    """ Test simple access to env in script """
+    """Test simple access to env in script"""
     script = os.path.join(here, "scripts", "script1.py")
     cmd = ["click-odoo", "-d", odoodb, script]
     result = subprocess.check_output(cmd, universal_newlines=True)
@@ -62,7 +61,7 @@ def test_click_odoo(odoodb):
 
 
 def test_click_odoo_minus_m(odoodb):
-    """ Test simple access to env in script """
+    """Test simple access to env in script"""
     script = os.path.join(here, "scripts", "script1.py")
     cmd = [sys.executable, "-m", "click_odoo", "-d", odoodb, script]
     result = subprocess.check_output(cmd, universal_newlines=True)
@@ -70,7 +69,7 @@ def test_click_odoo_minus_m(odoodb):
 
 
 def test_click_odoo_minus_m_cli(odoodb):
-    """ Test simple access to env in script """
+    """Test simple access to env in script"""
     script = os.path.join(here, "scripts", "script1.py")
     cmd = [sys.executable, "-m", "click_odoo.cli", "-d", odoodb, script]
     result = subprocess.check_output(cmd, universal_newlines=True)
@@ -78,7 +77,7 @@ def test_click_odoo_minus_m_cli(odoodb):
 
 
 def test_cli_runner(odoodb):
-    """ Test simple access to env in script (through click CliRunner) """
+    """Test simple access to env in script (through click CliRunner)"""
     script = os.path.join(here, "scripts", "script1.py")
     runner = CliRunner()
     result = runner.invoke(main, ["-d", odoodb, script])
@@ -87,7 +86,7 @@ def test_cli_runner(odoodb):
 
 
 def test_click_odoo_args(odoodb):
-    """ Test sys.argv in script """
+    """Test sys.argv in script"""
     script = os.path.join(here, "scripts", "script2.py")
     cmd = ["click-odoo", "-d", odoodb, "--", script, "a", "-b", "-d"]
     result = subprocess.check_output(cmd, universal_newlines=True)
@@ -102,7 +101,7 @@ def test_click_odoo_args(odoodb):
 
 
 def test_click_odoo_shebang(odoodb):
-    """ Test simple access to env in script with click-odoo shebang """
+    """Test simple access to env in script with click-odoo shebang"""
     script = os.path.join(here, "scripts", "script1.py")
     cmd = [script, "-d", odoodb]
     result = subprocess.check_output(cmd, universal_newlines=True)
@@ -110,7 +109,7 @@ def test_click_odoo_shebang(odoodb):
 
 
 def test_click_odoo_shebang_args(odoodb):
-    """ Test script arguments (with click-odoo shebang) """
+    """Test script arguments (with click-odoo shebang)"""
     script = os.path.join(here, "scripts", "script2.py")
     cmd = [script, "-d", odoodb, "--", "a", "-b", "-d"]
     result = subprocess.check_output(cmd, universal_newlines=True)
@@ -175,7 +174,7 @@ def test_env_options_withdb(odoodb, tmpdir):
     @click_odoo.env_options()
     def testcmd(env):
         login = env["res.users"].search([("login", "=", "admin")]).login
-        click.echo("login={}".format(login))
+        click.echo(f"login={login}")
 
     # database from command line
     runner = CliRunner()
@@ -350,7 +349,7 @@ def _assert_testparam_absent(dbname):
 
 
 def test_write_commit(odoodb):
-    """ test commit in script """
+    """test commit in script"""
     _cleanup_testparam(odoodb)
     script = os.path.join(here, "scripts", "script4.py")
     cmd = ["click-odoo", "-d", odoodb, "--", script, "commit"]
@@ -359,7 +358,7 @@ def test_write_commit(odoodb):
 
 
 def test_write_rollback(odoodb):
-    """ test rollback in script """
+    """test rollback in script"""
     _cleanup_testparam(odoodb)
     script = os.path.join(here, "scripts", "script4.py")
     cmd = ["click-odoo", "-d", odoodb, "--", script, "rollback"]
@@ -368,7 +367,7 @@ def test_write_rollback(odoodb):
 
 
 def test_write_defaulttx(odoodb):
-    """ test click-odoo commits itself """
+    """test click-odoo commits itself"""
     _cleanup_testparam(odoodb)
     script = os.path.join(here, "scripts", "script4.py")
     cmd = ["click-odoo", "-d", odoodb, "--", script]
@@ -377,7 +376,7 @@ def test_write_defaulttx(odoodb):
 
 
 def test_write_interactive_defaulttx(mocker, odoodb):
-    """ test click-odoo rollbacks in interactive mode """
+    """test click-odoo rollbacks in interactive mode"""
     mocker.patch.object(console.Shell, "python")
     mocker.patch.object(console, "_isatty", return_value=True)
 
@@ -399,7 +398,7 @@ def test_write_stdin_defaulttx(odoodb):
 
 
 def test_write_raise(tmpdir, capfd, odoodb):
-    """ test nothing is committed if the script raises """
+    """test nothing is committed if the script raises"""
     _cleanup_testparam(odoodb)
     script = os.path.join(here, "scripts", "script4.py")
     logfile = tmpdir.join("mylogfile")
@@ -414,7 +413,7 @@ def test_write_raise(tmpdir, capfd, odoodb):
 
 
 def test_env_cache(odoodb):
-    """ test a new environment does not reuse cache """
+    """test a new environment does not reuse cache"""
     _cleanup_testparam(odoodb)
     with OdooEnvironment(database=odoodb) as env:
         env["ir.config_parameter"].set_param("testparam", "testvalue")

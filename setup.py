@@ -23,6 +23,7 @@ setup(
     include_package_data=True,
     setup_requires=["setuptools_scm"],
     install_requires=["click>=7"],
+    python_requires=">=3.6",
     license="LGPLv3+",
     author="ACSONE SA/NV",
     author_email="info@acsone.eu",
@@ -32,8 +33,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: "
         "GNU Lesser General Public License v3 or later (LGPLv3+)",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",

@@ -1,5 +1,4 @@
 #!/usr/bin/env click-odoo
-from __future__ import print_function
 
 import sys
 
