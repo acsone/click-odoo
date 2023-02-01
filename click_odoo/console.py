@@ -9,7 +9,6 @@ _logger = logging.getLogger(__name__)
 
 
 class Shell:
-
     shells = ["ipython", "ptpython", "bpython", "python"]
 
     @classmethod
