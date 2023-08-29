@@ -46,10 +46,6 @@ or::
 
   click-odoo -d dbname --log-level=error ./list-users.py
 
-or::
-
-  ./list-users.py -d dbname --log-level=error
-
 The other technique to create scripts looks like this. Assuming
 the following script named ``list-users2.py``.
 
