@@ -33,8 +33,8 @@ jobs:
           - python-version: "3.10"
             toxenv: "py310-16.0"
             machine: ubuntu-22.04
-          - python-version: "3.10"
-            toxenv: "py310-17.0"
+          - python-version: "3.12"
+            toxenv: "py312-17.0"
             machine: ubuntu-22.04
           - python-version: "3.10"
             toxenv: "twine_check"
