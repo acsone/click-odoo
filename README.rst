@@ -321,6 +321,9 @@ you commit, install
 `pre-commit <https://github.com/pre-commit/pre-commit>`_ and
 run ``pre-commit install`` after cloning the repository.
 
+To release, create a release with a tag on GitHub. This will trigger a
+deployment to PyPI.
+
 Useful links
 ~~~~~~~~~~~~
 
