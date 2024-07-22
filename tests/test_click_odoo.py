@@ -94,9 +94,7 @@ def test_click_odoo_args(odoodb):
         """\
         sys.argv = {} a -b -d
         __name__ = __main__
-    """.format(
-            script
-        )
+        """.format(script)
     )
 
 
@@ -117,9 +115,7 @@ def test_click_odoo_shebang_args(odoodb):
         """\
         sys.argv = {} a -b -d
         __name__ = __main__
-    """.format(
-            script
-        )
+    """.format(script)
     )
 
 
@@ -188,9 +184,7 @@ def test_env_options_withdb(odoodb, tmpdir):
             """\
         [options]
         db_name={}
-    """.format(
-                odoodb
-            )
+    """.format(odoodb)
         )
     )
     result = runner.invoke(testcmd, ["-c", str(odoocfg1)])
@@ -216,9 +210,7 @@ def test_env_options_withdb(odoodb, tmpdir):
             """\
         [options]
         db_name={},notadb
-    """.format(
-                odoodb
-            )
+    """.format(odoodb)
         )
     )
     result = runner.invoke(testcmd, ["-c", str(odoocfg3)])
@@ -254,9 +246,7 @@ def test_env_options_nodb(odoodb, tmpdir):
             """\
         [options]
         db_name={}
-    """.format(
-                odoodb
-            )
+    """.format(odoodb)
         )
     )
     result = runner.invoke(testcmd, ["-c", str(odoocfg1)])
@@ -289,9 +279,7 @@ def test_env_options_optionaldb(odoodb, tmpdir):
             """\
         [options]
         db_name={}
-    """.format(
-                odoodb
-            )
+    """.format(odoodb)
         )
     )
     result = runner.invoke(testcmd, ["-c", str(odoocfg1)])
