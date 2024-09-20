@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 @contextmanager
 def OdooEnvironment(database, rollback=False, **kwargs):
     with environment_manage():
-        registry = odoo.registry(database)
+        registry = odoo.modules.registry.Registry(database)
         try:
             with registry.cursor() as cr:
                 uid = odoo.SUPERUSER_ID
