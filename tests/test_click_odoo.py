@@ -21,7 +21,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 # This hack is necessary because the way CliRunner patches
 # stdout is not compatible with the Odoo logging initialization
 # mechanism. Logging is therefore tested with subprocesses.
-odoo.netsvc._logger_init = True
+odoo.netsvc.init_logger = lambda: None
 
 
 def _init_odoo_db(dbname):
