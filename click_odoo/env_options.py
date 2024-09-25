@@ -142,7 +142,10 @@ class env_options:
         odoo.tools.config["db_name"] = None
         # see https://github.com/odoo/odoo/commit/b122217f74
         odoo.tools.config["load_language"] = None
-        odoo.tools.config.parse_config(odoo_args)
+        if odoo.release.version_info >= (18, 0):
+            odoo.tools.config.parse_config(odoo_args, setup_logging=True)
+        else:
+            odoo.tools.config.parse_config(odoo_args)
         odoo.cli.server.report_configuration()
 
     def _db_exists(self, dbname):
