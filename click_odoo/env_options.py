@@ -146,7 +146,10 @@ class env_options:
             odoo.tools.config.parse_config(odoo_args, setup_logging=True)
         else:
             odoo.tools.config.parse_config(odoo_args)
-        odoo.cli.server.report_configuration()
+
+        from odoo.cli.server import report_configuration
+
+        report_configuration()
 
     def _db_exists(self, dbname):
         conn = odoo.sql_db.db_connect("postgres")
