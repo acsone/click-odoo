@@ -312,7 +312,7 @@ def test_env_options_database_must_exist(odoodb):
 def _cleanup_testparam(dbname):
     with psycopg2.connect(dbname=dbname) as conn:
         with conn.cursor() as cr:
-            cr.execute("DELETE FROM ir_config_parameter " "WHERE key='testparam'")
+            cr.execute("DELETE FROM ir_config_parameter WHERE key='testparam'")
             conn.commit()
     conn.close()
 
@@ -320,7 +320,7 @@ def _cleanup_testparam(dbname):
 def _assert_testparam_present(dbname, expected):
     with psycopg2.connect(dbname=dbname) as conn:
         with conn.cursor() as cr:
-            cr.execute("SELECT value FROM ir_config_parameter " "WHERE key='testparam'")
+            cr.execute("SELECT value FROM ir_config_parameter WHERE key='testparam'")
             r = cr.fetchall()
             assert len(r) == 1
             assert r[0][0] == expected
@@ -330,7 +330,7 @@ def _assert_testparam_present(dbname, expected):
 def _assert_testparam_absent(dbname):
     with psycopg2.connect(dbname=dbname) as conn:
         with conn.cursor() as cr:
-            cr.execute("SELECT value FROM ir_config_parameter " "WHERE key='testparam'")
+            cr.execute("SELECT value FROM ir_config_parameter WHERE key='testparam'")
             r = cr.fetchall()
             assert len(r) == 0
     conn.close()
