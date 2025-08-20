@@ -12,29 +12,30 @@ _logger = logging.getLogger(__name__)
 @contextmanager
 def OdooEnvironment(database, rollback=False, **kwargs):
     with environment_manage():
-        registry = odoo.modules.registry.Registry(database)
-        try:
-            with registry.cursor() as cr:
-                uid = odoo.SUPERUSER_ID
-                try:
-                    ctx = Environment(cr, uid, {})["res.users"].context_get()
-                except Exception as e:
-                    ctx = {"lang": "en_US"}
-                    # this happens, for instance, when there are new
-                    # fields declared on res_partner which are not yet
-                    # in the database (before -u)
-                    _logger.warning(
-                        "Could not obtain a user context, continuing "
-                        "anyway with a default context. Error was: %s",
-                        e,
-                    )
-                env = Environment(cr, uid, ctx)
-                cr.rollback()
-                yield env
-                if rollback:
+        registry = odoo.modules.registry.Registry(database).check_signaling()
+        with registry.manage_changes():
+            try:
+                with registry.cursor() as cr:
+                    uid = odoo.SUPERUSER_ID
+                    try:
+                        ctx = Environment(cr, uid, {})["res.users"].context_get()
+                    except Exception as e:
+                        ctx = {"lang": "en_US"}
+                        # this happens, for instance, when there are new
+                        # fields declared on res_partner which are not yet
+                        # in the database (before -u)
+                        _logger.warning(
+                            "Could not obtain a user context, continuing "
+                            "anyway with a default context. Error was: %s",
+                            e,
+                        )
+                    env = Environment(cr, uid, ctx)
                     cr.rollback()
-                else:
-                    cr.commit()
-        finally:
-            odoo.modules.registry.Registry.delete(database)
-            odoo.sql_db.close_db(database)
+                    yield env
+                    if rollback:
+                        cr.rollback()
+                    else:
+                        cr.commit()
+            finally:
+                odoo.modules.registry.Registry.delete(database)
+                odoo.sql_db.close_db(database)
