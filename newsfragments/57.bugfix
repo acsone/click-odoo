@@ -1,0 +1,3 @@
+Support deployments where access to ``pg_catalog.pg_databases`` is restricted
+(this is the case on ``odoo.sh``). If the normal mechanism fails, we attempt to
+connect to the database, and if that fail we assume it does not exist.
