@@ -24,3 +24,7 @@ else:
         # Environment.manage is a no-op in Odoo 15+, but it
         # emits a noisy warning so let's avoid it.
         yield
+
+
+if odoo_version_info >= (19, 0):
+    import odoo.init
