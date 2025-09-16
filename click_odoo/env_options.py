@@ -3,6 +3,7 @@
 
 import logging
 from contextlib import closing
+from typing import Optional
 
 import click
 from click.decorators import _param_memo  # XXX undocumented click internal
@@ -169,18 +170,27 @@ class env_options:
         ctx.params.pop("logfile", None)
         ctx.params.pop("rollback", None)
 
+    @classmethod
+    def _get_config_single_db_name(cls) -> Optional[str]:
+        """Return the database name from the Odoo config if it is a single database."""
+        config_db_name = odoo.tools.config["db_name"]
+        if not config_db_name:
+            return None
+        elif isinstance(config_db_name, str) and "," not in config_db_name:
+            # Odoo < 19
+            return config_db_name
+        elif isinstance(config_db_name, list) and len(config_db_name) == 1:
+            # In Odoo >= 19, odoo.tools.config["db_name"] can be a list of databases
+            return config_db_name[0]
+        else:
+            return None
+
     def _invoke(self, ctx):
         try:
             self._configure_odoo(ctx)
             database = ctx.params.get("database")
-            if (
-                not database
-                and odoo.tools.config["db_name"]
-                and "," not in odoo.tools.config["db_name"]
-            ):
-                # if database not provided as parameter and a single
-                # database is provided in the odoo config file, use it
-                database = odoo.tools.config["db_name"]
+            if not database:
+                database = self._get_config_single_db_name()
             rollback = ctx.params.get("rollback")
             # pop env_options params so they are not passed to the command
             self._pop_params(ctx)

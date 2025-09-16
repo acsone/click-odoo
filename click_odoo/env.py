@@ -5,6 +5,7 @@ import logging
 from contextlib import contextmanager
 
 from .compat import Environment, environment_manage, odoo
+import odoo.modules.registry
 
 _logger = logging.getLogger(__name__)
 
