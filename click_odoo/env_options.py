@@ -3,6 +3,7 @@
 
 import logging
 from contextlib import closing
+from typing import Optional
 
 import click
 from click.decorators import _param_memo  # XXX undocumented click internal
@@ -170,7 +171,7 @@ class env_options:
         ctx.params.pop("rollback", None)
 
     @classmethod
-    def _get_config_single_db_name(cls) -> str | None:
+    def _get_config_single_db_name(cls) -> Optional[str]:
         """Return the database name from the Odoo config if it is a single database."""
         config_db_name = odoo.tools.config["db_name"]
         if not config_db_name:
