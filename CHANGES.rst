@@ -3,6 +3,14 @@ Changes
 
 .. towncrier release notes start
 
+1.8.0 (2025-09-16)
+------------------
+
+**Features**
+
+- Odoo 19 support. (`#70 <https://github.com/acsone/click-odoo/issues/70>`_)
+
+
 1.7.0 (2024-10-23)
 ------------------
 
