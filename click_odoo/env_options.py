@@ -6,10 +6,17 @@ from contextlib import closing
 from typing import Optional
 
 import click
+import psycopg2
 from click.decorators import _param_memo  # XXX undocumented click internal
 
 from .compat import environment_manage
 from .env import OdooEnvironment, odoo
+
+try:
+    from psycopg2.errors import InsufficientPrivilege
+except ImportError:
+    # for psycopg2 < 2.8
+    from psycopg2 import ProgrammingError as InsufficientPrivilege
 
 _logger = logging.getLogger(__name__)
 
@@ -152,15 +159,26 @@ class env_options:
 
         report_configuration()
 
+    def _can_connect_to_db(self, dbname):
+        try:
+            conn = odoo.sql_db.db_connect(dbname)
+            with closing(conn.cursor()):
+                return True
+        except psycopg2.OperationalError:
+            return False
+
     def _db_exists(self, dbname):
-        conn = odoo.sql_db.db_connect("postgres")
-        with closing(conn.cursor()) as cr:
-            cr._obj.execute(
-                "SELECT datname FROM pg_catalog.pg_database "
-                "WHERE lower(datname) = lower(%s)",
-                (dbname,),
-            )
-            return bool(cr.fetchone())
+        try:
+            conn = odoo.sql_db.db_connect("postgres")
+            with closing(conn.cursor()) as cr:
+                cr._obj.execute(
+                    "SELECT datname FROM pg_catalog.pg_database "
+                    "WHERE lower(datname) = lower(%s)",
+                    (dbname,),
+                )
+                return bool(cr.fetchone())
+        except InsufficientPrivilege:
+            return self._can_connect_to_db(dbname)
 
     def _pop_params(self, ctx):
         ctx.params.pop("config", None)
