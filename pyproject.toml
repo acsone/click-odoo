@@ -9,3 +9,8 @@ build-backend = "setuptools.build_meta"
     issue_format = "`#{issue} <https://github.com/acsone/click-odoo/issues/{issue}>`_"
     directory = "newsfragments/"
     filename = "CHANGES.rst"
+
+[dependency-groups]
+dev = [
+    "towncrier>=25.8.0",
+]
