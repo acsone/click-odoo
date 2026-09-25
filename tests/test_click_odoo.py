@@ -11,6 +11,7 @@ import click
 import psycopg2
 import pytest
 from click.testing import CliRunner
+from odoo import netsvc
 
 import click_odoo
 from click_odoo import OdooEnvironment, console, odoo, odoo_bin
@@ -22,8 +23,10 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 # This hack is necessary because the way CliRunner patches
 # stdout is not compatible with the Odoo logging initialization
-# mechanism. Logging is therefore tested with subprocesses.
-odoo.netsvc.init_logger = lambda: None
+# mechanism (the stream has no fileno).
+# Logging is therefore tested with subprocesses.
+netsvc.init_logger = lambda: None
+os.environ["NO_COLOR"] = "1"
 
 
 def _init_odoo_db(dbname):
