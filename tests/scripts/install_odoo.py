@@ -68,6 +68,15 @@ def install_odoo():
                 "setuptools<58",
             ]
         )
+    elif odoo_branch in ["14.0", "15.0", "16.0"]:
+        # setuptools 82 dropped pkg_resources which these Odoo versions require
+        subprocess.check_call(
+            [
+                "pip",
+                "install",
+                "setuptools<82",
+            ]
+        )
     with odoo_requirements(odoo_branch) as requirements:
         subprocess.check_call(["pip", "install", *requirements])
     odoo_install_cmd = ["pip", "install", "-e", odoo_dir]

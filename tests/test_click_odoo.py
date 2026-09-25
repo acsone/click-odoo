@@ -11,17 +11,22 @@ import click
 import psycopg2
 import pytest
 from click.testing import CliRunner
+from odoo import netsvc
 
 import click_odoo
 from click_odoo import OdooEnvironment, console, odoo, odoo_bin
 from click_odoo.cli import main
 
+from .compat import get_param, set_param
+
 here = os.path.abspath(os.path.dirname(__file__))
 
 # This hack is necessary because the way CliRunner patches
 # stdout is not compatible with the Odoo logging initialization
-# mechanism. Logging is therefore tested with subprocesses.
-odoo.netsvc.init_logger = lambda: None
+# mechanism (the stream has no fileno).
+# Logging is therefore tested with subprocesses.
+netsvc.init_logger = lambda: None
+os.environ["NO_COLOR"] = "1"
 
 
 def _init_odoo_db(dbname):
@@ -238,7 +243,10 @@ def test_env_options_nodb(odoodb, tmpdir):
     # -d not allowed
     result = runner.invoke(testcmd, ["-d", odoodb])
     assert result.exit_code != 0
-    assert "no such option: -d" in result.output.lower()
+    assert (
+        "no such option: -d" in result.output.lower()
+        or "no such option '-d'" in result.output.lower()
+    )
     # db_name in config ignored
     odoocfg1 = tmpdir / "odoo1.cfg"
     odoocfg1.write(
@@ -404,15 +412,15 @@ def test_env_cache(odoodb):
     """test a new environment does not reuse cache"""
     _cleanup_testparam(odoodb)
     with OdooEnvironment(database=odoodb) as env:
-        env["ir.config_parameter"].set_param("testparam", "testvalue")
-        value = env["ir.config_parameter"].get_param("testparam")
+        set_param(env, "testparam", "testvalue")
+        value = get_param(env, "testparam")
         assert value == "testvalue"
         env.cr.commit()
     _assert_testparam_present(odoodb, "testvalue")
     _cleanup_testparam(odoodb)
     _assert_testparam_absent(odoodb)
     with OdooEnvironment(database=odoodb) as env:
-        value = env["ir.config_parameter"].get_param("testparam")
+        value = get_param(env, "testparam")
         assert not value
 
 
