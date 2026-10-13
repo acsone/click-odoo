@@ -79,6 +79,17 @@ class env_options:
                     "provided in the Odoo configuration file.",
                 ),
             )
+        _param_memo(
+            f,
+            click.Option(
+                ("--load-server-wide-modules",),
+                is_flag=True,
+                help="Load the server wide modules before running the "
+                "command. This is needed when a server wide module "
+                "patches the framework in a way that is required for "
+                "the command to work correctly.",
+            ),
+        )
         if self.with_addons_path:
             _param_memo(
                 f,
@@ -169,6 +180,7 @@ class env_options:
         ctx.params.pop("log_level", None)
         ctx.params.pop("logfile", None)
         ctx.params.pop("rollback", None)
+        ctx.params.pop("load_server_wide_modules", None)
 
     @classmethod
     def _get_config_single_db_name(cls) -> Optional[str]:
@@ -192,6 +204,7 @@ class env_options:
             if not database:
                 database = self._get_config_single_db_name()
             rollback = ctx.params.get("rollback")
+            load_server_wide_modules = ctx.params.get("load_server_wide_modules")
             # pop env_options params so they are not passed to the command
             self._pop_params(ctx)
             if self.with_database and self.database_required and not database:
@@ -205,7 +218,10 @@ class env_options:
                 and (self.database_must_exist or self._db_exists(database))
             ):
                 with self.environment_manager(
-                    database=database, rollback=rollback, ctx=ctx
+                    database=database,
+                    rollback=rollback,
+                    load_server_wide_modules=load_server_wide_modules,
+                    ctx=ctx,
                 ) as env:
                     ctx.params["env"] = env
                     return self.org_invoke(ctx)
