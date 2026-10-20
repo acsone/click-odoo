@@ -13,6 +13,7 @@ _logger = logging.getLogger(__name__)
 @contextmanager
 def OdooEnvironment(database, rollback=False, **kwargs):
     with environment_manage():
+        odoo.service.server.load_server_wide_modules()
         registry = odoo.modules.registry.Registry(database)
         try:
             with registry.cursor() as cr:
