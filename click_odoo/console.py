@@ -13,6 +13,14 @@ class Shell:
 
     @classmethod
     def python(cls, local_vars):
+        if os.getenv("PYTHONSTARTUP"):
+            # If PYTHONSTARTUP is defined, run it.
+            startup_file = os.getenv("PYTHONSTARTUP")
+            if os.path.isfile(startup_file):
+                with open(startup_file) as f:
+                    startup = f.read()
+                exec(startup, local_vars)
+
         console = code.InteractiveConsole(locals=local_vars)
         import readline
         import rlcompleter  # noqa
